@@ -1,0 +1,45 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <title>Groceries List</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="apple-touch-icon" href="icon.png">
+  <!-- Place favicon.ico in the root directory -->
+
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <meta name="theme-color" content="#fafafa">
+</head>
+
+<body>
+  <!-- Add your site or application content here -->
+  <br>
+  <h1>Grocery List.</h1>
+  <br>
+  <div id='buttons'>
+    <button id='btn-add-item' class='btn btn-outline-success btn-lg'>ADD ITEM</button>  
+    <button id='btn-del-item' class='btn btn-outline-danger btn-lg'>DELETE ITEM</button>
+    <button id='btn-reset' class='btn btn-outline-danger btn-lg'>RESET LIST</button>
+  </div>
+  <div class='grocery-items'>
+    <br><br>
+  </div>
+  <div class='grocery-total'> 
+    <h3 id='total-cost'>TOTAL COST =  $ <span id='cost-num'>0</span></h3>
+    <h3 id='total-items'>Total number of grocery items: <span id='items-num'>0</span> </h3>
+  </div>
+  <div id='footer'></div>
+    <img id='groceries-img' src='img/groceries-vector.jpg' alt='vector groceries'>
+  </div>
+
+  <script src="js/main.js"></script>
+
+</body>
+
+</html>
