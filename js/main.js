@@ -1,4 +1,5 @@
 initialize(); 
+buildTable();
 
 //*****************************************************************
 function initialize(){
@@ -6,6 +7,14 @@ function initialize(){
   document.getElementById('btn-add-item').addEventListener('click', addItem);
   document.getElementById('btn-del-item').addEventListener('click', deleteItem);
   document.getElementById('btn-reset').addEventListener('click', resetList);
+}
+
+function buildTable(){
+  var elToAppendTo = document.getElementById('btn-save')
+  var groceryTable = document.createElement('table')
+  elToAppendTo.appendChild(groceryTable);
+  var groceryBody = document.createElement('tbody')
+  groceryTable.appendChild(groceryBody)
 }
 
 function addItem(){
@@ -18,17 +27,33 @@ function addItem(){
   } 
 
   function saveItem(event){
-    let name = event.target.previousElementSibling.value;
+    var name = event.target.previousElementSibling.value;
     event.target.previousElementSibling.value = '';
-    let item = { name: name, cost: undefined, price: undefined };
+    var item = { name: name, cost: undefined, price: undefined };
     groceryList.push(item);
+    displayItem(item, groceryList);
+    updateTable(groceryList, 'add');
+  }
+
+  function displayItem(item, groceryList){  
     console.log(groceryList);
-    countItems(groceryList);
-    updateCost(groceryList, 'add');
+    var table = document.querySelector('table')
+    var row = table.insertRow();
+    var itemData = Object.values(item)
+    debugger;
+    itemData.forEach(el => {
+      let cell = row.insertCell();
+      let text = document.createTextNode(el);
+      cell.appendChild(text);
+    })   
   }
   //name, quantity, cost
   //displayList, cost and count
- 
+}
+
+function updateTable(groceryList, addOrDelete){
+  countItems(groceryList);
+  updateCost(groceryList, addOrDelete);
 }
 
 function createItemField(fieldType){
@@ -47,7 +72,6 @@ function createItemField(fieldType){
 }
 
 function updateCost(groceryList, operationToPerform) {
-  
   // update cost by adding or removing item
 }
 
@@ -58,9 +82,6 @@ function countItems(groceryList){
   // total items by count and quantity
 }
 
-function displayList(){
-  // display table of grocery items with name, quantity, cost and checkbox
-}
 
 function deleteItem(item){
   // delete item
@@ -71,7 +92,7 @@ function deleteItem(item){
 function resetList(){
   groceryList = [];
   cost = 0;
-  document.getElementById('grocery-items').innerHTML = '<br><br>'; 
+  document.getElementById('grocery-items').innerHTML = ''; 
   document.getElementById('total-cost').innerText = 0;
   document.getElementById('items-num').innerText = 0;
 }
