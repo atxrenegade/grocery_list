@@ -8,17 +8,46 @@ function initialize(){
   document.getElementById('btn-reset').addEventListener('click', resetList)
 }
 
-function addItem(name, quantity, cost){
-  //create item field with button and event listener
+function addItem(){
+  if (inputField == null) {
+    createItemField('field-add-item')
+    document.getElementById('btn-save').addEventListener('click', saveItem)
+  } 
+
+  var inputField = document.getElementById('field-add-item')
+  function saveItem(event){
+    debugger;
+    var groceryList = []
+    let name = event.target.previousElementSibling.value
+    let item = {name: name, cost: undefined, price: undefined }
+    groceryList.push(item)
+    console.log(groceryList)
+  }
+
+    
+  //name, quantity, cost
+  //create item field with button
+  //add event listener
   //get data from event
   //adds button with event listener to append new items to list
   //invokes updateCost
   //invokes countItem
-  //displaylist, cost and count
+  //displayList, cost and count
 }
 
-function createItemField(){
-  //create fields with save button
+function createItemField(fieldType){
+  let itemField = document.createElement('input')
+  let saveButton = document.createElement('button')
+  let elToAppendTo = document.getElementById('grocery-items')
+
+  itemField.type = 'text';
+  itemField.id = fieldType;
+
+  saveButton.id = 'btn-save'
+  saveButton.innerText = 'SAVE'
+
+  elToAppendTo.appendChild(itemField)
+  elToAppendTo.appendChild(saveButton)
 }
 
 function updateCost(itemSum, operationToPerform) {
