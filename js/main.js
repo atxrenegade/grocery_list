@@ -9,6 +9,9 @@ function initialize(){
 }
 
 function addItem(){
+  var inputField = document.getElementById('field-add-item');
+  var groceryList = [];
+
   if (inputField == null) {
     createItemField('field-add-item');
     document.getElementById('btn-save').addEventListener('click', saveItem);
@@ -16,22 +19,16 @@ function addItem(){
 
   function saveItem(event){
     let name = event.target.previousElementSibling.value;
+    event.target.previousElementSibling.value = '';
     let item = { name: name, cost: undefined, price: undefined };
     groceryList.push(item);
-    console.log(groceryList)
+    console.log(groceryList);
+    countItems(groceryList);
+    updateCost(groceryList, 'add');
   }
-
-    
   //name, quantity, cost
-  //create item field with button
-  //add event listener
-  //get data from event
-  //adds button with event listener to append new items to list
-  //invokes updateCost
-  //invokes countItem
   //displayList, cost and count
-  var inputField = document.getElementById('field-add-item');
-  var groceryList = [];
+ 
 }
 
 function createItemField(fieldType){
@@ -49,17 +46,20 @@ function createItemField(fieldType){
   elToAppendTo.appendChild(saveButton);
 }
 
-function updateCost(itemSum, operationToPerform) {
+function updateCost(groceryList, operationToPerform) {
   
   // update cost by adding or removing item
 }
 
-function countItems(){
+function countItems(groceryList){
+  // create clossure to access groceryList without passing as parameter
+  var count = groceryList.length;
+  document.getElementById('items-num').innerText = count;
   // total items by count and quantity
 }
 
 function displayList(){
-  // display table of grocery items
+  // display table of grocery items with name, quantity, cost and checkbox
 }
 
 function deleteItem(item){
@@ -69,8 +69,9 @@ function deleteItem(item){
 }
 
 function resetList(){
-  document.getElementById('grocery-items').innerHTML = '<br><br>'; 
   groceryList = [];
   cost = 0;
-  numOfItems = 0;
+  document.getElementById('grocery-items').innerHTML = '<br><br>'; 
+  document.getElementById('total-cost').innerText = 0;
+  document.getElementById('items-num').innerText = 0;
 }
