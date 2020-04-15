@@ -68,10 +68,8 @@ function addItem(){
     itemCheckbox.classList.add('ckbx-styled');
     cell.appendChild(itemCheckbox);
     itemCheckbox.addEventListener('change', function(){ 
-      if (this.checked){ 
-        countItems();
-        updateCost(item, 'add') 
-      } 
+      countItems();
+      updateCost(item, 'add')   
     })
   }
 
@@ -94,9 +92,18 @@ function updateCost(item, operationToPerform){
   // update cost by adding or removing item
 }
 
-function countItems(groceryList){
+function countItems(){
   // create closure to access groceryList without passing as parameter
-  var count = groceryList.length;
+  var checkboxes = Array.from(document.getElementsByClassName('ckbx-styled'))
+  var checked = []
+  for (const element of checkboxes) { 
+    if (element.checked == true) {
+      // search GroceryList for element and get item quantity and push it to checked
+      //then add total quantity numbers
+      checked.push(element);
+    }
+  }
+  var count = checked.length;
   document.getElementById('items-num').innerText = count;
   // total items by count and quantity
 }
