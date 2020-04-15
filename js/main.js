@@ -10,8 +10,9 @@ function initialize(){
 }
 
 function buildTable(){
-  var elToAppendTo = document.getElementById('btn-save')
+  var elToAppendTo = document.getElementById('grocery-items-section')
   var groceryTable = document.createElement('table')
+  groceryTable.classList.add('table');
   elToAppendTo.appendChild(groceryTable);
   var groceryBody = document.createElement('tbody')
   groceryTable.appendChild(groceryBody)
@@ -37,9 +38,9 @@ function addItem(){
 
   function displayItem(item, groceryList){  
     console.log(groceryList);
-    var table = document.querySelector('table')
+    var table = document.querySelector('table');
     var row = table.insertRow();
-    var itemData = Object.values(item)
+    var itemData = Object.values(item);
     debugger;
     itemData.forEach(el => {
       let cell = row.insertCell();
@@ -59,7 +60,7 @@ function updateTable(groceryList, addOrDelete){
 function createItemField(fieldType){
   var itemField = document.createElement('input');
   var saveButton = document.createElement('button');
-  var elToAppendTo = document.getElementById('grocery-items');
+  var elToAppendTo = document.getElementById('add-items-section');
 
   itemField.type = 'text';
   itemField.id = fieldType;
