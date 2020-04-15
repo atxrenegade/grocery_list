@@ -41,6 +41,11 @@ img {
   margin: auto;
 }
 
+.ckbx-styled {
+  width: 30px;
+  height: 30px;
+}
+
 #grocery-img {
   vertical-align: auto;
   max-height: 30%;
@@ -54,6 +59,10 @@ img {
   border-radius: 7%;
   border-width: 3px;
   margin: 4px 2px;
+}
+
+#btn-save {
+  margin: 5px;
 }
 
 /*
