@@ -69,6 +69,7 @@ function addItem(){
     cell.appendChild(itemCheckbox);
     itemCheckbox.addEventListener('change', function(){ 
       if (this.checked){ 
+        countItems();
         updateCost(item, 'add') 
       } 
     })
@@ -109,7 +110,7 @@ function deleteItem(item){
 function resetList(){
   groceryList = [];
   cost = 0;
-  document.getElementById('grocery-items').innerHTML = ''; 
+  document.getElementById('grocery-items-section').innerHTML = ''; 
   document.getElementById('total-cost').innerText = 0;
   document.getElementById('items-num').innerText = 0;
 }
