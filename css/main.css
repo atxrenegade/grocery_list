@@ -32,6 +32,11 @@ img {
   width: 40%;
 }
 
+input[type='text'] {
+  margin: 5px;
+  display: inline;
+}
+
 .table td, .table th {
   border-bottom: 1px solid #dee2e6;
 }
@@ -63,7 +68,19 @@ img {
 
 #btn-save {
   margin: 5px;
+  display: block;
+  margin: auto;
 }
+
+#field-quantity {
+  width: 70px;
+}
+
+#field-add-item {
+  width: 200px;
+}
+
+
 
 /*
  * Remove text-shadow in selection highlight:
