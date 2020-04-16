@@ -131,6 +131,6 @@ function resetList(){
   groceryList = [];
   cost = 0;
   document.getElementById('grocery-items-section').innerHTML = ''; 
-  document.getElementById('total-cost').innerText = 0;
+  document.getElementById('cost-num').innerText = 0;
   document.getElementById('items-num').innerText = 0;
 }
