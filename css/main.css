@@ -18,7 +18,13 @@ html {
 }
 
 body {
+  padding: 30px 20px;
+  max-width: 850px;
   text-align: center;
+  display:flex; 
+  flex-direction:column; 
+  justify-content:center;
+  min-height:100vh;
 }
 
 div, h1 {
@@ -68,7 +74,7 @@ input[type='text'] {
 
 #btn-save {
   margin: 5px;
-  display: block;
+  display: inline-flex;
   margin: auto;
 }
 
