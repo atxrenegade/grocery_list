@@ -20,16 +20,25 @@ function buildTable(){
 
 function createItemField(fieldType){
   var itemField = document.createElement('input');
+  var itemQuantity = document.createElement('input');
   var saveButton = document.createElement('button');
   var elToAppendTo = document.getElementById('add-items-section');
 
   itemField.type = 'text';
   itemField.id = fieldType;
+  itemField.value = 'item'
+  itemField.addEventListener('click', function(){itemField.value = ''})
+
+  itemQuantity.type = 'text';
+  itemQuantity.id = 'field-quantity';
+  itemQuantity.value = 'quantity';
+  itemQuantity.addEventListener('click', function(){itemQuantity.value = ''})
 
   saveButton.id = 'btn-save';
   saveButton.innerText = 'SAVE';
 
   elToAppendTo.appendChild(itemField);
+  elToAppendTo.appendChild(itemQuantity);
   elToAppendTo.appendChild(saveButton);
 }
 
@@ -42,10 +51,13 @@ function addItem(){
   } 
 
   /***************************/
-  function saveItem(event){
-    var name = event.target.previousElementSibling.value;
-    event.target.previousElementSibling.value = '';
-    var item = { name: name, cost: undefined, price: undefined };
+  function saveItem(){
+    var nameField = document.getElementById('field-add-item') ;
+    var quantityField = document.getElementById('field-quantity');
+    
+    var item = { name: nameField.value, quantity: 'x ' + quantityField.value, price: undefined };
+    nameField.value = '';
+    quantityField.value = '';
     groceryList.push(item);
     displayItem(item, groceryList);
     updateTable(groceryList, 'add');
@@ -60,7 +72,6 @@ function addItem(){
   }  
 
   function createCheckbox(item, row){
-    debugger;
     var itemCheckbox = document.createElement('input');
     var cell = row.insertCell();
     itemCheckbox.type = 'checkbox';
@@ -97,15 +108,17 @@ function countItems(){
   var checkboxes = Array.from(document.getElementsByClassName('ckbx-styled'))
   var checked = []
   for (const element of checkboxes) { 
-    if (element.checked == true) {
-      // search GroceryList for element and get item quantity and push it to checked
-      //then add total quantity numbers
-      checked.push(element);
+    if (element.checked == true) {   
+      let quantity = element.offsetParent.nextElementSibling.nextElementSibling.textContent.substr(2)
+      checked.push(parseInt(quantity, 10));
     }
   }
-  var count = checked.length;
+  var count = checked.reduce(add, 0)
   document.getElementById('items-num').innerText = count;
-  // total items by count and quantity
+
+  function add(total, num) {
+    return total + num;
+  }
 }
 
 function deleteItem(item){
