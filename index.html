@@ -18,31 +18,28 @@
 </head>
 
 <body>
-  <br>
-  <h1>Grocery List.</h1>
-  <br><br>
-  <div id='grocery-items-section'>
+  <div class='content'>
+    <br>
+    <h1>Grocery List.</h1>
+    <br><br><br>
+    <div id='grocery-items-section'>
+    </div>
+    <div id='grocery-total-section'> 
+      <h3 id='total-cost'>TOTAL COST =  $ <span id='cost-num'>0</span></h3>
+      <h3 id='total-items'>Total number of grocery items: <span id='items-num'>0</span> </h3>
+    </div>
+    <div id='image-section'>
+      <img id='groceries-img' src='img/groceries-vector-transparent-2.png' alt='vector groceries'>
+    </div>
+    <div id='buttons-section'>
+      <button id='btn-add-item' class='btn btn-outline-success btn-lg'>ADD ITEM</button>  
+      <button id='btn-del-item' class='btn btn-outline-danger btn-lg'>DELETE ITEM</button>
+      <button id='btn-reset' class='btn btn-outline-danger btn-lg'>RESET LIST</button>
+    </div>
+    <div id='add-items-section'>
+    </div>
   </div>
-  
-  <div id='grocery-total-section'> 
-    <h3 id='total-cost'>TOTAL COST =  $ <span id='cost-num'>0</span></h3>
-    <h3 id='total-items'>Total number of grocery items: <span id='items-num'>0</span> </h3>
-  </div>
-  <div id='footer-section'></div>
-    <img id='groceries-img' src='img/groceries-vector-removebg-preview.png' alt='vector groceries'>
-  </div>
-  <div id='buttons-section'>
-    <button id='btn-add-item' class='btn btn-outline-success btn-lg'>ADD ITEM</button>  
-    <button id='btn-del-item' class='btn btn-outline-danger btn-lg'>DELETE ITEM</button>
-    <button id='btn-reset' class='btn btn-outline-danger btn-lg'>RESET LIST</button>
-  </div>
-  <br>
-  <div id='add-items-section'>
-  </div>
-  <br>
-
   <script src="js/main.js"></script>
-
 </body>
 
 </html>
