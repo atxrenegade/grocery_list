@@ -54,8 +54,9 @@ input[type='text'] {
 }  
 
 .table {
+  border-top: 3px dotted red;
   max-width: 50%;
-  margin: 30px auto;
+  margin: 30px auto 50px auto;
 }
 
 .ckbx-styled {
@@ -76,6 +77,9 @@ input[type='text'] {
   border-radius: 7%;
   border-width: 3px;
   margin: 4px 2px;
+}
+
+#buttons-section {
   margin-bottom: 20px;
 }
 
