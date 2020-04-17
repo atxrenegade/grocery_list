@@ -18,7 +18,7 @@ function buildTable(){
   groceryTable.appendChild(groceryBody)
 }
 
-function createItemField(fieldType){
+function createAddItemField(fieldType){
   var itemField = document.createElement('input');
   var itemQuantity = document.createElement('input');
   var saveButton = document.createElement('button');
@@ -42,11 +42,15 @@ function createItemField(fieldType){
   elToAppendTo.appendChild(saveButton);
 }
 
+function addPriceField(item, el){
+
+}
+
 function addItem(){
   var inputField = document.getElementById('field-add-item');
   var groceryList = [];
   if (inputField == null) {
-    createItemField('field-add-item');
+    createAddItemField('field-add-item');
     document.getElementById('btn-save').addEventListener('click', saveItem);
   } 
 
@@ -55,7 +59,7 @@ function addItem(){
     var nameField = document.getElementById('field-add-item') ;
     var quantityField = document.getElementById('field-quantity');
     
-    var item = { name: nameField.value, quantity: 'x ' + quantityField.value, price: undefined };
+    var item = { name: nameField.value, quantity: 'x ' + quantityField.value, price: 'unassigned' };
     nameField.value = '';
     quantityField.value = '';
     groceryList.push(item);
@@ -84,15 +88,57 @@ function addItem(){
     })
   }
 
+  function addPriceButton(item, cell){
+    let priceButton = document.createElement('input');
+    priceButton.type = 'button';
+    priceButton.id = `${item}-price`;
+    priceButton.value = 'Add Price';
+    priceButton.classList.add('btn-outline-success');
+    priceButton.addEventListener('click', function(){
+      addPriceField(item, cell)
+    })
+    cell.appendChild(priceButton);
+  }
+
+  function addPriceField(item, cell){
+    debugger;
+    cell.innerHTML = '';
+    var priceField = document.createElement('input')
+    priceField.id = 'item-price-field'
+    priceField.type = 'text'
+    var savePriceButton = document.createElement('input')
+    savePriceButton.id = `save-${item}-price`;
+    savePriceButton.type = 'button';
+    savePriceButton.value = 'Save Price';
+    savePriceButton.addEventListener('click', function(){
+      debugger;
+      var itemPrice = document.getElementById('item-price-field').value
+      for (const element of groceryList){
+        var item;
+        if (element.name == item){
+          element.price = itemPrice;
+        }
+      }
+      cell.innerHTML = '$' + itemPrice; 
+    }) 
+    cell.appendChild(priceField);
+    cell.appendChild(savePriceButton); 
+  }
   function createCellData(item, row){
     var itemData = Object.values(item);
     itemData.forEach(el => {
       let cell = row.insertCell();
-      let text = document.createTextNode(el);
-      cell.appendChild(text);
-    })   
-  } 
+      if (el == 'unassigned') {
+        addPriceButton(itemData[0], cell);
+      } else {
+        let text = document.createTextNode(el);
+        cell.appendChild(text);
+      }
+    })  
+  }
 }
+
+
 
 function updateTable(groceryList, operation){
   countItems(groceryList);
