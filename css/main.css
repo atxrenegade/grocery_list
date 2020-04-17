@@ -15,16 +15,12 @@ html {
   color: #222;
   font-size: 1em;
   line-height: 1.4;
+  
 }
 
+
 body {
-  padding: 30px 20px;
-  max-width: 850px;
-  text-align: center;
-  display:flex; 
-  flex-direction:column; 
-  justify-content:center;
-  min-height:100vh;
+  background-image: url('white-linen-paper-texture.jpg');
 }
 
 div, h1 {
@@ -33,8 +29,7 @@ div, h1 {
 
 img {
   display: block;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 30px auto;
   width: 40%;
 }
 
@@ -43,13 +38,24 @@ input[type='text'] {
   display: inline;
 }
 
-.table td, .table th {
-  border-bottom: 1px solid #dee2e6;
+.content {
+  padding: 50px 20px;
+  max-width: 850px;
+  text-align: center;
+  display:flex; 
+  flex-direction:column; 
+  justify-content:center;
+  min-height:100vh;
 }
+
+.table td, .table th {
+  border-top: 3px dotted red;
+  border-bottom: 3px dotted red;
+}  
 
 .table {
   max-width: 50%;
-  margin: auto;
+  margin: 30px auto;
 }
 
 .ckbx-styled {
@@ -70,6 +76,7 @@ input[type='text'] {
   border-radius: 7%;
   border-width: 3px;
   margin: 4px 2px;
+  margin-bottom: 20px;
 }
 
 #btn-save {
@@ -84,6 +91,10 @@ input[type='text'] {
 
 #field-add-item {
   width: 200px;
+}
+
+#item-price-field {
+  width: 70px;
 }
 
 
