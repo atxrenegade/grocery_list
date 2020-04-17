@@ -47,6 +47,8 @@ function addPriceField(item, el){
 }
 
 function addItem(){
+  document.getElementById('btn-add-item').classList.add('active');
+  document.getElementById('btn-del-item').classList.remove('active');
   var inputField = document.getElementById('field-add-item');
   var groceryList = [];
   if (inputField == null) {
@@ -101,7 +103,6 @@ function addItem(){
   }
 
   function addPriceField(item, cell){
-    debugger;
     cell.innerHTML = '';
     var priceField = document.createElement('input')
     priceField.id = 'item-price-field'
@@ -111,7 +112,6 @@ function addItem(){
     savePriceButton.type = 'button';
     savePriceButton.value = 'Save Price';
     savePriceButton.addEventListener('click', function(){
-      debugger;
       var itemPrice = document.getElementById('item-price-field').value
       for (const element of groceryList){
         var item;
@@ -137,8 +137,6 @@ function addItem(){
     })  
   }
 }
-
-
 
 function updateTable(groceryList, operation){
   countItems(groceryList);
@@ -168,6 +166,8 @@ function countItems(){
 }
 
 function deleteItem(item){
+  document.getElementById('btn-del-item').classList.add('active');
+  document.getElementById('btn-add-item').classList.remove('active');
   // delete item
   // update cost
   // display new table
@@ -179,4 +179,5 @@ function resetList(){
   document.getElementById('grocery-items-section').innerHTML = ''; 
   document.getElementById('cost-num').innerText = 0;
   document.getElementById('items-num').innerText = 0;
+  buildTable();
 }
