@@ -43,7 +43,7 @@ function addItem(){
     var quantityField = document.getElementById('field-quantity'); 
     var item = { name: nameField.value, quantity: 'x ' + quantityField.value, price: 'unassigned' };
     nameField.value = '';
-    quantityField.value = ;
+    quantityField.value = '';
     groceryList.push(item);
     displayItem(item, groceryList);
     updateTable(groceryList, 'add');
