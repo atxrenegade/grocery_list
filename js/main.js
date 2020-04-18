@@ -167,11 +167,30 @@ function countItems(){
 function deleteItem(item){
   var buttonStates = ['btn-del-item', 'btn-add-item', 'btn-reset']
   displayActiveButton(buttonStates);
-  //document.getElementById('btn-del-item').classList.add('active');
-  //document.getElementById('btn-add-item').classList.remove('active');
-  // delete item
+  var elToAppendTo = document.getElementById('add-items-section');
+  var deleteField = document.createElement('input')
+  deleteField.id = 'field-delete-item';
+  deleteField.type = 'text';
+  deleteField.value = 'item to delete';
+  deleteField.addEventListener('click', function() { deleteField.value = ''; })
+  var deleteButton = document.createElement('input');
+  deleteButton.type = 'button';
+  deleteButton.id = 'btn-field-del-item';
+  deleteButton.value = 'Delete';
+  deleteButton.addEventListener('click', function(){
+    var itemToDel = document.getElementById('field-delete-item').value;
+    elToAppendTo.innerHTML = '';
+    groceryList.forEach( el => {
+      if (el.name === itemToDel){ el.delete() }
+    })
+  })
+  elToAppendTo.innerHTML = '';
+  elToAppendTo.appendChild(deleteField);
+  elToAppendTo.appendChild(deleteButton);
+  // update groceryList object
+  // update table
+  // update items count
   // update cost
-  // display new table
 }
 
 function displayActiveButton(buttonStates){
