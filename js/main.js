@@ -18,32 +18,13 @@ function buildTable(){
   groceryTable.appendChild(groceryBody)
 }
 
-function createAddItemField(fieldType){
-  var itemField = document.createElement('input');
-  var itemQuantity = document.createElement('input');
-  var saveButton = document.createElement('button');
+function createAddItemElements(fieldType){
   var elToAppendTo = document.getElementById('add-items-section');
-
-  itemField.type = 'text';
-  itemField.id = fieldType;
-  itemField.value = 'item'
-  itemField.addEventListener('click', function(){itemField.value = ''})
-
-  itemQuantity.type = 'text';
-  itemQuantity.id = 'field-quantity';
-  itemQuantity.value = 'quantity';
-  itemQuantity.addEventListener('click', function(){itemQuantity.value = ''})
-
-  saveButton.id = 'btn-save';
-  saveButton.innerText = 'SAVE';
-
-  elToAppendTo.appendChild(itemField);
-  elToAppendTo.appendChild(itemQuantity);
-  elToAppendTo.appendChild(saveButton);
-}
-
-function addPriceField(item, el){
-
+  var itemField = buildInput('text', fieldType, 'item', clearValue);
+  var itemQuantity = buildInput('text', 'field-quantity', 'quantity', clearValue);
+  var saveButton = buildInput('button', 'btn-save', 'SAVE');
+  var newElements = [itemField,itemQuantity, saveButton]
+  newElements.forEach(el => elToAppendTo.appendChild(el))
 }
 
 function addItem(){
@@ -52,18 +33,17 @@ function addItem(){
   var inputField = document.getElementById('field-add-item');
   var groceryList = [];
   if (inputField == null) {
-    createAddItemField('field-add-item');
+    createAddItemElements('field-add-item');
     document.getElementById('btn-save').addEventListener('click', saveItem);
   } 
 
   /***************************/
   function saveItem(){
     var nameField = document.getElementById('field-add-item') ;
-    var quantityField = document.getElementById('field-quantity');
-    
+    var quantityField = document.getElementById('field-quantity'); 
     var item = { name: nameField.value, quantity: 'x ' + quantityField.value, price: 'unassigned' };
     nameField.value = '';
-    quantityField.value = '';
+    quantityField.value = ;
     groceryList.push(item);
     displayItem(item, groceryList);
     updateTable(groceryList, 'add');
@@ -90,39 +70,27 @@ function addItem(){
   }
 
   function addPriceButton(item, cell){
-    var priceButton = document.createElement('input');
-    priceButton.type = 'button';
-    priceButton.id = `${item}-price`;
-    priceButton.value = 'Add Price';
-    priceButton.classList.add('btn-outline-success');
-    priceButton.addEventListener('click', function(){
-      addPriceField(item, cell)
-    })
+    var priceButton = buildInput('button', `${item}-price`, 'Add Price',
+      addPriceField(item, cell))
     cell.appendChild(priceButton);
   }
 
   function addPriceField(item, cell){
     cell.innerHTML = '';
-    var priceField = document.createElement('input')
-    priceField.id = 'item-price-field'
-    priceField.type = 'text'
-    var savePriceButton = document.createElement('input')
-    savePriceButton.id = `save-${item}-price`;
-    savePriceButton.type = 'button';
-    savePriceButton.value = 'Save';
-    savePriceButton.addEventListener('click', function(){
+    var priceField = buildInput('text', 'item-price-field', '');
+    var savePriceButton = buildInput('button', `save-${item}-price`, 'Save', savePrice)
+    function savePrice(){
       var itemPrice = document.getElementById('item-price-field').value
       for (const element of groceryList){
         var item;
-        if (element.name == item){
-          element.price = itemPrice;
-        }
+        if (element.name == item){ element.price = itemPrice; }
       }
       cell.innerHTML = '$' + itemPrice; 
-    }) 
+    }
     cell.appendChild(priceField);
     cell.appendChild(savePriceButton); 
   }
+
   function createCellData(item, row){
     var itemData = Object.values(item);
     itemData.forEach(el => {
@@ -168,35 +136,25 @@ function deleteItem(item){
   var buttonStates = ['btn-del-item', 'btn-add-item', 'btn-reset']
   displayActiveButton(buttonStates);
   var elToAppendTo = document.getElementById('add-items-section');
-  var deleteField = buildInput('text', 'field-delete-item', 'item to delete', function() { this.value = ''; })
-  //var deleteField = document.createElement('input')
-  //deleteField.id = 'field-delete-item';
-  //deleteField.type = 'text';
-  //deleteField.value = 'item to delete';
-  //deleteField.addEventListener('click', function() { deleteField.value = ''; })
-  var deleteButton = document.createElement('input');
-  deleteButton.type = 'button';
-  deleteButton.id = 'btn-field-del-item';
-  deleteButton.value = 'Delete';
-  deleteButton.addEventListener('click', function(){
+  var deleteField = buildInput('text', 'field-delete-item', 'item to delete', clearValue)
+  var deleteButton = buildInput('button', 'btn-field-del-item', 'Delete', removeFromGroceries)
+
+  function removeFromGroceries(){
     var itemToDel = document.getElementById('field-delete-item').value;
     elToAppendTo.innerHTML = '';
-    groceryList.forEach( el => {
-      if (el.name === itemToDel){ el.delete() }
+    groceryList.forEach((el, itemToDelete) => {
+      if (el.name === itemToDel){
+        //remove from groceryList object
+        //update table, count, and total cost
+      }
     })
-  })
-  debugger;
+  }  
   elToAppendTo.innerHTML = '';
   elToAppendTo.appendChild(deleteField);
   elToAppendTo.appendChild(deleteButton);
-  // update groceryList object
-  // update table
-  // update items count
-  // update cost
 }
 
 function buildInput(type, id, value, eventListenerToAdd){
-  debugger;
   var newInput = document.createElement('input');
   newInput.type = type;
   newInput.id = id;
@@ -205,6 +163,10 @@ function buildInput(type, id, value, eventListenerToAdd){
     newInput.addEventListener('click', eventListenerToAdd);
   }
   return newInput;
+}
+
+function clearValue(){
+  this.value = '';
 }
 
 function displayActiveButton(buttonStates){
@@ -223,8 +185,7 @@ function resetList(){
   var buttonStates = ['btn-reset', 'btn-add-item', 'btn-del-item']
   displayActiveButton(buttonStates);
   document.getElementById('add-items-section').innerHTML = '';
-  document.getElementById('grocery-items-section').innerHTML = '';
-  
+  document.getElementById('grocery-items-section').innerHTML = ''; 
   document.getElementById('cost-num').innerText = 0;
   document.getElementById('items-num').innerText = 0;
 
