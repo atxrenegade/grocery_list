@@ -47,8 +47,8 @@ function addPriceField(item, el){
 }
 
 function addItem(){
-  document.getElementById('btn-add-item').classList.add('active');
-  document.getElementById('btn-del-item').classList.remove('active');
+  var buttonStates = ['btn-add-item', 'btn-del-item', 'btn-reset']
+  displayActiveButton(buttonStates);
   var inputField = document.getElementById('field-add-item');
   var groceryList = [];
   if (inputField == null) {
@@ -70,7 +70,6 @@ function addItem(){
   }
 
   function displayItem(item, groceryList){  
-    console.log(groceryList);
     var table = document.querySelector('table');
     var row = table.insertRow();
     createCheckbox(item, row);
@@ -91,7 +90,7 @@ function addItem(){
   }
 
   function addPriceButton(item, cell){
-    let priceButton = document.createElement('input');
+    var priceButton = document.createElement('input');
     priceButton.type = 'button';
     priceButton.id = `${item}-price`;
     priceButton.value = 'Add Price';
@@ -110,7 +109,7 @@ function addItem(){
     var savePriceButton = document.createElement('input')
     savePriceButton.id = `save-${item}-price`;
     savePriceButton.type = 'button';
-    savePriceButton.value = 'Save Price';
+    savePriceButton.value = 'Save';
     savePriceButton.addEventListener('click', function(){
       var itemPrice = document.getElementById('item-price-field').value
       for (const element of groceryList){
@@ -166,18 +165,38 @@ function countItems(){
 }
 
 function deleteItem(item){
-  document.getElementById('btn-del-item').classList.add('active');
-  document.getElementById('btn-add-item').classList.remove('active');
+  var buttonStates = ['btn-del-item', 'btn-add-item', 'btn-reset']
+  displayActiveButton(buttonStates);
+  //document.getElementById('btn-del-item').classList.add('active');
+  //document.getElementById('btn-add-item').classList.remove('active');
   // delete item
   // update cost
   // display new table
 }
 
+function displayActiveButton(buttonStates){
+  buttonStates.forEach(el => {
+    if (el == buttonStates[0]) {
+      document.getElementById(el).classList.add('active');
+    } else {  
+      if (document.getElementById(el).classList.contains('active')) {
+        document.getElementById(el).classList.remove('active');
+      }
+    }  
+  })
+}
+
 function resetList(){
-  groceryList = [];
-  cost = 0;
-  document.getElementById('grocery-items-section').innerHTML = ''; 
+  var buttonStates = ['btn-reset', 'btn-add-item', 'btn-del-item']
+  displayActiveButton(buttonStates);
+  document.getElementById('add-items-section').innerHTML = '';
+  document.getElementById('grocery-items-section').innerHTML = '';
+  
   document.getElementById('cost-num').innerText = 0;
   document.getElementById('items-num').innerText = 0;
+
+  groceryList = [];
+  cost = 0;
+
   buildTable();
 }
