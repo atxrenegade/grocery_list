@@ -168,11 +168,12 @@ function deleteItem(item){
   var buttonStates = ['btn-del-item', 'btn-add-item', 'btn-reset']
   displayActiveButton(buttonStates);
   var elToAppendTo = document.getElementById('add-items-section');
-  var deleteField = document.createElement('input')
-  deleteField.id = 'field-delete-item';
-  deleteField.type = 'text';
-  deleteField.value = 'item to delete';
-  deleteField.addEventListener('click', function() { deleteField.value = ''; })
+  var deleteField = buildInput('text', 'field-delete-item', 'item to delete', function() { this.value = ''; })
+  //var deleteField = document.createElement('input')
+  //deleteField.id = 'field-delete-item';
+  //deleteField.type = 'text';
+  //deleteField.value = 'item to delete';
+  //deleteField.addEventListener('click', function() { deleteField.value = ''; })
   var deleteButton = document.createElement('input');
   deleteButton.type = 'button';
   deleteButton.id = 'btn-field-del-item';
@@ -184,6 +185,7 @@ function deleteItem(item){
       if (el.name === itemToDel){ el.delete() }
     })
   })
+  debugger;
   elToAppendTo.innerHTML = '';
   elToAppendTo.appendChild(deleteField);
   elToAppendTo.appendChild(deleteButton);
@@ -191,6 +193,18 @@ function deleteItem(item){
   // update table
   // update items count
   // update cost
+}
+
+function buildInput(type, id, value, eventListenerToAdd){
+  debugger;
+  var newInput = document.createElement('input');
+  newInput.type = type;
+  newInput.id = id;
+  newInput.value = value;
+  if (eventListenerToAdd != undefined) {
+    newInput.addEventListener('click', eventListenerToAdd);
+  }
+  return newInput;
 }
 
 function displayActiveButton(buttonStates){
