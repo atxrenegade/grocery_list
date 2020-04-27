@@ -7,16 +7,6 @@ function initialize(){
     document.getElementById('btn-del-item').addEventListener('click', deleteItem);
     document.getElementById('btn-reset').addEventListener('click', resetList);
   }();
-
-  void function buildTable(){
-    //move this to 
-    var elToAppendTo = document.getElementById('grocery-items-section')
-    var groceryTable = document.createElement('table')
-    var groceryBody = document.createElement('tbody')
-    groceryTable.classList.add('table');
-    elToAppendTo.appendChild(groceryTable);
-    groceryTable.appendChild(groceryBody)
-  }();
 }
 
 // DISPLAY DATA
@@ -67,12 +57,6 @@ function manageGroceryList(action, item, num){
   updateCost();
   return groceryList;
 }
-
-switch (expression) {
-  case value1:
-    //Statements executed when the
-    //result of expression matches value1
-    [break;]
 
 // LOGIC AND CALCULATIONS 
 
