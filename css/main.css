@@ -53,15 +53,15 @@ input[type='text'] {
   border-bottom: 3px dotted red;
 }  
 
-.table {
-  border-top: 3px dotted red;
-  max-width: 50%;
-  margin: 30px auto 50px auto;
-}
-
 .ckbx-styled {
   width: 30px;
   height: 30px;
+}
+
+#grocery-table {
+  border-top: 3px dotted red;
+  max-width: 50%;
+  margin: 30px auto 50px auto;
 }
 
 #grocery-img {
