@@ -9,6 +9,7 @@ function initialize(){
   }();
 
   void function buildTable(){
+    //move this to 
     var elToAppendTo = document.getElementById('grocery-items-section')
     var groceryTable = document.createElement('table')
     var groceryBody = document.createElement('tbody')
@@ -17,6 +18,41 @@ function initialize(){
     groceryTable.appendChild(groceryBody)
   }();
 }
+
+// DISPLAY DATA
+
+//diplay table
+
+//display row
+
+//display cell
+
+// display field
+
+//display buttons
+
+
+// MANAGE DATA
+
+// create closure to store GroceryList variable
+
+// add new item to grocery list
+
+// delete item  from grocery list
+
+// add price
+
+// add quantity
+
+// clear grocery list
+
+// LOGIC AND CALCULATIONS 
+
+// count items
+
+// calculate cost
+
+// convert currency 
 
 // build ADD ITEM input elements
 function buildAddItemElements(fieldType){
@@ -27,7 +63,6 @@ function buildAddItemElements(fieldType){
   var newElements = [itemField,itemQuantity, saveButton]
   newElements.forEach(el => elToAppendTo.appendChild(el))
 }
-
 
 function addItem(){
   var groceryList = [];
