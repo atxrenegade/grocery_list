@@ -57,7 +57,6 @@ function manageGroceryList(action, item, num){
   return groceryList;
 
   function addItem(item){
-    debugger;
     let newItem = {name: item.name, quantity: item.quantity, price: undefined}
     groceryList.push(newItem)
     return groceryList;
@@ -96,6 +95,7 @@ function buildAddItemElements(fieldType){
 
 function addItem(){
   void function displayActiveADDButton(){
+    clearDiv('edit-items-section');
     var buttonStates = ['btn-add-item', 'btn-del-item', 'btn-reset']
     var inputField = document.getElementById('field-add-item');
     if (inputField == null) {
@@ -110,9 +110,10 @@ function getUserInputItem(){
   var nameField = document.getElementById('field-add-item') ;
   var quantityField = document.getElementById('field-quantity'); 
   var item = { name: nameField.value, quantity: quantityField.value, price: undefined };
+  var groceryList = manageGroceryList('addItem', item);
   nameField.value = '';
   quantityField.value = '';
-  var groceryList = manageGroceryList('addItem', item);
+  
   displayItem(item);
   updateTable(groceryList, 'add');
 }
@@ -206,20 +207,19 @@ function countItems(){
 }
 
 function deleteItem(item){
+  clearDiv('edit-items-section');
   var buttonStates = ['btn-del-item', 'btn-add-item', 'btn-reset']
   var elToAppendTo = document.getElementById('edit-items-section');
   var deleteField = buildInput('text', 'field-delete-item', 'item to delete', clearValue)
   var deleteButton = buildInput('button', 'btn-field-del-item', 'Delete', removeFromGroceries)
 
   displayActiveButton(buttonStates);
-  elToAppendTo.innerHTML = '';
   elToAppendTo.appendChild(deleteField);
   elToAppendTo.appendChild(deleteButton);
   
   function removeFromGroceries(){
     var itemToDel = document.getElementById('field-delete-item').value;
-
-    elToAppendTo.innerHTML = '';
+    clearDiv('edit-items-section');
     groceryList.forEach((el, itemToDelete) => {
       if (el.name === itemToDel){
         //remove from groceryList object
@@ -245,6 +245,10 @@ function clearValue(){
   this.value = '';
 }
 
+function clearDiv(id){
+  document.getElementById(id).innerHTML = "";
+}
+
 function displayActiveButton(buttonStates){
   buttonStates.forEach(el => {
     if (el == buttonStates[0]) {
@@ -260,8 +264,8 @@ function displayActiveButton(buttonStates){
 function resetList(){
   var buttonStates = ['btn-reset', 'btn-add-item', 'btn-del-item']
   displayActiveButton(buttonStates);
-  document.getElementById('edit-items-section').innerHTML = '';
-  document.getElementById('grocery-items-section').innerHTML = ''; 
+  clearDiv('edit-items-section');
+  clearDiv('grocery-items-section');
   document.getElementById('cost-num').innerText = 0;
   document.getElementById('items-num').innerText = 0;
 
