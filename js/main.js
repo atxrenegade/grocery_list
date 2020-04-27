@@ -26,36 +26,53 @@ function initialize(){
 
 // create closure to store GroceryList variable
 function manageGroceryList(action, item, num){
-  var groceryList;
+  if (groceryList == undefined){ var groceryList = []; }
 
-  //switch statement 
   switch (action){
-  case 'initialize':
-    groceryList = [];
-    break;
   case 'addItem': 
-    groceryList = void function addItem(item){
-    }();
+    groceryList = addItem(item);
     break;
 
   case 'deleteItem':
-    groceryList = void function deleteItem(item){}();
+    groceryList = deleteItem(item);
     break;
 
   case 'addQuantity':
-    groceryList = void function addQuantity(item, num){}();
+    groceryList =  addQuantity(item, num);
     break;
 
   case 'addPrice':
-    groceryList = void function addPrice(item, num){}();
+    groceryList = addPrice(item, num);
     break;
 
-   default: 
+  case 'resetList':
+    groceryList = resetList();
+    break;  
+
+  default: 
     groceryList;  
   }   
   countItems();
   updateCost();
   return groceryList;
+
+  function addItem(item){
+    debugger;
+    let newItem = {name: item.name, quantity: item.quantity, price: undefined}
+    groceryList.push(newItem)
+    return groceryList;
+  }
+
+  function deleteItem(){}
+
+  function addPrice(){}
+
+  function addQuantity(){
+  } 
+
+  function resetList(){
+
+  }
 }
 
 // LOGIC AND CALCULATIONS 
@@ -66,9 +83,10 @@ function manageGroceryList(action, item, num){
 
 // convert currency 
 
-// build ADD ITEM input elements
+
+//BUILD TABLE CELLS
 function buildAddItemElements(fieldType){
-  var elToAppendTo = document.getElementById('add-items-section');
+  var elToAppendTo = document.getElementById('edit-items-section');
   var itemField = buildInput('text', fieldType, 'item', clearValue);
   var itemQuantity = buildInput('text', 'field-quantity', 'quantity', clearValue);
   var saveButton = buildInput('button', 'btn-save', 'SAVE');
@@ -77,32 +95,30 @@ function buildAddItemElements(fieldType){
 }
 
 function addItem(){
-  var groceryList = [];
-
   void function displayActiveADDButton(){
     var buttonStates = ['btn-add-item', 'btn-del-item', 'btn-reset']
     var inputField = document.getElementById('field-add-item');
     if (inputField == null) {
       buildAddItemElements('field-add-item');
-      document.getElementById('btn-save').addEventListener('click', saveItem);
+      document.getElementById('btn-save').addEventListener('click', getUserInputItem);
     } 
     displayActiveButton(buttonStates);
   }();   
 }
 
-function saveItem(){
+function getUserInputItem(){
   var nameField = document.getElementById('field-add-item') ;
   var quantityField = document.getElementById('field-quantity'); 
-  var item = { name: nameField.value, quantity: 'x ' + quantityField.value, price: 'unassigned' };
+  var item = { name: nameField.value, quantity: quantityField.value, price: undefined };
   nameField.value = '';
   quantityField.value = '';
-  groceryList.push(item);
-  displayItem(item, groceryList);
+  var groceryList = manageGroceryList('addItem', item);
+  displayItem(item);
   updateTable(groceryList, 'add');
 }
 
 function displayItem(item, groceryList){  
-  var table = document.querySelector('table');
+  var table = document.querySelector('tbody');
   var row = table.insertRow();
   createCheckbox(item, row);
   createCellData(item, row);
@@ -191,7 +207,7 @@ function countItems(){
 
 function deleteItem(item){
   var buttonStates = ['btn-del-item', 'btn-add-item', 'btn-reset']
-  var elToAppendTo = document.getElementById('add-items-section');
+  var elToAppendTo = document.getElementById('edit-items-section');
   var deleteField = buildInput('text', 'field-delete-item', 'item to delete', clearValue)
   var deleteButton = buildInput('button', 'btn-field-del-item', 'Delete', removeFromGroceries)
 
@@ -244,7 +260,7 @@ function displayActiveButton(buttonStates){
 function resetList(){
   var buttonStates = ['btn-reset', 'btn-add-item', 'btn-del-item']
   displayActiveButton(buttonStates);
-  document.getElementById('add-items-section').innerHTML = '';
+  document.getElementById('edit-items-section').innerHTML = '';
   document.getElementById('grocery-items-section').innerHTML = ''; 
   document.getElementById('cost-num').innerText = 0;
   document.getElementById('items-num').innerText = 0;
