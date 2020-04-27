@@ -1,21 +1,21 @@
 initialize(); 
-buildTable();
 
 //*****************************************************************
 function initialize(){
-  // add event listeners to buttons
-  document.getElementById('btn-add-item').addEventListener('click', addItem);
-  document.getElementById('btn-del-item').addEventListener('click', deleteItem);
-  document.getElementById('btn-reset').addEventListener('click', resetList);
-}
+  void function addEventListeners(){
+    document.getElementById('btn-add-item').addEventListener('click', addItem);
+    document.getElementById('btn-del-item').addEventListener('click', deleteItem);
+    document.getElementById('btn-reset').addEventListener('click', resetList);
+  }();
 
-function buildTable(){
-  var elToAppendTo = document.getElementById('grocery-items-section')
-  var groceryTable = document.createElement('table')
-  groceryTable.classList.add('table');
-  elToAppendTo.appendChild(groceryTable);
-  var groceryBody = document.createElement('tbody')
-  groceryTable.appendChild(groceryBody)
+  void function buildTable(){
+    var elToAppendTo = document.getElementById('grocery-items-section')
+    var groceryTable = document.createElement('table')
+    var groceryBody = document.createElement('tbody')
+    groceryTable.classList.add('table');
+    elToAppendTo.appendChild(groceryTable);
+    groceryTable.appendChild(groceryBody)
+  }();
 }
 
 function createAddItemElements(fieldType){
