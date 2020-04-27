@@ -23,7 +23,7 @@
     <h1>Grocery List.</h1>
     <br><br><br>
     <div id='grocery-items-section'>
-      <table id='groceryTable'>
+      <table id='grocery-table'>
         <tbody>
         </tbody>
       </table>
@@ -47,13 +47,3 @@
 </body>
 
 </html>
-
-void function buildTable(){
-  //move this to html
-  var elToAppendTo = document.getElementById('grocery-items-section')
-  var groceryTable = document.createElement('table')
-  var groceryBody = document.createElement('tbody')
-  groceryTable.classList.add('table');
-  elToAppendTo.appendChild(groceryTable);
-  groceryTable.appendChild(groceryBody)
-}();
