@@ -27,7 +27,7 @@ function initialize(){
 
 //display cell
 
-// display field
+//display field
 
 //display buttons
 
@@ -35,16 +35,44 @@ function initialize(){
 // MANAGE DATA
 
 // create closure to store GroceryList variable
+function manageGroceryList(action, item, num){
+  var groceryList;
 
-// add new item to grocery list
+  //switch statement 
+  switch (action){
+  case 'initialize':
+    groceryList = [];
+    break;
+  case 'addItem': 
+    groceryList = void function addItem(item){
+    }();
+    break;
 
-// delete item  from grocery list
+  case 'deleteItem':
+    groceryList = void function deleteItem(item){}();
+    break;
 
-// add price
+  case 'addQuantity':
+    groceryList = void function addQuantity(item, num){}();
+    break;
 
-// add quantity
+  case 'addPrice':
+    groceryList = void function addPrice(item, num){}();
+    break;
 
-// clear grocery list
+   default: 
+    groceryList;  
+  }   
+  countItems();
+  updateCost();
+  return groceryList;
+}
+
+switch (expression) {
+  case value1:
+    //Statements executed when the
+    //result of expression matches value1
+    [break;]
 
 // LOGIC AND CALCULATIONS 
 
