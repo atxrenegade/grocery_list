@@ -11,55 +11,42 @@ function initialize(){
 
 // DISPLAY DATA
 // BUILD AND APPEND DOM ELEMENTS
-function buildAddGroceryInputs(fieldType){
-  debugger;
+function buildAddGroceryInputs(){
   var elToAppendTo = document.getElementById('edit-items-section');
-  var itemField = buildInput('text', fieldType, 'item', clearValue);
+  var itemField = buildInput('text', 'field-add-item', 'item', clearValue);
   var itemQuantity = buildInput('text', 'field-quantity', 'quantity', clearValue);
   var saveButton = buildInput('button', 'btn-save', 'SAVE', addItem);
   var newElements = [itemField,itemQuantity, saveButton]
   newElements.forEach(el => elToAppendTo.appendChild(el))
 }
 
-function addItemToDOM(){
-  var currentItem = buildGroceryItem();
+function buildGroceryItem() {
+  var nameField = document.getElementById('field-add-item');
+  var quantityField = document.getElementById('field-quantity');
+  var item = { name: nameField.value, quantity: quantityField.value, price: 'unassigned' };
+  return item;
+}
+
+function addItemToDOM(currentItem){
   displayActiveADDButton();
+  createItemRow(currentItem);
+  updateTable('add');
 
  //*************************************** */ 
   function displayActiveADDButton(){
     var buttonStates = ['btn-add-item', 'btn-del-item', 'btn-reset']
     var inputField = document.getElementById('field-add-item');
-    clearDiv('edit-items-section');
-    if (inputField == null) {
-      buildAddGroceryInputs('field-add-item');
-      document.getElementById('btn-save').addEventListener('click', addItem);
-    } 
+    clearElement('edit-items-section');
     displayActiveButton(buttonStates);
   };   
-
-  function buildGroceryItem(){
-    var nameField = document.getElementById('field-add-item') ;
-    var quantityField = document.getElementById('field-quantity'); 
-    var item = { name: nameField.value, quantity: quantityField.value, price: undefined };
-    manageGroceryList('addItem', item);
-    nameField.value = '';
-    quantityField.value = '';
-    return item;
-  }
-
-  function addItemToDOM(){
-    createItemRow(currentItem);
-    updateTable('add');
-  }
 }
 
 function buildDeleteGroceryInputs(){
-  clearDiv('edit-items-section');
   var buttonStates = ['btn-del-item', 'btn-add-item', 'btn-reset']
   var elToAppendTo = document.getElementById('edit-items-section');
   var deleteField = buildInput('text', 'field-delete-item', 'item to delete', clearValue)
   var deleteButton = buildInput('button', 'btn-field-del-item', 'Delete', deleteItem)
-
+  clearElement('edit-items-section');
   displayActiveButton(buttonStates);
   elToAppendTo.appendChild(deleteField);
   elToAppendTo.appendChild(deleteButton);
@@ -94,8 +81,8 @@ function createCellData(item, row){
   var itemData = Object.values(item);
   itemData.forEach(el => {
     let cell = row.insertCell();
-    if (el == 'unassigned') {
-      addPriceButton(itemData[0], cell);
+    if (el == 'unassigned') {;
+      createPriceButton(itemData[0], cell);
     } else {
       let text = document.createTextNode(el);
       cell.appendChild(text);
@@ -104,8 +91,8 @@ function createCellData(item, row){
 }
 
 function createPriceButton(item, cell){
-  var priceButton = buildInput('button', `${item}-price`, 'Add Price',
-    createPriceField(item, cell))
+  debugger;
+  var priceButton = buildInput('button', `${item}-price`, 'Add Price', createPriceField)
   cell.appendChild(priceButton);
 }
 
@@ -120,10 +107,10 @@ function createPriceField(item, cell){
 
 function addPriceToDOM(){
   var itemPrice = document.getElementById('item-price-field').value
-  for (const element of groceryList){
-    var item;
-    if (element.name == item){ element.price = itemPrice; }
-  }
+  //for (const element of groceryList){
+  //  var item;
+  //  if (element.name == item){ element.price = itemPrice; }
+  //}
   cell.innerHTML = '$' + itemPrice; 
 }
 
@@ -139,8 +126,8 @@ function updateDOMCost(){}
 function reset(){
   var buttonStates = ['btn-reset', 'btn-add-item', 'btn-del-item']
   displayActiveButton(buttonStates);
-  clearDiv('edit-items-section');
-  clearDiv('grocery-items-section');
+  clearElement('edit-items-section');
+  clearElement('grocery-items-section');
   document.getElementById('cost-num').innerText = 0;
   document.getElementById('items-num').innerText = 0;
   cost = 0;
@@ -148,16 +135,25 @@ function reset(){
   intialize();
 }
 
-// DOM UTILITY FUNCTIONS  
-function addItem(){ 
-  debugger;
-  addItemToDOM();
-  manageGroceryList('addItem', currentItem)
+// UTILITY FUNCTIONS  
+function addItem(){
+  var currentItem = buildGroceryItem();
+  manageGroceryList('addItem', currentItem) 
+  addItemToDOM(currentItem);
+  clearField('field-add-item')
+  clearField('field-quantity')
 }
 
 function deleteItem(){
   deleteItemFromDOM();
   manageGroceryList('deleteItem', currentItem)
+}
+
+function savePrice(){
+  var price = udefined;
+  var currentItem = undefined;
+  manageGroceryList('addPrice', currentItem, price);
+  addPriceToDOM();
 }
 
 function addTotalPrice(){
@@ -181,12 +177,13 @@ function buildInput(type, id, value, eventListenerToAdd){
   return newInput;
 }
 
+// factory functions
 function clearValue(){
   this.value = '';
 }
 
-function clearDiv(id){
-  document.getElementById(id).innerHTML = "";
+function clearElement(id){
+  document.getElementById(id).innerHTML = '';
 }
 
 function displayActiveButton(buttonStates){
@@ -204,35 +201,37 @@ function displayActiveButton(buttonStates){
 // MANAGE DATA
 // create closure to store GroceryList variable
 function manageGroceryList(action, item, num){
-  if (groceryList == undefined){ var groceryList = []; }
+  var groceryList = [];
+  directGroceryListAction(action, item, num);
 
-  switch (action){
-  case 'addItem': 
-    groceryList = addItemToGroceryList(item);
-    break;
+/********************************************************** */
 
-  case 'deleteItem':
-    groceryList = deleteItemFromGroceryList(item);
-    break;
+  function directGroceryListAction(action, item, num) {
+    switch (action){
+    case 'addItem': 
+      groceryList = addItemToGroceryList(item);
+      break;
 
-  case 'addQuantity':
-    groceryList =  addQuantity(item, num);
-    break;
+    case 'deleteItem':
+      groceryList = deleteItemFromGroceryList(item);
+      break;
 
-  case 'addPrice':
-    groceryList = addPrice(item, num);
-    break;
+    case 'addQuantity':
+      groceryList =  addQuantity(item, num);
+      break;
 
-  case 'resetList':
-    groceryList = resetListGroceryList();
-    break;  
+    case 'addPrice':
+      groceryList = addPrice(item, num);
+      break;
 
-  default: 
-    groceryList;  
-  }   
-  countItems();
-  updateCost();
-  return groceryList;
+    case 'resetList':
+      groceryList = resetListGroceryList();
+      break;  
+
+    default: 
+      groceryList;  
+    } 
+  }
 
   function addItemToGroceryList(item){
     let newItem = {name: item.name, quantity: item.quantity, price: undefined}
