@@ -28,9 +28,9 @@ function buildGroceryItem() {
   return item;
 }
 
-function addItemToDOM(){
+function addItemToDOM(item){
   displayActiveADDButton();
-  createItemRow();
+  createItemRow(item);
   updateTable('add');
 
  //*************************************** */ 
@@ -58,37 +58,33 @@ function deleteItemFromDOM(){
   var item = document.getElementById('');
 }
 
-function createItemRow(){  
-  var item = storeItem();
+function createItemRow(item){  
   var table = document.querySelector('tbody');
   table.insertRow();
-  createCheckbox();
-  createCellData();
+  createCheckbox(item);
+  createCellData(item);
 }  
 
-function createCheckbox(){
-  var item = storeItem();
+function createCheckbox(item){
   var row = storeRow();
   var itemCheckbox = document.createElement('input');
-  row.insertCell();
+  var cell = row.insertCell();
   itemCheckbox.type = 'checkbox';
   itemCheckbox.id = item.name;
   itemCheckbox.classList.add('ckbx-styled');
   cell.appendChild(itemCheckbox);
   itemCheckbox.addEventListener('change', function(){ 
     countItems();
-    updateCost(item, 'add')   
+    updateCost();   
   })
 }
 
-function createCellData(){
-  var item = storeItem();
+function createCellData(item){
   var row = storeRow();
   var itemData = Object.values(item);
   itemData.forEach(el => {
     let cell = row.insertCell();
     if (el == 'unassigned') {
-      debugger;
       createPriceButton(itemData[0], cell);
     } else {
       let text = document.createTextNode(el);
@@ -97,19 +93,17 @@ function createCellData(){
   })  
 }
 
-function createPriceButton(){
-  var item = storeItem();
-  var cell = storeCell();
-  var priceButton = buildInput('button', `${item}-price`, 'Add Price', createPriceField)
+function createPriceButton(item, cell){
+  var priceButton = buildInput('button', `${item}-price`, 'Add Price')
+  priceButton.addEventListener('click', createPriceField.bind(null, item, cell)) // bind item param to createPriceField
   cell.appendChild(priceButton);
 }
 
-function createPriceField(){
-  var item = storeItem();
-  var cell = storeCell();
+function createPriceField(item, cell){
   var priceField = buildInput('text', 'item-price-field', '');
-  var savePriceButton = buildInput('button', `save-${item}-price`, 'Save', savePrice)
-  clearElement(cell);
+  var savePriceButton = buildInput('button', `save-${item}-price`, 'Save')
+  savePriceButton.addEventListener('click', savePrice.bind(null, item, cell))
+  cell.innerHTML = '';
   cell.appendChild(priceField);
   cell.appendChild(savePriceButton); 
 }
@@ -162,11 +156,12 @@ function deleteItem(){
   manageGroceryList('deleteItem', currentItem)
 }
 
-function savePrice(){
-  var price = udefined;
-  var currentItem = undefined;
+function savePrice(item, cell){
+  //get price, get item
+  debugger;
+  var price = undefined;
   // data
-  manageGroceryList('addPrice', currentItem, price);
+  manageGroceryList('addPrice', item, price);
   // dom
   addPriceToDOM();
 }
@@ -186,24 +181,24 @@ function createTotalCount(){
 } 
 
 // storage functions for DOM elements using closure
-function storeItem() {
-  // future closure here
-  var item;
-  { item }
-  return item;
-}
+//function storeItem() {
+// future closure here
+//  var item;
+// { item =  }
+//  return item;
+//}
 
 function storeCell() {
   // future closure here
   var cell;
-  { cell }
+  { cell = document.getElementById('grocery-table').children[0].lastChild.lastChild }
   return cell;
 }
 
 function storeRow() {
   // future closure
   var row;
-  { row }
+  { row = document.getElementById('grocery-table').children[0].lastChild }
   return row;
 }
 
@@ -224,6 +219,7 @@ function clearValue(){
 }
 
 function clearElement(id){
+  debugger;
   document.getElementById(id).innerHTML = '';
 }
 
@@ -250,34 +246,34 @@ function manageGroceryList(action, item, num){
   function directGroceryListAction(action, item, num) {
     switch (action){
     case 'addItem': 
-      groceryList = addItemToGroceryList(item);
+      addItemToGroceryList(item);
       break;
 
     case 'deleteItem':
-      groceryList = deleteItemFromGroceryList(item);
+      deleteItemFromGroceryList(item);
       break;
 
     case 'addQuantity':
-      groceryList =  addQuantity(item, num);
+      addQuantity(item, num);
       break;
 
     case 'addPrice':
-      groceryList = addPrice(item, num);
+      addPrice(item, num);
       break;
 
     case 'resetList':
-      groceryList = resetListGroceryList();
+      resetListGroceryList();
       break;  
 
     default: 
-      groceryList;  
+      return groceryList;  
     } 
+    return groceryList;
   }
 
   function addItemToGroceryList(item){
     let newItem = {name: item.name, quantity: item.quantity, price: undefined}
     groceryList.push(newItem)
-    return groceryList;
   }
 
   function deleteItemFromGroceryList(item){
@@ -295,7 +291,6 @@ function manageGroceryList(action, item, num){
 
 // LOGIC AND CALCULATIONS 
 
-// count items
 function countItems(){
   // create closure to access groceryList without passing as parameter
   var checkboxes = Array.from(document.getElementsByClassName('ckbx-styled'))
