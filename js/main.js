@@ -1,3 +1,4 @@
+var groceryList = [];
 initialize(); 
 
 //*****************************************************************
@@ -215,7 +216,6 @@ function clearValue(){
 }
 
 function clearElement(id){
-  debugger;
   document.getElementById(id).innerHTML = '';
 }
 
@@ -234,7 +234,7 @@ function displayActiveButton(buttonStates){
 // MANAGE DATA
 // create closure to store GroceryList variable
 function manageGroceryList(action, item, num){
-  var groceryList = [];
+  //if (groceryList == undefined) { groceryList = [] };
   directGroceryListAction(action, item, num);
 
 /********************************************************** */
@@ -272,13 +272,11 @@ function manageGroceryList(action, item, num){
     groceryList.push(newItem)
   }
 
-  function deleteItemFromGroceryList(itemToDel){
-    groceryList.forEach((el, itemToDel) => {
-      if (el.name === itemToDel){
-
-
-        //remove from groceryList object
-        //update table, count, and total cost
+  function deleteItemFromGroceryList(item){
+    groceryList.forEach((el) => {
+      if (el.name === item){
+        let i = groceryList.indexOf(el);
+        groceryList.splice(i, 1);
       }
     })
     return groceryList;
