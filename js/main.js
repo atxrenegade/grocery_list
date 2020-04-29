@@ -100,6 +100,7 @@ function createPriceButton(item, cell){
 }
 
 function createPriceField(item, cell){
+  debugger;
   var priceField = buildInput('text', 'item-price-field', '');
   var savePriceButton = buildInput('button', `save-${item}-price`, 'Save')
   savePriceButton.addEventListener('click', savePrice.bind(null, item, cell))
@@ -108,13 +109,8 @@ function createPriceField(item, cell){
   cell.appendChild(savePriceButton); 
 }
 
-function addPriceToDOM(){
-  var itemPrice = document.getElementById('item-price-field').value
-  //for (const element of groceryList){
-  //  var item;
-  //  if (element.name == item){ element.price = itemPrice; }
-  //}
-  cell.innerHTML = '$' + itemPrice; 
+function addPriceToDOM(price, cell){
+  cell.innerHTML = '$' + price; 
 }
 
 function updateTable(operation){
@@ -158,12 +154,11 @@ function deleteItem(){
 
 function savePrice(item, cell){
   //get price, get item
-  debugger;
-  var price = undefined;
+  var price = cell.children[0].value;
   // data
   manageGroceryList('addPrice', item, price);
   // dom
-  addPriceToDOM();
+  addPriceToDOM(price, cell);
 }
 
 function createTotalPrice(){
@@ -286,7 +281,15 @@ function manageGroceryList(action, item, num){
     return groceryList;
   }
 
-  function resetGroceryList(){}
+  function addPrice(item, price) {
+    for (const element of groceryList) {
+      if (element.name == item) { element.price = price; }
+    }
+  } 
+
+  function resetGroceryList(){
+    groceryList = [];
+  }
 }
 
 // LOGIC AND CALCULATIONS 
