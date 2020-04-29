@@ -53,9 +53,9 @@ function buildDeleteGroceryInputs(){
   elToAppendTo.appendChild(deleteButton);
 } 
 
-function deleteItemFromDOM(){
-  debugger;
-  var item = document.getElementById('');
+function deleteItemFromDOM(row){
+  row.remove();
+  updateTable();
 }
 
 function createItemRow(item){  
@@ -100,7 +100,6 @@ function createPriceButton(item, cell){
 }
 
 function createPriceField(item, cell){
-  debugger;
   var priceField = buildInput('text', 'item-price-field', '');
   var savePriceButton = buildInput('button', `save-${item}-price`, 'Save')
   savePriceButton.addEventListener('click', savePrice.bind(null, item, cell))
@@ -114,9 +113,8 @@ function addPriceToDOM(price, cell){
 }
 
 function updateTable(operation){
-  var groceryList = manageGroceryList('listAll');
-  createTotalCount();
-  createTotalPrice(operation);
+  //createTotalCount();
+  //createTotalPrice(operation);
 }
 
 function updateDOMItemCount(){}
@@ -148,8 +146,11 @@ function addItem(){
 }
 
 function deleteItem(){
-  deleteItemFromDOM();
+  var currentItem = document.getElementById('field-delete-item').value
+  var row = document.getElementById(`${currentItem}`).parentElement.parentElement
+  deleteItemFromDOM(row);
   manageGroceryList('deleteItem', currentItem)
+  clearElement('edit-items-section');
 }
 
 function savePrice(item, cell){
@@ -271,9 +272,11 @@ function manageGroceryList(action, item, num){
     groceryList.push(newItem)
   }
 
-  function deleteItemFromGroceryList(item){
-    groceryList.forEach((el, itemToDelete) => {
+  function deleteItemFromGroceryList(itemToDel){
+    groceryList.forEach((el, itemToDel) => {
       if (el.name === itemToDel){
+
+
         //remove from groceryList object
         //update table, count, and total cost
       }
