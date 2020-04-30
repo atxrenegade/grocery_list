@@ -310,26 +310,34 @@ function manageGroceryList(action, item, num){
 // LOGIC AND CALCULATIONS 
 
 function countItems(selectedItems){
-  debugger;
-  var quantityArray = collectQuantities(selectedItems);
-  //checked.push(parseInt(quantity, 10));
+  var quantityArray = filterGroceries(selectedItems, 'quantity');
+  //checked.push();
  
   // create closure to access groceryList without passing as parameter
   return quantityArray.reduce(add, 0);  
-  
-  function collectQuantities(selectedItems) {
-    var quantity = selectedItems.forEach(el, filterGroceries)
-  }
-
-  function filterGroceries() {
-    for (const grocery of groceryList) {
-      if (grocery.name = el) {
-        quantity.push(el.quantity)
-      }
-    }
-  }
   return quantity;
 }
+
+function filterGroceries(selectedItems, collectionType) {
+  debugger;
+  var numsToCount = selectedItems.forEach((el) => {
+    var numsArray = [];
+    for(const grocery of groceryList) {
+      let subArray = [];  
+      if (grocery.name == el && collectionType == 'quantity' || collectionType == 'price') {
+        let numQuant = parseInt(grocery.quantity , 10)
+        subArray.push(numQuant)
+        if (collectionType == 'price'){
+          let numPrice = parseInt(grocery.price, 10)
+          subArray.push(numPrice)
+        } 
+      }
+      numsArray.push(subArray) 
+    }
+    return numsArray; 
+  }) 
+  return numsToCount;
+} 
 
 // add items
 function add(total, num) {
