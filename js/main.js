@@ -123,7 +123,9 @@ function updateTable(operation){
 function updateDOMItemCount(count){
   document.getElementById('items-num').innerText = count;
 }
-function updateDOMCost(){}
+function updateDOMCost(price){
+  document.getElementById('cost-num').innerText = price;
+}
 
 function reset(){
   var buttonStates = ['btn-reset', 'btn-add-item', 'btn-del-item']
