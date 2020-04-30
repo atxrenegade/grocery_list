@@ -3,7 +3,7 @@ initialize();
 
 //*****************************************************************
 function initialize(){
-  void function addEventListeners(){
+  void function addButtonEventListeners(){
     document.getElementById('btn-add-item').addEventListener('click', buildAddGroceryInputs);
     document.getElementById('btn-del-item').addEventListener('click', buildDeleteGroceryInputs);
     document.getElementById('btn-reset').addEventListener('click', reset);
@@ -124,12 +124,12 @@ function reset(){
   var buttonStates = ['btn-reset', 'btn-add-item', 'btn-del-item']
   displayActiveButton(buttonStates);
   clearElement('edit-items-section');
-  clearElement('grocery-items-section');
+  clearElement('grocery-tbody');
   document.getElementById('cost-num').innerText = 0;
   document.getElementById('items-num').innerText = 0;
   cost = 0;
   manageGroceryList('resetList')
-  intialize();
+  initialize();
 }
 
 // UTILITY FUNCTIONS 
@@ -267,7 +267,7 @@ function manageGroceryList(action, item, num){
       break;
 
     case 'resetList':
-      resetListGroceryList();
+      resetGroceryList();
       break;  
 
     default: 
