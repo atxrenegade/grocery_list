@@ -74,9 +74,11 @@ function createCheckbox(item){
   itemCheckbox.id = item.name;
   itemCheckbox.classList.add('ckbx-styled');
   cell.appendChild(itemCheckbox);
-  itemCheckbox.addEventListener('change', function(){ 
-    countItems();
-    updateCost();   
+  itemCheckbox.addEventListener('change', function total(){ 
+    if (this.checked){
+      createTotalCount();
+      createTotalPrice();  
+    } 
   })
 }
 
@@ -118,7 +120,9 @@ function updateTable(operation){
   //createTotalPrice(operation);
 }
 
-function updateDOMItemCount(){}
+function updateDOMItemCount(count){
+  document.getElementById('items-num').innerText = count;
+}
 function updateDOMCost(){}
 
 function reset(){
@@ -171,8 +175,16 @@ function createTotalPrice(){
 }
 
 function createTotalCount(){
+  var checkboxes = Array.from(document.getElementsByClassName('ckbx-styled'))
+  var selectedItems = (function countCheckboxes(){
+    var items = [];
+    for (const element of checkboxes) {
+      if (element.checked == true) { items.push(element.id) };
+    }
+    return items;
+  }()); 
   // data
-  var count = countItems();
+  var count = countItems(selectedItems);
   // dom
   updateDOMItemCount(count);
 } 
@@ -295,21 +307,26 @@ function manageGroceryList(action, item, num){
 
 // LOGIC AND CALCULATIONS 
 
-function countItems(){
+function countItems(selectedItems){
+  debugger;
+  var quantityArray = collectQuantities(selectedItems);
+  //checked.push(parseInt(quantity, 10));
+ 
   // create closure to access groceryList without passing as parameter
-  var checkboxes = Array.from(document.getElementsByClassName('ckbx-styled'))
-  var checked = []
-  var count = function countCheckboxes(){
-    for (const element of checkboxes) { 
-      if (element.checked == true) {   
-        let quantity = element.offsetParent.nextElementSibling.nextElementSibling.textContent.substr(2)
-        checked.push(parseInt(quantity, 10));
+  return quantityArray.reduce(add, 0);  
+  
+  function collectQuantities(selectedItems) {
+    var quantity = selectedItems.forEach(el, filterGroceries)
+  }
+
+  function filterGroceries() {
+    for (const grocery of groceryList) {
+      if (grocery.name = el) {
+        quantity.push(el.quantity)
       }
     }
-    return checked.reduce(add, 0);
-  }    
-
-  document.getElementById('items-num').innerText = count;
+  }
+  return quantity;
 }
 
 // add items
