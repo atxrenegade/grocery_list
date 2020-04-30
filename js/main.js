@@ -14,13 +14,15 @@ function initialize(){
 // BUILD AND APPEND DOM ELEMENTS
 function buildAddGroceryInputs(){
   var elToAppendTo = document.getElementById('edit-items-section');
+  var buttonStates = ['btn-add-item', 'btn-del-item', 'btn-reset']
   var itemField = buildInput('text', 'field-add-item', 'item', clearValue);
   var itemQuantity = buildInput('text', 'field-quantity', 'quantity', clearValue);
   var saveButton = buildInput('button', 'btn-save', 'SAVE', addItem);
   var newElements = [itemField,itemQuantity, saveButton]
   clearElement('edit-items-section');
+  displayActiveButton(buttonStates);
   newElements.forEach(el => elToAppendTo.appendChild(el))
-}
+} 
 
 function buildGroceryItem() {
   var nameField = document.getElementById('field-add-item');
@@ -30,22 +32,13 @@ function buildGroceryItem() {
 }
 
 function addItemToDOM(item){
-  displayActiveADDButton();
   createItemRow(item);
-  updateTable('add');
-
- //*************************************** */ 
-  function displayActiveADDButton(){
-    var buttonStates = ['btn-add-item', 'btn-del-item', 'btn-reset']
-    var inputField = document.getElementById('field-add-item');
-    clearElement('edit-items-section');
-    displayActiveButton(buttonStates);
-  };   
+  updateTable('add');   
 }
 
 function buildDeleteGroceryInputs(){
-  var buttonStates = ['btn-del-item', 'btn-add-item', 'btn-reset']
   var elToAppendTo = document.getElementById('edit-items-section');
+  var buttonStates = ['btn-del-item', 'btn-add-item', 'btn-reset']
   var deleteField = buildInput('text', 'field-delete-item', 'item to delete', clearValue)
   var deleteButton = buildInput('button', 'btn-field-del-item', 'Delete', deleteItem)
   clearElement('edit-items-section');
@@ -142,12 +135,14 @@ function reset(){
 // UTILITY FUNCTIONS 
 // divides the work between DOM and Data manipulation into seperate functions
 function addItem(){
+  var itemField = document.getElementById('field-add-item')
+  var quantityField = document.getElementById('field-quantity')
   var currentItem = buildGroceryItem();
   // data 
   manageGroceryList('addItem', currentItem) 
-  clearElement('field-add-item');
-  clearElement('field-quantity');
   // dom
+  itemField.value = '';
+  quantityField.value = '';
   addItemToDOM(currentItem);
   
 }
