@@ -325,7 +325,6 @@ function countItems(itemsArray){
 
 // calculate cost
 function totalPrice(itemsArray){
-  debugger;
   var price = [];
   itemsArray.map(el => {
     let quantNum = parseFloat(el.quantity, 10)
@@ -333,8 +332,7 @@ function totalPrice(itemsArray){
     if (el.price === 'unassigned' || el.price === 'undefined') {
       priceNum = 0;
     } else { 
-      debugger;
-      priceNum = parseFloat(el.price, 10)
+      priceNum = parseFloat(el.price, 10);
     } 
     price.push(quantNum * priceNum)
   })
@@ -342,9 +340,14 @@ function totalPrice(itemsArray){
   return Math.round(price * 100)/100
 }
 
-// add tax
-function calculateTax(){}
+// use for tax and conversion rates?
+function calculateRate(total, rate){
+  var numWithRate = (rate * price)
+  return Math.round(numWithRate * 100) / 100
+}
 
-// convert currency 
-function convertCurrency(){}
+function calculateTax(total, rate){
+  return total + calculateRate(total, rate)
+}
+
 
