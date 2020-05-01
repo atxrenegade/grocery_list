@@ -49,7 +49,7 @@ function buildDeleteGroceryInputs(){
 
 function deleteItemFromDOM(row){
   row.remove();
-  updateTable();
+  calculateCountAndPrice();
 }
 
 function createItemRow(item){  
@@ -111,7 +111,7 @@ function updateTable(operation){
 function updateDOMItemCount(count){
   document.getElementById('items-num').innerText = count;
 }
-function updateDOMCost(price){
+function updateDOMItemPrice(price){
   document.getElementById('cost-num').innerText = price;
 }
 
@@ -157,6 +157,7 @@ function savePrice(item, cell){
   manageGroceryList('addPrice', item, price);
   // dom
   addPriceToDOM(price, cell);
+  calculateCountAndPrice();
 }
 
 function calculateCountAndPrice(){
@@ -313,19 +314,33 @@ function add(total, num) {
   return total + num;
 }
 
-function countItems(numsArray){
+function countItems(itemsArray){
   var count = [];
-  numsArray.map(el => {
-    debugger;
+  itemsArray.map(el => {
     // add only one item for groceries measured by weight
     el.quantity.includes('.') ? count.push(1) : count.push(parseFloat(el.quantity, 10))
   }) 
-  debugger;
   return count.reduce(add, 0);  
 }
 
 // calculate cost
-function totalPrice(numsArray){}
+function totalPrice(itemsArray){
+  debugger;
+  var price = [];
+  itemsArray.map(el => {
+    let quantNum = parseFloat(el.quantity, 10)
+    let priceNum;
+    if (el.price === 'unassigned' || el.price === 'undefined') {
+      priceNum = 0;
+    } else { 
+      debugger;
+      priceNum = parseFloat(el.price, 10)
+    } 
+    price.push(quantNum * priceNum)
+  })
+  price = price.reduce(add, 0)
+  return Math.round(price * 100)/100
+}
 
 // add tax
 function calculateTax(){}
