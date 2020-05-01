@@ -319,7 +319,6 @@ function add(total, num) {
 }
 
 function countItems(numsArray){
-  // pull out all [i][0] values put in one array
   var count = [];
   numsArray.map(el => {
     if (el.quantity.includes('.')){
