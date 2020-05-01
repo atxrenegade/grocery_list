@@ -69,8 +69,7 @@ function createCheckbox(item){
   cell.appendChild(itemCheckbox);
   itemCheckbox.addEventListener('change', function total(){ 
     if (this.checked){
-      createTotalCount();
-      createTotalPrice();  
+      calculateCountAndPrice();   
     } 
   })
 }
@@ -164,14 +163,7 @@ function savePrice(item, cell){
   addPriceToDOM(price, cell);
 }
 
-function createTotalPrice(){
-  // data
-  var price = calculateCost();
-  // dom
-  updateDOMCost(price);
-}
-
-function createTotalCount(){
+function calculateCountAndPrice(){
   var checkboxes = Array.from(document.getElementsByClassName('ckbx-styled'))
   var selectedItems = (function countCheckboxes(){
     var items = [];
@@ -181,9 +173,13 @@ function createTotalCount(){
     return items;
   }()); 
   // data
-  var count = countItems(selectedItems);
+  var numsArray = filterSelected(selectedItems)
+  debugger;
+  var count = countItems(numsArray);
+  var price = totalPrice(numsArray);
   // dom
   updateDOMItemCount(count);
+  updateDOMItemPrice(price);
 } 
 
 // storage functions for DOM elements using closure
@@ -277,7 +273,7 @@ function manageGroceryList(action, item, num){
   }
 
   function addItemToGroceryList(item){
-    let newItem = {name: item.name, quantity: item.quantity, price: undefined}
+    let newItem = {name: item.name, quantity: item.quantity, price: 'unassigned'}
     groceryList.push(newItem)
   }
 
@@ -304,34 +300,17 @@ function manageGroceryList(action, item, num){
 
 // LOGIC AND CALCULATIONS 
 
-function countItems(selectedItems){
-  var quantityArray = filterGroceries(selectedItems, 'quantity');
-  //checked.push();
- 
-  // create closure to access groceryList without passing as parameter
-  return quantityArray.reduce(add, 0);  
-  return quantity;
-}
-
-function filterGroceries(selectedItems, collectionType) {
-  debugger;
-  var numsToCount = selectedItems.forEach((el) => {
-    var numsArray = [];
-    for(const grocery of groceryList) {
-      let subArray = [];  
-      if (grocery.name == el && collectionType == 'quantity' || collectionType == 'price') {
-        let numQuant = parseInt(grocery.quantity , 10)
-        subArray.push(numQuant)
-        if (collectionType == 'price'){
-          let numPrice = parseInt(grocery.price, 10)
-          subArray.push(numPrice)
-        } 
+function filterSelected(selectedItems){
+  var filteredArray = [];
+  selectedItems.forEach(el => {
+    let subArray = [];
+    for (const grocery of groceryList) {
+      if (grocery.name == el) {  
+        filteredArray.push(grocery)
       }
-      numsArray.push(subArray) 
     }
-    return numsArray; 
   }) 
-  return numsToCount;
+  return filteredArray
 } 
 
 // add items
@@ -339,8 +318,22 @@ function add(total, num) {
   return total + num;
 }
 
+function countItems(numsArray){
+  // pull out all [i][0] values put in one array
+  var count = [];
+  numsArray.map(el => {
+    if (el.quantity.includes('.')){
+      // add only one item for groceries measured by weight
+      count.push(1)
+    } else {
+      count.push(parseFloat(el.quantity, 10))
+    }  
+  })
+  return count.reduce(add, 0);  
+}
+
 // calculate cost
-function calculateCost(){}
+function totalPrice(numsArray){}
 
 // add tax
 function calculateTax(){}
@@ -348,5 +341,12 @@ function calculateTax(){}
 // convert currency 
 function convertCurrency(){}
 
-
+// let numQuant = parseFloat(grocery.quantity, 10)
+//subArray.push(numQuant)
+//let price = 
+//        if (grocery.price != 'unassigned' || grocery.price != 'undefined') {
+//  let numPrice = parseFloat(grocery.price, 10)
+//  subArray.push(numPrice)
+//}  
+//      }
 
