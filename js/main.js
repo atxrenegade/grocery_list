@@ -67,11 +67,7 @@ function createCheckbox(item){
   itemCheckbox.id = item.name;
   itemCheckbox.classList.add('ckbx-styled');
   cell.appendChild(itemCheckbox);
-  itemCheckbox.addEventListener('change', function total(){ 
-    if (this.checked){
-      calculateCountAndPrice();   
-    } 
-  })
+  itemCheckbox.addEventListener('click', calculateCountAndPrice); 
 }
 
 function createCellData(item){
@@ -174,7 +170,6 @@ function calculateCountAndPrice(){
   }()); 
   // data
   var numsArray = filterSelected(selectedItems)
-  debugger;
   var count = countItems(numsArray);
   var price = totalPrice(numsArray);
   // dom
@@ -321,13 +316,11 @@ function add(total, num) {
 function countItems(numsArray){
   var count = [];
   numsArray.map(el => {
-    if (el.quantity.includes('.')){
-      // add only one item for groceries measured by weight
-      count.push(1)
-    } else {
-      count.push(parseFloat(el.quantity, 10))
-    }  
-  })
+    debugger;
+    // add only one item for groceries measured by weight
+    el.quantity.includes('.') ? count.push(1) : count.push(parseFloat(el.quantity, 10))
+  }) 
+  debugger;
   return count.reduce(add, 0);  
 }
 
@@ -339,13 +332,4 @@ function calculateTax(){}
 
 // convert currency 
 function convertCurrency(){}
-
-// let numQuant = parseFloat(grocery.quantity, 10)
-//subArray.push(numQuant)
-//let price = 
-//        if (grocery.price != 'unassigned' || grocery.price != 'undefined') {
-//  let numPrice = parseFloat(grocery.price, 10)
-//  subArray.push(numPrice)
-//}  
-//      }
 
