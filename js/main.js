@@ -17,7 +17,7 @@ function buildAddGroceryInputs(){
   var buttonStates = ['btn-add-item', 'btn-del-item', 'btn-reset']
   var itemField = buildInput('text', 'field-add-item', 'item', clearValue);
   var itemQuantity = buildInput('text', 'field-quantity', 'quantity', clearValue);
-  var saveButton = buildInput('button', 'btn-save', 'SAVE', addItem);
+  var saveButton = buildInput('button', 'btn-save', 'SAVE', addGroceryItem);
   var newElements = [itemField,itemQuantity, saveButton]
   clearElement('edit-items-section');
   displayActiveButton(buttonStates);
@@ -31,7 +31,7 @@ function buildGroceryItem() {
   return item;
 }
 
-function addItemToDOM(item){
+function addGroceryItemToDOM(item){
   createItemRow(item);
   updateTable('add');   
 }
@@ -40,14 +40,14 @@ function buildDeleteGroceryInputs(){
   var elToAppendTo = document.getElementById('edit-items-section');
   var buttonStates = ['btn-del-item', 'btn-add-item', 'btn-reset']
   var deleteField = buildInput('text', 'field-delete-item', 'item to delete', clearValue)
-  var deleteButton = buildInput('button', 'btn-field-del-item', 'Delete', deleteItem)
+  var deleteButton = buildInput('button', 'btn-field-del-item', 'Delete', deleteGroceryItem)
   clearElement('edit-items-section');
   displayActiveButton(buttonStates);
   elToAppendTo.appendChild(deleteField);
   elToAppendTo.appendChild(deleteButton);
 } 
 
-function deleteItemFromDOM(row){
+function deleteGroceryItemFromDOM(row){
   row.remove();
   calculateCountAndPrice();
 }
@@ -129,7 +129,7 @@ function reset(){
 
 // UTILITY FUNCTIONS 
 // divides the work between DOM and Data manipulation into seperate functions
-function addItem(){
+function addGroceryItem(){
   var itemField = document.getElementById('field-add-item')
   var quantityField = document.getElementById('field-quantity')
   var currentItem = buildGroceryItem();
@@ -138,13 +138,13 @@ function addItem(){
   // dom
   itemField.value = '';
   quantityField.value = '';
-  addItemToDOM(currentItem); 
+  addGroceryItemToDOM(currentItem); 
 }
 
-function deleteItem(){
+function deleteGroceryItem(){
   var currentItem = document.getElementById('field-delete-item').value
   var row = document.getElementById(`${currentItem}`).parentElement.parentElement
-  deleteItemFromDOM(row);
+  deleteGroceryItemFromDOM(row);
   manageGroceryList('deleteItem', currentItem)
   clearElement('edit-items-section');
 }
@@ -345,7 +345,6 @@ function calculateRate(total, rate){
   return Math.round(numWithRate * 100) / 100
 }
 
-
 //add currency checkbox to existing table with event listener to call create currency selector
 
 function createCurrencySelector(){
@@ -383,7 +382,6 @@ function TaxAndTotalToDOM(){
   //  price = price.reduce(add, 0) - replace with tax and total
   // create tax and total elements
   // append them to the DOM
-
 }
 
 
