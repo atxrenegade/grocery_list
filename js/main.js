@@ -54,12 +54,10 @@ function addRatesCheckboxes(){
         let cell = row.insertCell();
         cell.id = 'rate-row-cell-' + i;
     }
-
     document.getElementById('rate-row-cell-1').innerText = "Add Taxes";
     document.getElementById('rate-row-cell-3').innerText = "Convert Currency";
     createCheckbox({ name: 'tax-rate-checkbox' }, createTaxRateElements, document.getElementById('rate-row-cell-0'));
     createCheckbox({ name: 'currency-rate-checkbox' }, createCurrencySelector, document.getElementById('rate-row-cell-2'));
-
   }
 }
 
@@ -404,12 +402,16 @@ function getCurrencyRate(currency1, currency2){
 // field and button 
 
 function createTaxRateElements(){
-  // create tax rate field and button
-  // append to DOM 
-  // add event listener to button to call 
+  var taxRateInputField = buildInput('text', 'tax-rate-input-field', '0.0', clearValue) ;
+  var taxRateButton = buildInput('button', 'tax-rate-button', 'add tax', taxAndTotalToDOM);
+  var elToAppendTo = document.getElementById('rate-row-cell-1');
+  elToAppendTo.innerText = '';
+  elToAppendTo.appendChild(taxRateInputField);
+  elToAppendTo.appendChild(taxRateButton);
 }
 
-function TaxAndTotalToDOM(){
+function taxAndTotalToDOM(){
+  console.log('working');
   // retrieve user input tax rate;
   // calculate tax rate calling calculateRate();
   // calculate taxed total by using the .reduce/add
