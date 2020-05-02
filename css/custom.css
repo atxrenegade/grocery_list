@@ -112,6 +112,10 @@ input[type='text'] {
   font-weight: bold;
 }
 
+#tax-rate-input-field {
+  max-width: 50px;
+}
+
 /* media queries */
 
 @media only screen and (max-width: 680px) {
