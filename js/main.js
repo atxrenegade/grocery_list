@@ -138,8 +138,7 @@ function addItem(){
   // dom
   itemField.value = '';
   quantityField.value = '';
-  addItemToDOM(currentItem);
-  
+  addItemToDOM(currentItem); 
 }
 
 function deleteItem(){
@@ -348,6 +347,29 @@ function calculateRate(total, rate){
 
 function calculateTax(total, rate){
   return total + calculateRate(total, rate)
+}
+
+
+//add currency checkbox to existing table with event listener to call create currency selector
+
+function createCurrencySelector(){
+  // create drop down menu for currency exchange with all USD, MXD, CAD options
+  // create button with event listener to convertCurrency()
+  // append to DOM
+  //
+}
+
+function convertCurrency(){
+  // get input from user from drop down menu
+  // asych await - invoke getCurrencyRate() to send fetch request to api
+  // invoke 
+  // create dom element with converted price and currency
+  // append element to DOM
+}
+
+function getCurrencyRate(currency1, currency2){
+  // fetch request to retrieve current rate
+  // calculateRate() as a callback function
 }
 
 
