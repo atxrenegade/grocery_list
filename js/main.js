@@ -54,20 +54,19 @@ function deleteGroceryItemFromDOM(row){
 
 function createItemRow(item){  
   var table = document.querySelector('tbody');
-  table.insertRow();
-  createCheckbox(item);
+  var row = table.insertRow();
+  var cell = row.insertCell();
+  createCheckbox(item, calculateCountAndPrice, cell);
   createCellData(item);
 }  
 
-function createCheckbox(item){
-  var row = storeRow();
+function createCheckbox(item, checkboxEvent, cell){
   var itemCheckbox = document.createElement('input');
-  var cell = row.insertCell();
   itemCheckbox.type = 'checkbox';
   itemCheckbox.id = item.name;
   itemCheckbox.classList.add('ckbx-styled');
   cell.appendChild(itemCheckbox);
-  itemCheckbox.addEventListener('click', calculateCountAndPrice); 
+  itemCheckbox.addEventListener('click', checkboxEvent); 
 }
 
 function createCellData(item){
