@@ -113,7 +113,12 @@ input[type='text'] {
 }
 
 #tax-rate-input-field {
-  max-width: 50px;
+  max-width: 82px;
+  padding-bottom: 3px;
+}
+
+#tax-rate-button {
+  margin-left: 4px;
 }
 
 /* media queries */
