@@ -345,10 +345,6 @@ function calculateRate(total, rate){
   return Math.round(numWithRate * 100) / 100
 }
 
-function calculateTax(total, rate){
-  return total + calculateRate(total, rate)
-}
-
 
 //add currency checkbox to existing table with event listener to call create currency selector
 
@@ -370,6 +366,24 @@ function convertCurrency(){
 function getCurrencyRate(currency1, currency2){
   // fetch request to retrieve current rate
   // calculateRate() as a callback function
+}
+
+// add checkbox to exisiting table with event listener to create tax rate field and button 
+
+function createTaxRateElements(){
+  // create tax rate field and button
+  // append to DOM 
+  // add event listener to button to call 
+}
+
+function TaxAndTotalToDOM(){
+  // retrieve user input tax rate;
+  // calculate tax rate calling calculateRate();
+  // calculate taxed total by using the .reduce/add
+  //  price = price.reduce(add, 0) - replace with tax and total
+  // create tax and total elements
+  // append them to the DOM
+
 }
 
 
