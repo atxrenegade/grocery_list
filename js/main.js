@@ -33,7 +33,34 @@ function buildGroceryItem() {
 
 function addGroceryItemToDOM(item){
   createItemRow(item);
-  updateTable('add');   
+  updateTable('add'); 
+  addRatesCheckboxes();
+}
+
+function createTaxRateElements() {
+  // create tax rate field and button
+  // append to DOM 
+  // add event listener to button to call 
+}
+
+
+function addRatesCheckboxes(){
+  var rateTBody = document.getElementById('rate-tbody')
+
+  if (rateTBody.children.length === 0){
+    let row = rateTBody.insertRow();
+    row.id = 'rate-row';
+    for (let i = 0; i <= 3; i++){
+        let cell = row.insertCell();
+        cell.id = 'rate-row-cell-' + i;
+    }
+
+    document.getElementById('rate-row-cell-1').innerText = "Add Taxes";
+    document.getElementById('rate-row-cell-3').innerText = "Convert Currency";
+    createCheckbox({ name: 'tax-rate-checkbox' }, createTaxRateElements, document.getElementById('rate-row-cell-0'));
+    createCheckbox({ name: 'currency-rate-checkbox' }, createCurrencySelector, document.getElementById('rate-row-cell-2'));
+
+  }
 }
 
 function buildDeleteGroceryInputs(){
@@ -56,18 +83,11 @@ function createItemRow(item){
   var table = document.querySelector('tbody');
   var row = table.insertRow();
   var cell = row.insertCell();
+  row.classList.add('grocery-row');
   createCheckbox(item, calculateCountAndPrice, cell);
   createCellData(item);
 }  
 
-function createCheckbox(item, checkboxEvent, cell){
-  var itemCheckbox = document.createElement('input');
-  itemCheckbox.type = 'checkbox';
-  itemCheckbox.id = item.name;
-  itemCheckbox.classList.add('ckbx-styled');
-  cell.appendChild(itemCheckbox);
-  itemCheckbox.addEventListener('click', checkboxEvent); 
-}
 
 function createCellData(item){
   var row = storeRow();
@@ -119,6 +139,7 @@ function reset(){
   displayActiveButton(buttonStates);
   clearElement('edit-items-section');
   clearElement('grocery-tbody');
+  clearElement('rate-tbody');
   document.getElementById('cost-num').innerText = 0;
   document.getElementById('items-num').innerText = 0;
   cost = 0;
@@ -210,12 +231,17 @@ function buildInput(type, id, value, eventListenerToAdd){
   return newInput;
 }
 
-function clearValue(){
-  this.value = '';
-}
-
-function clearElement(id){
-  document.getElementById(id).innerHTML = '';
+function createCheckbox(item, checkboxEvent, elToAppendTo, labelContent) {
+  var itemCheckbox = document.createElement('input');
+  itemCheckbox.type = 'checkbox';
+  itemCheckbox.id = item.name;
+  itemCheckbox.classList.add('ckbx-styled');
+  elToAppendTo.appendChild(itemCheckbox);
+  itemCheckbox.addEventListener('click', checkboxEvent);
+  if (labelContent != undefined) {
+    var label = document.createTextNode(labelContent)
+    elToAppendTo.appendChild(label)
+  };
 }
 
 function displayActiveButton(buttonStates){
@@ -228,6 +254,14 @@ function displayActiveButton(buttonStates){
       }
     }  
   })
+}
+
+function clearValue() {
+  this.value = '';
+}
+
+function clearElement(id) {
+  document.getElementById(id).innerHTML = '';
 }
 
 // MANAGE DATA
@@ -366,7 +400,8 @@ function getCurrencyRate(currency1, currency2){
   // calculateRate() as a callback function
 }
 
-// add checkbox to exisiting table with event listener to create tax rate field and button 
+// add checkbox to existing table with event listener to create tax rate 
+// field and button 
 
 function createTaxRateElements(){
   // create tax rate field and button
@@ -382,5 +417,17 @@ function TaxAndTotalToDOM(){
   // create tax and total elements
   // append them to the DOM
 }
+/** 
+function buildInput(type, id, value, eventListenerToAdd) {
+  var newInput = document.createElement('input');
+  newInput.type = type;
+  newInput.id = id;
+  newInput.value = value;
+  if (eventListenerToAdd != undefined) {
+    newInput.addEventListener('click', eventListenerToAdd);
+  }
+  return newInput;
+}
 
+*/
 
