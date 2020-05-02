@@ -1,0 +1,122 @@
+
+html {
+  color: #222;
+  font-size: 1em;
+  line-height: 1.4; 
+}
+
+body {
+  background-image: url('white-linen-paper-texture.jpg');
+}
+
+div, h1 {
+  text-align: center;
+}
+
+img {
+  display: block;
+  margin: 30px auto;
+  width: 40%;
+}
+
+input[type='text'] {
+  margin: 5px;
+  display: inline;
+}
+
+.content {
+  padding: 50px 20px;
+  max-width: 850px;
+  text-align: center;
+  display:flex; 
+  flex-direction:column; 
+  justify-content:center;
+  min-height:100vh;
+}
+
+.table td, .table th {
+  vertical-align: middle;
+  border-top: none;
+} 
+
+.grocery-row {
+  border-top: 3px dotted red;
+  border-bottom: 3px dotted red;
+} 
+
+.ckbx-styled {
+  width: 30px;
+  height: 30px;
+}
+
+#grocery-table, #rate-table {
+  max-width: 58%;
+  margin: 30px auto 10px auto;
+}
+
+#rate-table {
+  margin: 0px auto 30px auto;
+  border-top-style: none;  
+  border-bottom-style: none; 
+  margin-bottom: 20px; 
+  align-content: center;
+}
+
+#grocery-img {
+  vertical-align: auto;
+  max-height: 30%;
+}
+
+#cost-num, #items-num {
+  color: red;
+}
+
+#btn-del-item, #btn-reset, #btn-add-item {
+  border-radius: 7%;
+  border-width: 3px;
+  margin: 4px 2px;
+}
+
+#buttons-section {
+  margin-bottom: 20px;
+}
+
+#btn-save {
+  margin: 5px;
+  display: inline-flex;
+  margin: auto;
+}
+
+#field-quantity {
+  width: 70px;
+}
+
+#field-add-item {
+  width: 200px;
+}
+
+#item-price-field {
+  width: 65px;
+}
+
+#rate-row-cell-0, #rate-row-cell-2 {
+  min-width: 30px; 
+  width: 17.5%;
+}
+
+#rate-row-cell-1, #rate-row-cell-3 {
+  width: 31.5%;
+  text-align: left;
+  margin-left: 0%;
+  padding-left: 0%;
+  font-weight: bold;
+}
+
+/* media queries */
+
+@media only screen and (max-width: 680px) {
+  #grocery-table, #rate-table {
+	max-width: 90%;
+  }
+}
+
