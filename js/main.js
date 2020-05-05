@@ -401,13 +401,11 @@ function createCurrencySelector(){
     for(let length = selectValues.length, i = 0; i < length; i++) {
       let currencyOption = document.createElement('option');
       let currencyTextNode = document.createTextNode(`${selectValues[i][0]} to ${selectValues[i][1]}`)
-      currencyOption.value = `${selectValues}`;
+      currencyOption.value = `${selectValues[i]}`;
       currencyOption.appendChild(currencyTextNode);
       menuSelect.appendChild(currencyOption); 
     }
-    menuDiv.appendChild(menuButton);
-    debugger;
-   
+    menuDiv.appendChild(menuButton); 
     return menuDiv;
   }
 
@@ -432,27 +430,38 @@ function createCurrencySelector(){
 }
 
 function convertCurrency(){
-  debugger;
-  var currencyArray = retrieveUserInput();
+  var currencyArray = retrieveUserInput().split(',');
   var exchangeRate = getCurrencyRate(currencyArray); //async await?
-  var total = document.getElementById('price-num')
+  var total = parseFloat(document.getElementById('cost-num').innerText, 10)
   var exchangeTotal = calculateRate(total, exchangeRate);
   var elToAppendTo = document.getElementById('rate-row-cell-3')
-  elToAppendTo.innerHTML = `The converted total is ${exchangeTotal} ${currency_array[1]}.`;
+  debugger;
+  elToAppendTo.innerHTML = `The converted total is ${exchangeTotal} ${currencyArray[1].toUpperCase()}.`;
 
-  function retrieveUserInput(){ }
-  function getCurrencyRate(){ }
+  function retrieveUserInput(){ 
+    var options = Array.from(document.getElementsByTagName('select')[0].children);
+    return options.filter(returnSelectedValue)[0].value;
+
+    function returnSelectedValue(option) {
+      if (option.selected == true) {return option.value};
+    }
+  }
+
+  function getCurrencyRate(currencyArray){ 
+    debugger;
+    var num = 0.05875;
+    return num;
+  }
 }
 
 // tax rate functions
 function createTaxRateElements(event){
- 
   var addTaxCheckBox = document.getElementById('tax-rate-checkbox');
   //if event.target tax-rate-checkbox and event target = unchecked clear taxes from total 
   if (taxRate == 0 && event.target.checked == true && event.target == addTaxCheckBox) {
-    var taxRateInputField = buildInput('text', 'tax-rate-input-field', '0.0', clearValue) ;
-    var taxRateButton = buildInput('button', 'tax-rate-button', 'add tax', taxAndTotalToDOM);
-    var elToAppendTo = document.getElementById('rate-row-cell-1');
+    let taxRateInputField = buildInput('text', 'tax-rate-input-field', '0.0', clearValue) ;
+    let taxRateButton = buildInput('button', 'tax-rate-button', 'add tax', taxAndTotalToDOM);
+    let elToAppendTo = document.getElementById('rate-row-cell-1');
     elToAppendTo.innerText = '';
     elToAppendTo.appendChild(taxRateInputField);
     elToAppendTo.appendChild(taxRateButton);
