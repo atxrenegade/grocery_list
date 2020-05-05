@@ -379,9 +379,14 @@ function calculateRate(total, rate){
   return Math.round(numWithRate * 100) / 100
 }
 
-//add currency checkbox to existing table with event listener to call create currency selector
+// add currency checkbox to existing table with event listener to call create currency selector
 
 function createCurrencySelector(){
+  // get cell to clear
+  // clear cell
+  // create drop down menu 
+  // append to DOM 
+  // addEventListener for fetchRequest
   // create drop down menu for currency exchange with all USD, MXD, CAD options
   // create button with event listener to convertCurrency()
   // append to DOM
@@ -389,16 +394,16 @@ function createCurrencySelector(){
 }
 
 function convertCurrency(){
-  // get input from user from drop down menu
-  // asych await - invoke getCurrencyRate() to send fetch request to api
-  // invoke 
-  // create dom element with converted price and currency
-  // append element to DOM
-}
+  var currencyArray = retrieveUserInput();
+  var exchangeRate = getCurrencyRate(currency_array); //async await?
+  var total = document.getElementById('price-num')
+  var exchangeTotal = calculateRate(total, exchangeRate);
+  var elToAppendTo = document.getElementById('rate-row-cell-3')
+  elToAppendTo.innerHTML = `The converted total is ${exchangeTotal} ${currency_array[1]}.`;
 
-function getCurrencyRate(currency1, currency2){
-  // fetch request to retrieve current rate
-  // calculateRate() as a callback function
+  function retrieveUserInput(){ }
+  function getCurrencyRate(){ }
+  function appendResult(){ } 
 }
 
 // tax rate functions
