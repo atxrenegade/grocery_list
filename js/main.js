@@ -382,20 +382,59 @@ function calculateRate(total, rate){
 // add currency checkbox to existing table with event listener to call create currency selector
 
 function createCurrencySelector(){
-  // get cell to clear
-  // clear cell
-  // create drop down menu 
-  // append to DOM 
-  // addEventListener for fetchRequest
-  // create drop down menu for currency exchange with all USD, MXD, CAD options
-  // create button with event listener to convertCurrency()
-  // append to DOM
-  //
+  var elToAppendTo = document.getElementById('rate-row-cell-3');
+  var currencyTypesArray = [['usd', 'cad'], ['cad', 'usd'], ['usd', 'mxd'], ['mxd', 'usd'], ['cad','mxd'], ['mxd', 'cad']]
+  var currencyDropDownMenu = createDropDownMenu(currencyTypesArray);  
+  clearElement('rate-row-cell-3');
+  elToAppendTo.appendChild(currencyDropDownMenu);
+   
+  function createDropDownMenu(selectValues){
+    var menuDiv = document.createElement('div');
+    var menuSelect = document.createElement('select');
+    var menuButton = buildInput('button', 'currency-drop-down-button', 'convert', convertCurrency )
+    menuDiv.classList.add('col-sm-2')
+    menuSelect.classList.add('form-control')
+    menuSelect.style.width = '125px';
+    menuButton.classList.add('custom-select-button');
+    menuDiv.appendChild(menuSelect);
+  
+    for(let length = selectValues.length, i = 0; i < length; i++) {
+      let currencyOption = document.createElement('option');
+      let currencyTextNode = document.createTextNode(`${selectValues[i][0]} to ${selectValues[i][1]}`)
+      currencyOption.value = `${selectValues}`;
+      currencyOption.appendChild(currencyTextNode);
+      menuSelect.appendChild(currencyOption); 
+    }
+    menuDiv.appendChild(menuButton);
+    debugger;
+   
+    return menuDiv;
+  }
+
+  /*  <div class="custom-select" style="width:200px;">
+  <select>
+    <option value="0">Select car:</option>
+    <option value="1">Audi</option>
+    <option value="2">BMW</option>
+    <option value="3">Citroen</option>
+    <option value="4">Ford</option>
+    <option value="5">Honda</option>
+    <option value="6">Jaguar</option>
+    <option value="7">Land Rover</option>
+    <option value="8">Mercedes</option>
+    <option value="9">Mini</option>
+    <option value="10">Nissan</option>
+    <option value="11">Toyota</option>
+    <option value="12">Volvo</option>
+  </select>
+</div>
+  */
 }
 
 function convertCurrency(){
+  debugger;
   var currencyArray = retrieveUserInput();
-  var exchangeRate = getCurrencyRate(currency_array); //async await?
+  var exchangeRate = getCurrencyRate(currencyArray); //async await?
   var total = document.getElementById('price-num')
   var exchangeTotal = calculateRate(total, exchangeRate);
   var elToAppendTo = document.getElementById('rate-row-cell-3')
@@ -403,12 +442,11 @@ function convertCurrency(){
 
   function retrieveUserInput(){ }
   function getCurrencyRate(){ }
-  function appendResult(){ } 
 }
 
 // tax rate functions
 function createTaxRateElements(event){
-  debugger; 
+ 
   var addTaxCheckBox = document.getElementById('tax-rate-checkbox');
   //if event.target tax-rate-checkbox and event target = unchecked clear taxes from total 
   if (taxRate == 0 && event.target.checked == true && event.target == addTaxCheckBox) {
