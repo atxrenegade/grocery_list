@@ -1,4 +1,5 @@
 var groceryList = [];
+var taxRate = 0;
 initialize(); 
 
 //*****************************************************************
@@ -32,21 +33,12 @@ function buildGroceryItem() {
 }
 
 function addGroceryItemToDOM(item){
-  createItemRow(item);
-  updateTable('add'); 
+  createItemRow(item); 
   addRatesCheckboxes();
 }
 
-function createTaxRateElements() {
-  // create tax rate field and button
-  // append to DOM 
-  // add event listener to button to call 
-}
-
-
 function addRatesCheckboxes(){
   var rateTBody = document.getElementById('rate-tbody')
-
   if (rateTBody.children.length === 0){
     let row = rateTBody.insertRow();
     row.id = 'rate-row';
@@ -74,7 +66,7 @@ function buildDeleteGroceryInputs(){
 
 function deleteGroceryItemFromDOM(row){
   row.remove();
-  calculateCountAndPrice();
+  manageTableTotals();
 }
 
 function createItemRow(item){  
@@ -82,7 +74,7 @@ function createItemRow(item){
   var row = table.insertRow();
   var cell = row.insertCell();
   row.classList.add('grocery-row');
-  createCheckbox(item, calculateCountAndPrice, cell);
+  createCheckbox(item, manageTableTotals, cell);
   createCellData(item);
 }  
 
@@ -118,11 +110,6 @@ function createPriceField(item, cell){
 
 function addPriceToDOM(price, cell){
   cell.innerHTML = '$' + price; 
-}
-
-function updateTable(operation){
-  //createTotalCount();
-  //createTotalPrice(operation);
 }
 
 function updateDOMItemCount(count){
@@ -174,26 +161,41 @@ function savePrice(item, cell){
   manageGroceryList('addPrice', item, price);
   // dom
   addPriceToDOM(price, cell);
-  calculateCountAndPrice();
+  manageTableTotals();
 }
 
-function calculateCountAndPrice(){
-  var checkboxes = Array.from(document.getElementsByClassName('ckbx-styled'))
-  var selectedItems = (function countCheckboxes(){
-    var items = [];
-    for (const element of checkboxes) {
-      if (element.checked == true) { items.push(element.id) };
-    }
-    return items;
-  }()); 
-  // data
-  var numsArray = filterSelected(selectedItems)
+function manageTableTotals(){ 
+  var selectedItems = collectCheckedBoxes();
+  var numsArray = filterListForSelected(selectedItems); 
+  var taxCheckBox = document.getElementById('tax-rate-checkbox');
+  var totalPrice = addPrice(numsArray);
+  addCount(numsArray);
+  // create a form of closure to store tax rate
+  if (taxCheckBox.checked == true && taxRate > 0) {
+    taxAndTotalToDOM();
+  }
+}
+
+function addCount(numsArray){
   var count = countItems(numsArray);
-  var price = totalPrice(numsArray);
-  // dom
   updateDOMItemCount(count);
+  return count;
+}
+
+function addPrice(numsArray){
+  var price = totalPrice(numsArray);
   updateDOMItemPrice(price);
-} 
+  return price;
+}
+
+function collectCheckedBoxes() {
+  var checkboxes = Array.from(document.getElementsByClassName('ckbx-styled grocery'))
+  var items = [];
+  for (const element of checkboxes) {
+    if (element.checked == true) { items.push(element.id) };
+  }
+  return items;
+}
 
 // storage functions for DOM elements using closure
 //function storeItem() {
@@ -234,6 +236,7 @@ function createCheckbox(item, checkboxEvent, elToAppendTo, labelContent) {
   itemCheckbox.type = 'checkbox';
   itemCheckbox.id = item.name;
   itemCheckbox.classList.add('ckbx-styled');
+  if (item.price == 'unassigned'){ itemCheckbox.classList.add('grocery')}; 
   elToAppendTo.appendChild(itemCheckbox);
   itemCheckbox.addEventListener('click', checkboxEvent);
   if (labelContent != undefined) {
@@ -326,7 +329,7 @@ function manageGroceryList(action, item, num){
 
 // LOGIC AND CALCULATIONS 
 
-function filterSelected(selectedItems){
+function filterListForSelected(selectedItems){
   var filteredArray = [];
   selectedItems.forEach(el => {
     let subArray = [];
@@ -372,7 +375,7 @@ function totalPrice(itemsArray){
 
 // use for tax and conversion rates?
 function calculateRate(total, rate){
-  var numWithRate = (rate * price)
+  var numWithRate = (total * rate)
   return Math.round(numWithRate * 100) / 100
 }
 
@@ -398,38 +401,42 @@ function getCurrencyRate(currency1, currency2){
   // calculateRate() as a callback function
 }
 
-// add checkbox to existing table with event listener to create tax rate 
-// field and button 
-
-function createTaxRateElements(){
-  var taxRateInputField = buildInput('text', 'tax-rate-input-field', '0.0', clearValue) ;
-  var taxRateButton = buildInput('button', 'tax-rate-button', 'add tax', taxAndTotalToDOM);
-  var elToAppendTo = document.getElementById('rate-row-cell-1');
-  elToAppendTo.innerText = '';
-  elToAppendTo.appendChild(taxRateInputField);
-  elToAppendTo.appendChild(taxRateButton);
+// tax rate functions
+function createTaxRateElements(event){
+  debugger; 
+  var addTaxCheckBox = document.getElementById('tax-rate-checkbox');
+  //if event.target tax-rate-checkbox and event target = unchecked clear taxes from total 
+  if (taxRate == 0 && event.target.checked == true && event.target == addTaxCheckBox) {
+    var taxRateInputField = buildInput('text', 'tax-rate-input-field', '0.0', clearValue) ;
+    var taxRateButton = buildInput('button', 'tax-rate-button', 'add tax', taxAndTotalToDOM);
+    var elToAppendTo = document.getElementById('rate-row-cell-1');
+    elToAppendTo.innerText = '';
+    elToAppendTo.appendChild(taxRateInputField);
+    elToAppendTo.appendChild(taxRateButton);
+  } else if (taxRate != 0 && addTaxCheckBox.checked == true ) {
+    taxAndTotalToDOM();
+  } else {
+    manageTableTotals();
+  }
 }
+//round one - if checkbox is selected and event is taxRate checkbox create fields and get the tax rate
+//round two  - if taxRate is set and checkbox is selected calculate tax add to total
+// round three - if taxRate is set and box is unselected remove tax set to zero and recalculate the total
 
 function taxAndTotalToDOM(){
-  console.log('working');
-  // retrieve user input tax rate;
-  // calculate tax rate calling calculateRate();
-  // calculate taxed total by using the .reduce/add
-  //  price = price.reduce(add, 0) - replace with tax and total
-  // create tax and total elements
-  // append them to the DOM
-}
-/** 
-function buildInput(type, id, value, eventListenerToAdd) {
-  var newInput = document.createElement('input');
-  newInput.type = type;
-  newInput.id = id;
-  newInput.value = value;
-  if (eventListenerToAdd != undefined) {
-    newInput.addEventListener('click', eventListenerToAdd);
-  }
-  return newInput;
+  debugger;
+  taxRate = document.getElementById('tax-rate-input-field').value; 
+  var priceElement = document.getElementById('cost-num')
+  var price = parseFloat(priceElement.innerText, 10);
+  var taxOfTotal = calculateRate(price, parseFloat(taxRate, 10)/100);
+  var totalWithTax = Math.round((price + taxOfTotal) * 100) / 100
+  var taxElement = document.getElementById('rate-row-cell-1')
+  taxElement.innerText = `Tax @ ${taxRate}% :  $${taxOfTotal}`;
+  priceElement.innerText = `${totalWithTax}` 
 }
 
-*/
+// everytime the total price is recalculated, tax should be recalculated
+// unchecking tax box should recalculated with out price without tax
+// change event listener on taxbox once rate has been set
+
 
