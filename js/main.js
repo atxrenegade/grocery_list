@@ -1,5 +1,6 @@
 var groceryList = [];
 var taxRate = 0;
+var currencyRates;
 initialize(); 
 
 //*****************************************************************
@@ -383,7 +384,7 @@ function calculateRate(total, rate){
 
 function createCurrencySelector(){
   var elToAppendTo = document.getElementById('rate-row-cell-3');
-  var currencyTypesArray = [['usd', 'cad'], ['cad', 'usd'], ['usd', 'mxd'], ['mxd', 'usd'], ['cad','mxd'], ['mxd', 'cad']]
+  var currencyTypesArray = [['usd', 'cad'], ['cad', 'usd'], ['usd', 'mxn'], ['mxn', 'usd'], ['cad','mxn'], ['mxn', 'cad']]
   var currencyDropDownMenu = createDropDownMenu(currencyTypesArray);  
   clearElement('rate-row-cell-3');
   elToAppendTo.appendChild(currencyDropDownMenu);
@@ -408,36 +409,13 @@ function createCurrencySelector(){
     menuDiv.appendChild(menuButton); 
     return menuDiv;
   }
-
-  /*  <div class="custom-select" style="width:200px;">
-  <select>
-    <option value="0">Select car:</option>
-    <option value="1">Audi</option>
-    <option value="2">BMW</option>
-    <option value="3">Citroen</option>
-    <option value="4">Ford</option>
-    <option value="5">Honda</option>
-    <option value="6">Jaguar</option>
-    <option value="7">Land Rover</option>
-    <option value="8">Mercedes</option>
-    <option value="9">Mini</option>
-    <option value="10">Nissan</option>
-    <option value="11">Toyota</option>
-    <option value="12">Volvo</option>
-  </select>
-</div>
-  */
 }
 
 function convertCurrency(){
   var currencyArray = retrieveUserInput().split(',');
-  var exchangeRate = getCurrencyRate(currencyArray); //async await?
   var total = parseFloat(document.getElementById('cost-num').innerText, 10)
-  var exchangeTotal = calculateRate(total, exchangeRate);
-  var elToAppendTo = document.getElementById('rate-row-cell-3')
-  debugger;
-  elToAppendTo.innerHTML = `The converted total is ${exchangeTotal} ${currencyArray[1].toUpperCase()}.`;
-
+  calculateAndAppendConverted(currencyArray, total);
+ 
   function retrieveUserInput(){ 
     var options = Array.from(document.getElementsByTagName('select')[0].children);
     return options.filter(returnSelectedValue)[0].value;
@@ -446,14 +424,42 @@ function convertCurrency(){
       if (option.selected == true) {return option.value};
     }
   }
+  
+  function calculateAndAppendConverted(currencyArray, total){
+    try {
+      fetchCurrencyRate(currencyArray[0]);      
+    } catch(error) {
+      console.log(error);
+    }
+  }  
 
-  function getCurrencyRate(currencyArray){ 
-    debugger;
-    var num = 0.05875;
-    return num;
+  function fetchCurrencyRate(currency){ 
+    var url = `https://prime.exchangerate-api.com/v5/51b51bd8875d058d36d9986d/latest/${currency.toUpperCase()}`
+    fetch(url)
+      .then(response => response.json())
+      .then(json => formatRate(json))
+      .then(rate => calculateExchangedTotal(rate))
+      .then(totalExchanged => appendToDOM(totalExchanged))
+  }
+
+  function formatRate(data){
+    currencyRates = data.conversion_rates;
+    var currency = currencyArray[1].toUpperCase();
+    var rate = currencyRates[`${currency}`];
+    return rate;
+  }
+
+  function calculateExchangedTotal(rate){
+    var price = parseFloat(document.getElementById('cost-num').innerText, 10);
+    var totalExchanged = calculateRate(price, rate);
+    return totalExchanged;
+  }
+
+  function appendToDOM(totalExchanged){
+    var elToAppendTo = document.getElementById('rate-row-cell-3')
+    elToAppendTo.innerHTML = `The total is ${ totalExchanged } ${ currencyArray[1].toUpperCase() }, converted from ${ currencyArray[0].toUpperCase() }.`;
   }
 }
-
 // tax rate functions
 function createTaxRateElements(event){
   var addTaxCheckBox = document.getElementById('tax-rate-checkbox');
@@ -471,12 +477,8 @@ function createTaxRateElements(event){
     manageTableTotals();
   }
 }
-//round one - if checkbox is selected and event is taxRate checkbox create fields and get the tax rate
-//round two  - if taxRate is set and checkbox is selected calculate tax add to total
-// round three - if taxRate is set and box is unselected remove tax set to zero and recalculate the total
 
 function taxAndTotalToDOM(){
-  debugger;
   taxRate = document.getElementById('tax-rate-input-field').value; 
   var priceElement = document.getElementById('cost-num')
   var price = parseFloat(priceElement.innerText, 10);
@@ -486,6 +488,10 @@ function taxAndTotalToDOM(){
   taxElement.innerText = `Tax @ ${taxRate}% :  $${taxOfTotal}`;
   priceElement.innerText = `${totalWithTax}` 
 }
+
+//round one - if checkbox is selected and event is taxRate checkbox create fields and get the tax rate
+//round two  - if taxRate is set and checkbox is selected calculate tax add to total
+// round three - if taxRate is set and box is unselected remove tax set to zero and recalculate the total
 
 // everytime the total price is recalculated, tax should be recalculated
 // unchecking tax box should recalculated with out price without tax
