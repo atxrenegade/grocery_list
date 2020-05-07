@@ -60,6 +60,19 @@ input[type='text'] {
   margin:0 auto;
 }
 
+.instruction-links {
+  text-align: left;
+  margin: 4%;
+}
+
+.error-msg {
+  margin-top: 20px;
+  font-weight: bold;
+  color: red;
+  font-size: medium;
+  border: 2px dotted red;
+}
+
 #grocery-table, #rate-table {
   max-width: 58%;
   margin: 30px auto 10px auto;
@@ -152,11 +165,6 @@ input[type='text'] {
 
 #instructions-title {
   text-align: center;
-}
-
-.instruction-links {
-  text-align: left;
-  margin: 4%;
 }
 
 /* media queries */
