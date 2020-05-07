@@ -153,6 +153,9 @@ function deleteGroceryItem(){
   deleteGroceryItemFromDOM(row);
   manageGroceryList('deleteItem', currentItem)
   clearElement('edit-items-section');
+  if (groceryList.length < 1) {
+    clearElement('rate-tbody');
+  }
 }
 
 function savePrice(item, cell){
