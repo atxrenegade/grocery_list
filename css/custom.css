@@ -19,6 +19,12 @@ img {
   width: 40%;
 }
 
+div a {
+  text-align: center;
+    display: block;
+    margin: 0 auto;
+}
+
 input[type='text'] {
   margin: 5px;
   display: inline;
@@ -123,6 +129,24 @@ input[type='text'] {
 
 #form-control {
   padding: 3px;
+}
+
+#instructions-page {
+  text-align: center;
+}
+
+#instructions-format {
+  display: inline-block; 
+  text-align: justify;
+}
+
+#instructions-title {
+  text-align: center;
+}
+
+.instruction-links {
+  text-align: left;
+  margin: 4%;
 }
 
 /* media queries */
