@@ -8,6 +8,7 @@ function initialize(){
   void function addButtonEventListeners(){
     document.getElementById('btn-add-item').addEventListener('click', buildAddGroceryInputs);
     document.getElementById('btn-del-item').addEventListener('click', buildDeleteGroceryInputs);
+    document.getElementById('btn-select-all').addEventListener('click', selectAllToggle);
     document.getElementById('btn-reset').addEventListener('click', reset);
   }();
 }
@@ -16,7 +17,7 @@ function initialize(){
 // BUILD AND APPEND DOM ELEMENTS
 function buildAddGroceryInputs(){
   var elToAppendTo = document.getElementById('edit-items-section');
-  var buttonStates = ['btn-add-item', 'btn-del-item', 'btn-reset']
+  var buttonStates = ['btn-add-item', 'btn-del-item', 'btn-reset', 'btn-select-all']
   var itemField = buildInput('text', 'field-add-item', 'item', clearValue);
   var itemQuantity = buildInput('text', 'field-quantity', 'quantity', clearValue);
   var saveButton = buildInput('button', 'btn-save', 'SAVE', addGroceryItem);
@@ -56,7 +57,7 @@ function addRatesCheckboxes(){
 
 function buildDeleteGroceryInputs(){
   var elToAppendTo = document.getElementById('edit-items-section');
-  var buttonStates = ['btn-del-item', 'btn-add-item', 'btn-reset']
+  var buttonStates = ['btn-del-item', 'btn-add-item', 'btn-reset', 'btn-select-all']
   var deleteField = buildInput('text', 'field-delete-item', 'item to delete', clearValue)
   var deleteButton = buildInput('button', 'btn-field-del-item', 'Delete', deleteGroceryItem)
   clearElement('edit-items-section');
@@ -78,7 +79,6 @@ function createItemRow(item){
   createCheckbox(item, manageTableTotals, cell);
   createCellData(item);
 }  
-
 
 function createCellData(item){
   var row = storeRow();
@@ -120,8 +120,33 @@ function updateDOMItemPrice(price){
   document.getElementById('cost-num').innerText = price;
 }
 
+function selectAllToggle(event){
+  var buttonStates = ['btn-select-all', 'btn-add-item', 'btn-del-item', 'btn-reset'];
+  var selectAllButton = document.getElementById('btn-select-all');
+  clearElement('edit-items-section');
+  displayActiveButton(buttonStates);
+  toggleButtonsAndBoxes();
+  manageTableTotals();
+
+  function toggleButtonsAndBoxes(){
+    if (selectAllButton.innerText == 'SELECT ALL') {
+      selectAllButton.innerText = 'DESELECT ALL';
+      changeCheckboxes('select');
+    } else {
+      selectAllButton.innerText = 'SELECT ALL';
+      changeCheckboxes('deselect');
+    }
+    function changeCheckboxes(action) {
+      var groceryCheckboxes = Array.from(document.getElementsByClassName('ckbx-styled grocery'));
+      groceryCheckboxes.forEach(el => {
+        action == 'select' ? el.checked = true : el.checked = false;
+      })
+    }
+  } 
+}
+
 function reset(){
-  var buttonStates = ['btn-reset', 'btn-add-item', 'btn-del-item']
+  var buttonStates = ['btn-reset', 'btn-add-item', 'btn-del-item', 'btn-select-all']
   displayActiveButton(buttonStates);
   clearElement('edit-items-section');
   clearElement('grocery-tbody');
