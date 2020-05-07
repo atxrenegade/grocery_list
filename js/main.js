@@ -167,8 +167,8 @@ function addGroceryItem(){
   // data 
   manageGroceryList('addItem', currentItem) 
   // dom
-  itemField.value = '';
-  quantityField.value = '';
+  itemField.value = 'item';
+  quantityField.value = 'quantity';
   addGroceryItemToDOM(currentItem); 
 }
 
