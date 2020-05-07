@@ -542,4 +542,55 @@ function taxAndTotalToDOM(){
 // unchecking tax box should recalculated with out price without tax
 // change event listener on taxbox once rate has been set
 
+// storage functions
 
+function createStoredList(newItem) {
+  var groceryArray = [];
+  localStorage.setItem('groceryArray', JSON.stringify(groceryArray));
+}
+
+// add item
+function addItemToSavedList(newItem) {
+  let retrievedArray = retrieveSavedList();
+  retrievedArray.push(newItem);
+  var newArray = JSON.stringify(retrievedArray)
+  localStorage.setItem('groceryArray', newArray);
+}
+
+// delete item
+function deleteItemFromSavedList(itemToDelete){
+  var retrievedArray = retrieveSavedList();
+  var elIndex = retrievedArray.findIndex(el => (e.item === itemToDelete)) 
+  retrievedArray.splice(elIndex, 1)
+  localStorage.setItem('groceryArray', retrievedArray);
+}
+// retrieveSavedList 
+function retrieveSavedList(){
+  return JSON.parse(localStorage.getItem('groceryArray'));
+}
+
+// delete saved list
+function deleteSavedList(){
+  localStorage.clear();
+}
+
+function returnFormattedList(){
+  let retrievedArray = retrieveSavedList();
+  debugger;
+}
+
+
+
+/*
+var testObject = { 'one': 1, 'two': 2, 'three': 3 };
+
+// Put the object into storage
+localStorage.setItem('testObject', JSON.stringify(testObject));
+
+// Retrieve the object from storage
+var retrievedObject = localStorage.getItem('testObject');
+
+console.log('retrievedObject: ', JSON.parse(retrievedObject));
+*/
+
+ 
