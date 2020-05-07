@@ -82,7 +82,7 @@ input[type='text'] {
   color: red;
 }
 
-#btn-del-item, #btn-reset, #btn-add-item {
+#btn-del-item, #btn-reset, #btn-add-item, #btn-select-all {
   border-radius: 7%;
   border-width: 3px;
   margin: 4px 2px;
@@ -90,6 +90,8 @@ input[type='text'] {
 
 #buttons-section {
   margin-bottom: 20px;
+  max-width: 400px;
+  margin: 15px auto;
 }
 
 #btn-save {
@@ -161,7 +163,7 @@ input[type='text'] {
 
 @media only screen and (max-width: 680px) {
   #grocery-table, #rate-table {
-	  max-width: 90%;
+	  max-width: 85%;
   }
 } 
 @media only screen and (max-width: 650px) {
