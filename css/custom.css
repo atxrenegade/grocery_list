@@ -55,6 +55,11 @@ input[type='text'] {
   height: 30px;
 }
 
+.align-main { 
+  max-width: 800px;
+  margin:0 auto;
+}
+
 #grocery-table, #rate-table {
   max-width: 58%;
   margin: 30px auto 10px auto;
@@ -132,7 +137,10 @@ input[type='text'] {
 }
 
 #instructions-page {
+  font-size: 18px;
+  margin:0 auto;
   text-align: center;
+  max-width: 40%;
 }
 
 #instructions-format {
@@ -153,7 +161,15 @@ input[type='text'] {
 
 @media only screen and (max-width: 680px) {
   #grocery-table, #rate-table {
-	max-width: 90%;
+	  max-width: 90%;
   }
-}
+} 
+@media only screen and (max-width: 650px) {
+  #instructions-page {
+    max-width: 85%;
+  }
 
+  .instruction-links {
+    text-align: center;
+  }
+}  
