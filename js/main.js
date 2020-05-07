@@ -114,10 +114,24 @@ function addPriceToDOM(price, cell){
 }
 
 function updateDOMItemCount(count){
-  document.getElementById('items-num').innerText = count;
+  var countEl = document.getElementById('count-num')
+  isNaN(count) ? createNaNError() : countEl.innerText = count;
 }
 function updateDOMItemPrice(price){
-  document.getElementById('cost-num').innerText = price;
+  var priceEl = document.getElementById('cost-num')
+  isNaN(price) ? createNaNError() : priceEl.innerText = price;
+} 
+
+function createNaNError(){
+  var errorDiv = document.createElement('div');
+  var bodyDiv = document.getElementsByTagName('body')[0]
+  errorDiv.classList.add('error-msg');
+  errorDiv.innerText = 'Cannot perform calculations with illegal characters! Please add numbers only to quantity, price and tax fields. Delete invalid items or reset list to continue.';
+  document.getElementById('grocery-total-section').appendChild(errorDiv);
+  bodyDiv.addEventListener('click', deleteError);
+  function deleteError(){
+   setTimeout(errorDiv.remove(), 1000);
+  }
 }
 
 function selectAllToggle(event){
@@ -197,7 +211,7 @@ function manageTableTotals(){
   var selectedItems = collectCheckedBoxes();
   var numsArray = filterListForSelected(selectedItems); 
   var taxCheckBox = document.getElementById('tax-rate-checkbox');
-  var totalPrice = addPrice(numsArray);
+  addPrice(numsArray);
   addCount(numsArray);
   // create a form of closure to store tax rate
   if (taxCheckBox.checked == true && taxRate > 0) {
@@ -382,7 +396,9 @@ function countItems(itemsArray){
     // add only one item for groceries measured by weight
     el.quantity.includes('.') ? count.push(1) : count.push(parseFloat(el.quantity, 10))
   }) 
-  return count.reduce(add, 0);  
+  debugger;
+  isNan(count[0]) ? count = NaN : count.reduce(add, 0); 
+  return count; 
 }
 
 // calculate cost
@@ -513,7 +529,8 @@ function taxAndTotalToDOM(){
   var taxOfTotal = calculateRate(price, parseFloat(taxRate, 10)/100);
   var totalWithTax = Math.round((price + taxOfTotal) * 100) / 100
   var taxElement = document.getElementById('rate-row-cell-1')
-  taxElement.innerText = `Tax @ ${taxRate}% :  $${taxOfTotal}`;
+  var priceEl = document.getElementById('cost-num')
+  isNaN(taxOfTotal) ? createNaNError() : taxRate.innerText = `Tax @ ${taxRate}% :  $${taxOfTotal}`;
   priceElement.innerText = `${totalWithTax}` 
 }
 
