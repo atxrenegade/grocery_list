@@ -125,8 +125,11 @@ function addPriceToDOM(price, cell){
 }
 
 function updateDOMItemCount(count){
-  var countEl = document.getElementById('count-num')
-  isNaN(count) ? createNaNError() : countEl.innerText = count;
+  // line for debugging purposes
+   //delete this after debugging NaN Errors
+  var countEl = document.getElementById('items-num')
+  //isNaN(count) ? createNaNError() : countEl.innerText = count;
+  countEl.innerText = count;
 }
 function updateDOMItemPrice(price){
   var priceEl = document.getElementById('cost-num')
@@ -201,7 +204,6 @@ function deleteGroceryItem(){
   var currentItem = document.getElementById('field-delete-item').value
   var row = document.getElementById(`${currentItem}`).parentElement.parentElement
   deleteGroceryItemFromDOM(row);
-  debugger;
   manageGroceryList('deleteItem', currentItem)
   clearElement('edit-items-section');
   if (parsedGroceryList().length < 1) {
@@ -363,9 +365,9 @@ function manageGroceryList(action, item, num){
   // delete item
   function deleteItemFromSavedList(itemToDelete){
     var retrievedArray = retrieveSavedList();
-    var elIndex = retrievedArray.findIndex(el => (e.name === itemToDelete))
+    var elIndex = retrievedArray.findIndex(el => (el.name === itemToDelete))
     retrievedArray.splice(elIndex, 1)
-    localStorage.setItem('groceryArray', retrievedArray);
+    localStorage.setItem('groceryArray', JSON.stringify(retrievedArray));
   }
   // retrieveSavedList 
   function retrieveSavedList(){
@@ -415,7 +417,9 @@ function countItems(itemsArray){
     // add only one item for groceries measured by weight
     el.quantity.includes('.') ? count.push(1) : count.push(parseFloat(el.quantity, 10))
   }) 
-  isNan(count[0]) ? count = NaN : count.reduce(add, 0); 
+  //debugger;
+  //isNan(count[0]) ? count = NaN : count.reduce(add, 0); 
+  count.reduce(add, 0); 
   return count; 
 }
 
