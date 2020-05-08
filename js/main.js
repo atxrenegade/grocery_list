@@ -1,16 +1,27 @@
-var groceryList = [];
 var taxRate = 0;
 var currencyRates;
-initialize(); 
+initialize();
 
 //*****************************************************************
 function initialize(){
+  localStorage['groceryArray'] == undefined ? createNewList() : buildSavedList();
+
   void function addButtonEventListeners(){
     document.getElementById('btn-add-item').addEventListener('click', buildAddGroceryInputs);
     document.getElementById('btn-del-item').addEventListener('click', buildDeleteGroceryInputs);
     document.getElementById('btn-select-all').addEventListener('click', selectAllToggle);
     document.getElementById('btn-reset').addEventListener('click', reset);
   }();
+
+  function createNewList() {
+    var groceryArray = [];
+    localStorage.setItem('groceryArray', JSON.stringify(groceryArray));
+  }
+
+  function buildSavedList() {
+    var savedList = JSON.parse(localStorage['groceryArray']);
+    savedList.forEach(el => addGroceryItemToDOM(el));
+  }
 }
 
 // DISPLAY DATA
@@ -190,9 +201,10 @@ function deleteGroceryItem(){
   var currentItem = document.getElementById('field-delete-item').value
   var row = document.getElementById(`${currentItem}`).parentElement.parentElement
   deleteGroceryItemFromDOM(row);
+  debugger;
   manageGroceryList('deleteItem', currentItem)
   clearElement('edit-items-section');
-  if (groceryList.length < 1) {
+  if (parsedGroceryList().length < 1) {
     clearElement('rate-tbody');
   }
 }
@@ -201,7 +213,7 @@ function savePrice(item, cell){
   //get price, get item
   var price = cell.children[0].value;
   // data
-  manageGroceryList('addPrice', item, price);
+  manageGroceryList('updateItem', item, price);
   // dom
   addPriceToDOM(price, cell);
   manageTableTotals();
@@ -239,14 +251,6 @@ function collectCheckedBoxes() {
   }
   return items;
 }
-
-// storage functions for DOM elements using closure
-//function storeItem() {
-// future closure here
-//  var item;
-// { item =  }
-//  return item;
-//}
 
 function storeCell() {
   // future closure here
@@ -309,9 +313,14 @@ function clearElement(id) {
 }
 
 // MANAGE DATA
-// create closure to store GroceryList variable
+// build Grocery List
+function createStoredList(){
+  var groceryArray = [];
+  localStorage.setItem('groceryArray', JSON.stringify(groceryArray));
+}
+
+// create localStorage array to store GroceryList variable until cleared
 function manageGroceryList(action, item, num){
-  //if (groceryList == undefined) { groceryList = [] };
   directGroceryListAction(action, item, num);
 
 /********************************************************** */
@@ -319,61 +328,71 @@ function manageGroceryList(action, item, num){
   function directGroceryListAction(action, item, num) {
     switch (action){
     case 'addItem': 
-      addItemToGroceryList(item);
+      var newItem = { name: item.name, quantity: item.quantity, price: 'unassigned' }
+      addItemToSavedList(newItem);
       break;
 
     case 'deleteItem':
-      deleteItemFromGroceryList(item);
+      deleteItemFromSavedList(item);
       break;
 
-    case 'addQuantity':
-      addQuantity(item, num);
-      break;
-
-    case 'addPrice':
-      addPrice(item, num);
+    case 'updateItem':
+      updateSavedItem(item, num)
       break;
 
     case 'resetList':
-      resetGroceryList();
+      deleteSavedList();
       break;  
 
     default: 
-      return groceryList;  
+        return retrieveSavedList();;  
     } 
-    return groceryList;
+    return retrieveSavedList();
   }
 
-  function addItemToGroceryList(item){
-    let newItem = {name: item.name, quantity: item.quantity, price: 'unassigned'}
-    groceryList.push(newItem)
+  /*Local Storage Functions *****************************************/
+  
+  // add item
+  function addItemToSavedList(newItem){
+    var retrievedArray = retrieveSavedList();
+    retrievedArray.push(newItem);
+    var newArray = JSON.stringify(retrievedArray)
+    localStorage.setItem('groceryArray', newArray);
   }
 
-  function deleteItemFromGroceryList(item){
-    groceryList.forEach((el) => {
-      if (el.name === item){
-        let i = groceryList.indexOf(el);
-        groceryList.splice(i, 1);
-      }
-    })
-    return groceryList;
+  // delete item
+  function deleteItemFromSavedList(itemToDelete){
+    var retrievedArray = retrieveSavedList();
+    var elIndex = retrievedArray.findIndex(el => (e.name === itemToDelete))
+    retrievedArray.splice(elIndex, 1)
+    localStorage.setItem('groceryArray', retrievedArray);
+  }
+  // retrieveSavedList 
+  function retrieveSavedList(){
+    return JSON.parse(localStorage.getItem('groceryArray'));
   }
 
-  function addPrice(item, price) {
-    for (const element of groceryList) {
-      if (element.name == item) { element.price = price; }
-    }
-  } 
+  // delete saved list
+  function deleteSavedList(){
+    localStorage.clear();
+  }
 
-  function resetGroceryList(){
-    groceryList = [];
+  function updateSavedItem(itemToUpdate, num){
+    var retrievedArray = retrieveSavedList();
+    var elIndex = retrievedArray.findIndex(el => (el.name === itemToUpdate));
+    retrievedArray[elIndex]['price'] = num;
+    localStorage.setItem('groceryArray', JSON.stringify(retrievedArray));
   }
 }
 
+function parsedGroceryList(){
+  return JSON.parse(localStorage.getItem('groceryArray'));
+}
 // LOGIC AND CALCULATIONS 
 
 function filterListForSelected(selectedItems){
   var filteredArray = [];
+  var groceryList = parsedGroceryList();
   selectedItems.forEach(el => {
     let subArray = [];
     for (const grocery of groceryList) {
@@ -396,7 +415,6 @@ function countItems(itemsArray){
     // add only one item for groceries measured by weight
     el.quantity.includes('.') ? count.push(1) : count.push(parseFloat(el.quantity, 10))
   }) 
-  debugger;
   isNan(count[0]) ? count = NaN : count.reduce(add, 0); 
   return count; 
 }
@@ -542,55 +560,5 @@ function taxAndTotalToDOM(){
 // unchecking tax box should recalculated with out price without tax
 // change event listener on taxbox once rate has been set
 
-// storage functions
-
-function createStoredList(newItem) {
-  var groceryArray = [];
-  localStorage.setItem('groceryArray', JSON.stringify(groceryArray));
-}
-
-// add item
-function addItemToSavedList(newItem) {
-  let retrievedArray = retrieveSavedList();
-  retrievedArray.push(newItem);
-  var newArray = JSON.stringify(retrievedArray)
-  localStorage.setItem('groceryArray', newArray);
-}
-
-// delete item
-function deleteItemFromSavedList(itemToDelete){
-  var retrievedArray = retrieveSavedList();
-  var elIndex = retrievedArray.findIndex(el => (e.item === itemToDelete)) 
-  retrievedArray.splice(elIndex, 1)
-  localStorage.setItem('groceryArray', retrievedArray);
-}
-// retrieveSavedList 
-function retrieveSavedList(){
-  return JSON.parse(localStorage.getItem('groceryArray'));
-}
-
-// delete saved list
-function deleteSavedList(){
-  localStorage.clear();
-}
-
-function returnFormattedList(){
-  let retrievedArray = retrieveSavedList();
-  debugger;
-}
 
 
-
-/*
-var testObject = { 'one': 1, 'two': 2, 'three': 3 };
-
-// Put the object into storage
-localStorage.setItem('testObject', JSON.stringify(testObject));
-
-// Retrieve the object from storage
-var retrievedObject = localStorage.getItem('testObject');
-
-console.log('retrievedObject: ', JSON.parse(retrievedObject));
-*/
-
- 
