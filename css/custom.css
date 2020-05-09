@@ -111,14 +111,17 @@ input[type='text'] {
   margin: 5px;
   display: inline-flex;
   margin: auto;
+  padding-top: 5px;
+  padding-bottom: 3px;  
 }
 
 #field-quantity {
-  width: 70px;
+  width: 80px;
+  margin-left: 0px;
 }
 
 #field-add-item {
-  width: 200px;
+  width: 140px;
 }
 
 #item-price-field {
