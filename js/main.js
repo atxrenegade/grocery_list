@@ -1,4 +1,3 @@
-var currencyRates;
 initialize();
 
 //*****************************************************************
@@ -504,7 +503,7 @@ function convertCurrency(){
   }
 
   function formatRate(data){
-    currencyRates = data.conversion_rates;
+    var currencyRates = data.conversion_rates;
     var currency = currencyArray[1].toUpperCase();
     var rate = currencyRates[`${currency}`];
     return rate;
