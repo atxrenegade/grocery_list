@@ -124,16 +124,16 @@ function createPriceField(item, cell){
   cell.appendChild(savePriceButton); 
 }
 
-function addPriceToDOM(price, cell){
-  cell.innerHTML = '$' + price; 
-}
 
 function updateDOMItemCount(count){
   document.getElementById('items-num').innerText = count;
 }
+function addPriceToCell(price, cell){
+  cell.innerHTML = '$' + (parseFloat(price)).toFixed(2);
+}
 
-function updateDOMItemPrice(price){
-  document.getElementById('cost-num').innerText = price;
+function updateDOMTotalPrice(price){
+  document.getElementById('cost-num').innerText = (parseFloat(price)).toFixed(2);
 } 
 
 function createNaNError(){
@@ -209,6 +209,7 @@ function deleteGroceryItem(){
 }
 
 function savePrice(item, cell){
+  debugger;
   var price = cell.children[0].value;
   if (Number.isNaN(parseFloat(price))){
     createNaNError();
@@ -216,7 +217,7 @@ function savePrice(item, cell){
     // data
     manageGroceryList('updateItem', item, price);
     // dom
-    addPriceToDOM(price, cell);
+    addPriceToCell(price, cell);
     manageTableTotals();
   }
 }
@@ -241,7 +242,7 @@ function addCount(numsArray){
 
 function addPrice(numsArray){
   var price = totalPrice(numsArray);
-  updateDOMItemPrice(price);
+  updateDOMTotalPrice(price);
   return price;
 }
 
@@ -543,7 +544,6 @@ function createTaxRateElements(event){
 }
 
 function taxAndTotalToDOM(){
-  debugger;
   taxRate = document.getElementById('tax-rate-input-field').value; 
   if (Number.isNaN(parseFloat(taxRate))) {
     createNaNError();
