@@ -239,16 +239,13 @@ function manageTableTotals(){
 }
 
 function addCount(numsArray){
-  var count = countItems(numsArray);
-  updateDOMItemCount(count);
-  return count;
+  return updateDOMItemCount(countItems(numsArray));
 }
 
 function addPrice(numsArray){
-  var price = totalPrice(numsArray);
-  updateDOMTotalPrice(price);
-  return price;
+  return updateDOMTotalPrice(totalPrice(numsArray));
 }
+
 
 function collectCheckedBoxes() {
   var checkboxes = Array.from(document.getElementsByClassName('ckbx-styled grocery'))
