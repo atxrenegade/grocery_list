@@ -46,9 +46,8 @@ function buildGroceryItem() {
 }
 
 function addGroceryItemToDOM(item){
-  createItemRow(item); 
-  addRatesCheckboxes();
- 
+    createItemRow(item); 
+    addRatesCheckboxes();  
   // if select all toggle is on, add checked value to new item checkbox
   if (document.getElementById('btn-select-all').textContent == 'DESELECT ALL'){
     document.getElementById(item.name).checked = true;
@@ -130,27 +129,15 @@ function addPriceToDOM(price, cell){
 }
 
 function updateDOMItemCount(count){
-  // line for debugging purposes
-   //delete this after debugging NaN Errors
-  var countEl = document.getElementById('items-num')
-  //isNaN(count) ? createNaNError() : countEl.innerText = count;
-  countEl.innerText = count;
+  document.getElementById('items-num').innerText = count;
 }
+
 function updateDOMItemPrice(price){
-  var priceEl = document.getElementById('cost-num')
-  isNaN(price) ? createNaNError() : priceEl.innerText = price;
+  document.getElementById('cost-num').innerText = price;
 } 
 
 function createNaNError(){
-  var errorDiv = document.createElement('div');
-  var bodyDiv = document.getElementsByTagName('body')[0]
-  errorDiv.classList.add('error-msg');
-  errorDiv.innerText = 'Cannot perform calculations with illegal characters! Please add numbers only to quantity, price and tax fields. Delete invalid items or reset list to continue.';
-  document.getElementById('grocery-total-section').appendChild(errorDiv);
-  bodyDiv.addEventListener('click', deleteError);
-  function deleteError(){
-   setTimeout(errorDiv.remove(), 1000);
-  }
+  alert('Only NUMBERS allowed in number fields!');
 }
 
 function selectAllToggle(event){
@@ -194,15 +181,20 @@ function reset(){
 // UTILITY FUNCTIONS 
 // divides the work between DOM and Data manipulation into seperate functions
 function addGroceryItem(){
-  var itemField = document.getElementById('field-add-item')
   var quantityField = document.getElementById('field-quantity')
-  var currentItem = buildGroceryItem();
-  // data 
-  manageGroceryList('addItem', currentItem) 
-  // dom
-  itemField.value = 'item';
-  quantityField.value = 'quantity';
-  addGroceryItemToDOM(currentItem); 
+  if (Number.isNaN(parseFloat(quantityField.value))) {
+    createNaNError();
+  }
+  else {
+    let itemField = document.getElementById('field-add-item')
+    let currentItem = buildGroceryItem();
+    // data 
+    manageGroceryList('addItem', currentItem)
+    // dom
+    addGroceryItemToDOM(currentItem);
+    itemField.value = 'item';
+    quantityField.value = 'quantity'; 
+  }
 }
 
 function deleteGroceryItem(){
@@ -217,13 +209,16 @@ function deleteGroceryItem(){
 }
 
 function savePrice(item, cell){
-  //get price, get item
   var price = cell.children[0].value;
-  // data
-  manageGroceryList('updateItem', item, price);
-  // dom
-  addPriceToDOM(price, cell);
-  manageTableTotals();
+  if (Number.isNaN(parseFloat(price))){
+    createNaNError();
+  } else {
+    // data
+    manageGroceryList('updateItem', item, price);
+    // dom
+    addPriceToDOM(price, cell);
+    manageTableTotals();
+  }
 }
 
 function manageTableTotals(){ 
@@ -422,8 +417,6 @@ function countItems(itemsArray){
     // add only one item for groceries measured by weight
     el.quantity.includes('.') ? count.push(1) : count.push(parseFloat(el.quantity, 10))
   }) 
-  //debugger;
-  //isNan(count[0]) ? count = NaN : count.reduce(add, 0); 
   count.reduce(add, 0); 
   return count; 
 }
@@ -550,15 +543,20 @@ function createTaxRateElements(event){
 }
 
 function taxAndTotalToDOM(){
+  debugger;
   taxRate = document.getElementById('tax-rate-input-field').value; 
-  var priceElement = document.getElementById('cost-num')
-  var price = parseFloat(priceElement.innerText, 10);
-  var taxOfTotal = calculateRate(price, parseFloat(taxRate, 10)/100);
-  var totalWithTax = Math.round((price + taxOfTotal) * 100) / 100
-  var taxElement = document.getElementById('rate-row-cell-1')
-  var priceEl = document.getElementById('cost-num')
-  isNaN(taxOfTotal) ? createNaNError() : taxRate.innerText = `Tax @ ${taxRate}% :  $${taxOfTotal}`;
-  priceElement.innerText = `${totalWithTax}` 
+  if (Number.isNaN(parseFloat(taxRate))) {
+    createNaNError();
+  } else {
+    var priceElement = document.getElementById('cost-num')
+    var price = parseFloat(priceElement.innerText, 10);
+    var taxOfTotal = calculateRate(price, parseFloat(taxRate, 10)/100);
+    var totalWithTax = Math.round((price + taxOfTotal) * 100) / 100
+    var taxElement = document.getElementById('rate-row-cell-1')
+    var priceEl = document.getElementById('cost-num')
+    taxRate.innerText = `Tax @ ${taxRate}% :  $${taxOfTotal}`;
+    priceElement.innerText = `${totalWithTax}` 
+  }
 }
 
 //round one - if checkbox is selected and event is taxRate checkbox create fields and get the tax rate
