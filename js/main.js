@@ -48,6 +48,11 @@ function buildGroceryItem() {
 function addGroceryItemToDOM(item){
   createItemRow(item); 
   addRatesCheckboxes();
+ 
+  // if select all toggle is on, add checked value to new item checkbox
+  if (document.getElementById('btn-select-all').textContent == 'DESELECT ALL'){
+    document.getElementById(item.name).checked = true;
+  }
 }
 
 function addRatesCheckboxes(){
@@ -228,7 +233,7 @@ function manageTableTotals(){
   addPrice(numsArray);
   addCount(numsArray);
   // create a form of closure to store tax rate
-  if (taxCheckBox.checked == true && taxRate > 0) {
+  if (taxCheckBox != null && taxCheckBox.checked == true && taxRate > 0) {
     taxAndTotalToDOM();
   }
 }
