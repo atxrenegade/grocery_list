@@ -99,16 +99,17 @@ function createItemRow(item){
 
 function createCellData(item){
   var row = storeRow();
-  var itemData = Object.values(item);
-  itemData.forEach(el => {
+  for (let [key, value] of Object.entries(item)) {
+    debugger;
     let cell = row.insertCell();
-    if (el == 'unassigned') {
-      createPriceButton(itemData[0], cell);
+    if (value == 'unassigned') {
+      createPriceButton(item.name, cell);
     } else {
-      let text = document.createTextNode(el);
+      if (key == 'price'){ value = '$' + parseFloat(value).toFixed(2) }; 
+      let text = document.createTextNode(value);
       cell.appendChild(text);
     }
-  })  
+  } 
 }
 
 function createPriceButton(item, cell){
@@ -417,7 +418,7 @@ function add(total, num) {
 }
 
 function countItems(itemsArray){
-  debugger;
+  //debugger;
   var count = [];
   itemsArray.map(el => {
     // add only one item for groceries measured by weight
