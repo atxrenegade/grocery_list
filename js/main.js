@@ -137,7 +137,7 @@ function updateDOMTotalPrice(price){
 } 
 
 function createNaNError(){
-  alert('Only NUMBERS allowed in number fields!');
+  alert('Only NUMBERS allowed in number fields!')
 }
 
 function selectAllToggle(event){
@@ -168,14 +168,17 @@ function selectAllToggle(event){
 function reset(){
   var buttonStates = ['btn-reset', 'btn-add-item', 'btn-del-item', 'btn-select-all']
   displayActiveButton(buttonStates);
-  clearElement('edit-items-section');
-  clearElement('grocery-tbody');
-  clearElement('rate-tbody');
-  document.getElementById('cost-num').innerText = 0;
-  document.getElementById('items-num').innerText = 0;
-  cost = 0;
-  manageGroceryList('resetList')
-  initialize();
+  var confirmDelete = confirm("Are you sure you want to permanently delete your list?");
+  if (confirmDelete == true) {
+    clearElement('edit-items-section');
+    clearElement('grocery-tbody');
+    clearElement('rate-tbody');
+    document.getElementById('cost-num').innerText = 0;
+    document.getElementById('items-num').innerText = 0;
+    cost = 0;
+    manageGroceryList('resetList')
+    initialize();
+  }
 }
 
 // UTILITY FUNCTIONS 
@@ -209,7 +212,6 @@ function deleteGroceryItem(){
 }
 
 function savePrice(item, cell){
-  debugger;
   var price = cell.children[0].value;
   if (Number.isNaN(parseFloat(price))){
     createNaNError();
@@ -413,6 +415,7 @@ function add(total, num) {
 }
 
 function countItems(itemsArray){
+  debugger;
   var count = [];
   itemsArray.map(el => {
     // add only one item for groceries measured by weight
