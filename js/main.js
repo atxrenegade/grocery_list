@@ -100,7 +100,6 @@ function createItemRow(item){
 function createCellData(item){
   var row = storeRow();
   for (let [key, value] of Object.entries(item)) {
-    debugger;
     let cell = row.insertCell();
     if (value == 'unassigned') {
       createPriceButton(item.name, cell);
@@ -291,7 +290,7 @@ function createCheckbox(item, checkboxEvent, elToAppendTo, labelContent) {
   itemCheckbox.type = 'checkbox';
   itemCheckbox.id = item.name;
   itemCheckbox.classList.add('ckbx-styled');
-  if (item.price == 'unassigned'){ itemCheckbox.classList.add('grocery')}; 
+  if (item.price == 'unassigned' || !(isNaN(parseInt(item.price)))) { itemCheckbox.classList.add('grocery')}; 
   elToAppendTo.appendChild(itemCheckbox);
   itemCheckbox.addEventListener('click', checkboxEvent);
   if (labelContent != undefined) {
