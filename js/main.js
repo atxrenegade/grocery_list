@@ -197,6 +197,7 @@ function addGroceryItem(){
     manageGroceryList('addItem', currentItem)
     // dom
     addGroceryItemToDOM(currentItem);
+    manageTableTotals();
     itemField.value = 'item';
     quantityField.value = 'quantity'; 
   }
@@ -335,19 +336,15 @@ function manageGroceryList(action, item, num){
       var newItem = { name: item.name, quantity: item.quantity, price: 'unassigned' }
       addItemToSavedList(newItem);
       break;
-
-    case 'deleteItem':
-      deleteItemFromSavedList(item);
-      break;
-
     case 'updateItem':
       updateSavedItem(item, num)
       break;
-
+    case 'deleteItem':
+      deleteItemFromSavedList(item);
+      break;
     case 'resetList':
       deleteSavedList();
       break;  
-
     default: 
         return retrieveSavedList();;  
     } 
@@ -414,14 +411,12 @@ function add(total, num) {
 }
 
 function countItems(itemsArray){
-  //debugger;
   var count = [];
   itemsArray.map(el => {
     // add only one item for groceries measured by weight
     el.quantity.includes('.') ? count.push(1) : count.push(parseFloat(el.quantity, 10))
   }) 
-  count.reduce(add, 0); 
-  return count; 
+  return count.reduce(add, 0);  
 }
 
 // calculate cost
