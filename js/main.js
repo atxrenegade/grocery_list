@@ -199,7 +199,7 @@ function addGroceryItem(){
     addGroceryItemToDOM(currentItem);
     manageTableTotals();
     itemField.value = 'item';
-    quantityField.value = 'quantity'; 
+    quantityField.value = 'amount'; 
   }
 }
 
