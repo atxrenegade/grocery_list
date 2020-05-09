@@ -1,4 +1,3 @@
-var taxRate = 0;
 var currencyRates;
 initialize();
 
@@ -235,7 +234,7 @@ function manageTableTotals(){
   addCount(numsArray);
   // create a form of closure to store tax rate
   if (taxCheckBox != null && taxCheckBox.checked == true && taxRate > 0) {
-    taxAndTotalToDOM();
+    addTax();
   }
 }
 
@@ -505,7 +504,7 @@ function convertCurrency(){
   }
 
   function formatRate(data){
-    currencyRates = data.conversion_rates;
+    var currencyRates = data.conversion_rates;
     var currency = currencyArray[1].toUpperCase();
     var rate = currencyRates[`${currency}`];
     return rate;
@@ -534,23 +533,17 @@ function createTaxRateElements(event){
     elToAppendTo.appendChild(taxRateInputField);
     elToAppendTo.appendChild(taxRateButton);
   } else if (taxRate != 0 && addTaxCheckBox.checked == true ) {
-    taxAndTotalToDOM();
+    addTax();
   } else {
     manageTableTotals();
   }
 }
 
-function taxAndTotalToDOM(){
-  taxRate = document.getElementById('tax-rate-input-field').value; 
-  if (Number.isNaN(parseFloat(taxRate))) {
-    createNaNError();
-  } else {
-    var priceElement = document.getElementById('cost-num')
-    var price = parseFloat(priceElement.innerText, 10);
-    var taxOfTotal = calculateRate(price, parseFloat(taxRate, 10)/100);
-    var totalWithTax = Math.round((price + taxOfTotal) * 100) / 100
+function addTax(){
+  var priceEl = document.getElementById('cost-num')
+  var price = parseFloat(priceEl.innerText, 10);
+  var taxRate = document.getElementById('tax-rate-input-field').value; 
     var taxElement = document.getElementById('rate-row-cell-1')
-    var priceEl = document.getElementById('cost-num')
     taxRate.innerText = `Tax @ ${taxRate}% :  $${taxOfTotal}`;
     priceElement.innerText = `${totalWithTax}` 
   }
