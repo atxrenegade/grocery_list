@@ -30,8 +30,10 @@ function buildAddGroceryInputs(){
   var elToAppendTo = document.getElementById('edit-items-section');
   var buttonStates = ['btn-add-item', 'btn-del-item', 'btn-reset', 'btn-select-all']
   var itemField = buildInput('text', 'field-add-item', 'item', clearValue);
-  var itemQuantity = buildInput('text', 'field-quantity', 'quantity', clearValue);
+  var itemQuantity = buildInput('text', 'field-quantity', 'amount', clearValue);
   var saveButton = buildInput('button', 'btn-save', 'SAVE', addGroceryItem);
+  itemField.classList.add('form-control')
+  itemQuantity.classList.add('form-control')
   var newElements = [itemField,itemQuantity, saveButton]
   clearElement('edit-items-section');
   displayActiveButton(buttonStates);
