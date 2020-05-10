@@ -31,12 +31,13 @@ function buildAddGroceryInputs(){
   var itemField = buildInput('text', 'field-add-item', 'item', clearValue);
   var itemQuantity = buildInput('text', 'field-quantity', 'amount', clearValue);
   var saveButton = buildInput('button', 'btn-save', 'SAVE', addGroceryItem);
-  itemField.classList.add('form-control')
-  itemQuantity.classList.add('form-control')
-  var newElements = [itemField,itemQuantity, saveButton]
+  saveButton.classList.add('btn-save-price');
+  itemField.classList.add('form-control');
+  itemQuantity.classList.add('form-control');
+  var newElements = [itemField,itemQuantity, saveButton];
   clearElement('edit-items-section');
   displayActiveButton(buttonStates);
-  newElements.forEach(el => elToAppendTo.appendChild(el))
+  newElements.forEach(el => elToAppendTo.appendChild(el));
 } 
 
 function buildGroceryItem() {
@@ -56,7 +57,7 @@ function addGroceryItemToDOM(item){
 }
 
 function addRatesCheckboxes(){
-  var rateTBody = document.getElementById('rate-tbody')
+  var rateTBody = document.getElementById('rate-tbody');
   if (rateTBody.children.length === 0){
     let row = rateTBody.insertRow();
     row.id = 'rate-row';
@@ -73,9 +74,9 @@ function addRatesCheckboxes(){
 
 function buildDeleteGroceryInputs(){
   var elToAppendTo = document.getElementById('edit-items-section');
-  var buttonStates = ['btn-del-item', 'btn-add-item', 'btn-reset', 'btn-select-all']
-  var deleteField = buildInput('text', 'field-delete-item', 'item to delete', clearValue)
-  var deleteButton = buildInput('button', 'btn-field-del-item', 'DELETE', deleteGroceryItem)
+  var buttonStates = ['btn-del-item', 'btn-add-item', 'btn-reset', 'btn-select-all'];
+  var deleteField = buildInput('text', 'field-delete-item', 'item to delete', clearValue);
+  var deleteButton = buildInput('button', 'btn-field-del-item', 'DELETE', deleteGroceryItem);
   clearElement('edit-items-section');
   displayActiveButton(buttonStates);
   deleteField.classList.add('form-control');
@@ -101,7 +102,7 @@ function createCellData(item){
   var row = storeRow();
   for (let [key, value] of Object.entries(item)) {
     let cell = row.insertCell();
-    if (value == 'unassigned') {
+    if (value == 'unassigned'){
       createPriceButton(item.name, cell);
     } else {
       if (key == 'price'){ value = '$' + parseFloat(value).toFixed(2) }; 
@@ -114,14 +115,14 @@ function createCellData(item){
 function createPriceButton(item, cell){
   var priceButton = buildInput('button', `${item}-price`, 'Add Price')
   priceButton.addEventListener('click', createPriceField.bind(null, item, cell)) // bind item param to createPriceField
-  priceButton.classList.add('btn-add-price')
+  priceButton.classList.add('btn-add-price');
   cell.appendChild(priceButton);
 }
 
 function createPriceField(item, cell){
   var priceField = buildInput('text', 'item-price-field', '');
-  var savePriceButton = buildInput('button', `save-${item}-price`, 'Save')
-  savePriceButton.addEventListener('click', savePrice.bind(null, item, cell))
+  var savePriceButton = buildInput('button', `save-${item}-price`, 'Save');
+  savePriceButton.addEventListener('click', savePrice.bind(null, item, cell));
   priceField.classList.add('form-control');
   cell.innerHTML = '';
   cell.appendChild(priceField);
@@ -141,7 +142,7 @@ function updateDOMTotalPrice(price){
 } 
 
 function createNaNError(){
-  alert('Only NUMBERS allowed in number fields!')
+  alert('Only NUMBERS allowed in number fields!');
 }
 
 function selectAllToggle(event){
@@ -153,7 +154,7 @@ function selectAllToggle(event){
   manageTableTotals();
 
   function toggleButtonsAndBoxes(){
-    if (selectAllButton.innerText == 'SELECT ALL') {
+    if (selectAllButton.innerText == 'SELECT ALL'){
       selectAllButton.innerText = 'DESELECT ALL';
       changeCheckboxes('select');
     } else {
@@ -170,7 +171,7 @@ function selectAllToggle(event){
 }
 
 function reset(){
-  var buttonStates = ['btn-reset', 'btn-add-item', 'btn-del-item', 'btn-select-all']
+  var buttonStates = ['btn-reset', 'btn-add-item', 'btn-del-item', 'btn-select-all'];
   displayActiveButton(buttonStates);
   var confirmDelete = confirm("Are you sure you want to permanently delete your list?");
   if (confirmDelete == true) {
@@ -180,7 +181,7 @@ function reset(){
     document.getElementById('cost-num').innerText = 0;
     document.getElementById('items-num').innerText = 0;
     cost = 0;
-    manageGroceryList('resetList')
+    manageGroceryList('resetList');
     initialize();
   }
 }
@@ -188,15 +189,15 @@ function reset(){
 // UTILITY FUNCTIONS 
 // divides the work between DOM and Data manipulation into seperate functions
 function addGroceryItem(){
-  var quantityField = document.getElementById('field-quantity')
+  var quantityField = document.getElementById('field-quantity');
   if (Number.isNaN(parseFloat(quantityField.value))) {
     createNaNError();
   }
   else {
-    let itemField = document.getElementById('field-add-item')
+    let itemField = document.getElementById('field-add-item');
     let currentItem = buildGroceryItem();
     // data 
-    manageGroceryList('addItem', currentItem)
+    manageGroceryList('addItem', currentItem);
     // dom
     addGroceryItemToDOM(currentItem);
     manageTableTotals();
@@ -206,10 +207,10 @@ function addGroceryItem(){
 }
 
 function deleteGroceryItem(){
-  var currentItem = document.getElementById('field-delete-item').value
-  var row = document.getElementById(`${currentItem}`).parentElement.parentElement
+  var currentItem = document.getElementById('field-delete-item').value;
+  var row = document.getElementById(`${currentItem}`).parentElement.parentElement;
   deleteGroceryItemFromDOM(row);
-  manageGroceryList('deleteItem', currentItem)
+  manageGroceryList('deleteItem', currentItem);
   clearElement('edit-items-section');
   if (parsedGroceryList().length < 1) {
     clearElement('rate-tbody');
@@ -247,7 +248,7 @@ function addPrice(numsArray){
 
 
 function collectCheckedBoxes() {
-  var checkboxes = Array.from(document.getElementsByClassName('ckbx-styled grocery'))
+  var checkboxes = Array.from(document.getElementsByClassName('ckbx-styled grocery'));
   var items = [];
   for (const element of checkboxes) {
     if (element.checked == true) { items.push(element.id) };
@@ -258,14 +259,14 @@ function collectCheckedBoxes() {
 function storeCell() {
   // future closure here
   var cell;
-  { cell = document.getElementById('grocery-table').children[0].lastChild.lastChild }
+  { cell = document.getElementById('grocery-table').children[0].lastChild.lastChild };
   return cell;
 }
 
 function storeRow() {
   // future closure
   var row;
-  { row = document.getElementById('grocery-table').children[0].lastChild }
+  { row = document.getElementById('grocery-table').children[0].lastChild };
   return row;
 }
 
@@ -290,8 +291,8 @@ function createCheckbox(item, checkboxEvent, elToAppendTo, labelContent){
   elToAppendTo.appendChild(itemCheckbox);
   itemCheckbox.addEventListener('click', checkboxEvent);
   if (labelContent != undefined) {
-    var label = document.createTextNode(labelContent)
-    elToAppendTo.appendChild(label)
+    var label = document.createTextNode(labelContent);
+    elToAppendTo.appendChild(label);
   };
 }
 
@@ -300,18 +301,18 @@ function displayActiveButton(buttonStates){
     if (el == buttonStates[0]) {
       document.getElementById(el).classList.add('active');
     } else {  
-      if (document.getElementById(el).classList.contains('active')) {
+      if (document.getElementById(el).classList.contains('active')){
         document.getElementById(el).classList.remove('active');
       }
     }  
   })
 }
 
-function clearValue() {
+function clearValue(){
   this.value = '';
 }
 
-function clearElement(id) {
+function clearElement(id){
   document.getElementById(id).innerHTML = '';
 }
 
@@ -331,11 +332,11 @@ function manageGroceryList(action, item, num){
   function directGroceryListAction(action, item, num) {
     switch (action){
     case 'addItem': 
-      var newItem = { name: item.name, quantity: item.quantity, price: 'unassigned' }
+      var newItem = { name: item.name, quantity: item.quantity, price: 'unassigned' };
       addItemToSavedList(newItem);
       break;
     case 'updateItem':
-      updateSavedItem(item, num)
+      updateSavedItem(item, num);
       break;
     case 'deleteItem':
       deleteItemFromSavedList(item);
@@ -344,7 +345,7 @@ function manageGroceryList(action, item, num){
       deleteSavedList();
       break;  
     default: 
-        return retrieveSavedList();;  
+        return retrieveSavedList();  
     } 
     return retrieveSavedList();
   }
@@ -354,7 +355,7 @@ function manageGroceryList(action, item, num){
   function addItemToSavedList(newItem){
     var retrievedArray = retrieveSavedList();
     retrievedArray.push(newItem);
-    var newArray = JSON.stringify(retrievedArray)
+    var newArray = JSON.stringify(retrievedArray);
     localStorage.setItem('groceryArray', newArray);
   }
 
@@ -362,7 +363,7 @@ function manageGroceryList(action, item, num){
   function deleteItemFromSavedList(itemToDelete){
     var retrievedArray = retrieveSavedList();
     var elIndex = retrievedArray.findIndex(el => (el.name === itemToDelete))
-    retrievedArray.splice(elIndex, 1)
+    retrievedArray.splice(elIndex, 1);
     localStorage.setItem('groceryArray', JSON.stringify(retrievedArray));
   }
   // retrieveSavedList 
@@ -395,7 +396,7 @@ function filterListForSelected(selectedItems){
     let subArray = [];
     for (const grocery of groceryList) {
       if (grocery.name == el) {  
-        filteredArray.push(grocery)
+        filteredArray.push(grocery);
       }
     }
   }) 
@@ -411,7 +412,7 @@ function countItems(itemsArray){
   var count = [];
   itemsArray.map(el => {
     // add only one item for groceries measured by weight
-    el.quantity.includes('.') ? count.push(1) : count.push(parseFloat(el.quantity, 10))
+    el.quantity.includes('.') ? count.push(1) : count.push(parseFloat(el.quantity, 10));
   }) 
   return count.reduce(add, 0);  
 }
@@ -420,30 +421,30 @@ function countItems(itemsArray){
 function totalPrice(itemsArray){
   var price = [];
   itemsArray.map(el => {
-    let quantNum = parseFloat(el.quantity, 10)
+    let quantNum = parseFloat(el.quantity, 10);
     let priceNum;
     if (el.price === 'unassigned' || el.price === 'undefined') {
       priceNum = 0;
     } else { 
       priceNum = parseFloat(el.price, 10);
     } 
-    price.push(quantNum * priceNum)
+    price.push(quantNum * priceNum);
   })
-  price = price.reduce(add, 0)
-  return Math.round(price * 100)/100
+  price = price.reduce(add, 0);
+  return Math.round(price * 100)/100;
 }
 
 // use for tax and conversion rates
 function calculateRate(total, rate){
-  var numWithRate = (total * rate)
-  return Math.round(numWithRate * 100) / 100
+  var numWithRate = (total * rate);
+  return Math.round(numWithRate * 100) / 100;
 }
 
 // add currency checkbox to existing table with event listener to call create currency selector
 
 function createCurrencySelector(){
   var elToAppendTo = document.getElementById('rate-row-cell-3');
-  var currencyTypesArray = [['usd', 'cad'], ['cad', 'usd'], ['usd', 'mxn'], ['mxn', 'usd'], ['cad','mxn'], ['mxn', 'cad']]
+  var currencyTypesArray = [['usd', 'cad'], ['cad', 'usd'], ['usd', 'mxn'], ['mxn', 'usd'], ['cad','mxn'], ['mxn', 'cad']];
   var currencyDropDownMenu = createDropDownMenu(currencyTypesArray);  
   clearElement('rate-row-cell-3');
   elToAppendTo.appendChild(currencyDropDownMenu);
@@ -451,9 +452,9 @@ function createCurrencySelector(){
   function createDropDownMenu(selectValues){
     var menuDiv = document.createElement('div');
     var menuSelect = document.createElement('select');
-    var menuButton = buildInput('button', 'currency-drop-down-button', 'Convert', convertCurrency )
-    menuDiv.classList.add('col-sm-2')
-    menuSelect.classList.add('form-control')
+    var menuButton = buildInput('button', 'currency-drop-down-button', 'Convert', convertCurrency );
+    menuDiv.classList.add('col-sm-2');
+    menuSelect.classList.add('form-control');
     menuSelect.style.width = '110px';
     menuButton.classList.add('custom-select-button');
     menuDiv.appendChild(menuSelect);
@@ -462,7 +463,7 @@ function createCurrencySelector(){
       let currencyOption = document.createElement('option');
       let currencyTextNode = document.createTextNode(`${selectValues[i][0]} to ${selectValues[i][1]}`)
       currencyOption.value = `${selectValues[i]}`;
-      currencyOption.classList.add('form-control')
+      currencyOption.classList.add('form-control');
       currencyOption.appendChild(currencyTextNode);
       menuSelect.appendChild(currencyOption); 
     }
@@ -480,7 +481,7 @@ function convertCurrency(){
     var options = Array.from(document.getElementsByTagName('select')[0].children);
     return options.filter(returnSelectedValue)[0].value;
 
-    function returnSelectedValue(option) {
+    function returnSelectedValue(option){
       if (option.selected == true) {return option.value};
     }
   }
@@ -516,15 +517,15 @@ function convertCurrency(){
   }
 
   function appendToDOM(totalExchanged){
-    var elToAppendTo = document.getElementById('rate-row-cell-3')
+    var elToAppendTo = document.getElementById('rate-row-cell-3');
     elToAppendTo.innerHTML = `The total is ${ totalExchanged } ${ currencyArray[1].toUpperCase() }, converted from ${ currencyArray[0].toUpperCase() }.`;
   }
 }
 
 // tax rate functions
 function createTaxRateElements(event){
-  var taxRateCell = document.getElementById('rate-row-cell-1')
-  if (event.target.checked && event.target.id == "tax-rate-checkbox" && taxRateCell.textContent == 'Add Taxes') {
+  var taxRateCell = document.getElementById('rate-row-cell-1');
+  if (event.target.checked && event.target.id == "tax-rate-checkbox" && taxRateCell.textContent == 'Add Taxes'){
     let taxRateInputField = buildInput('text', 'tax-rate-input-field', '0.0', clearValue);
     let taxRateButton = buildInput('button', 'tax-rate-button', 'Add Tax', toggleTaxes);
     let elToAppendTo = document.getElementById('rate-row-cell-1');
@@ -539,14 +540,14 @@ function createTaxRateElements(event){
 
 function toggleTaxes(){ 
   var addTaxCheckBox = document.getElementById('tax-rate-checkbox');
-  if (!taxRate) {
+  if (!taxRate){
     if (document.getElementById('tax-rate-input-field')){
       taxRate = parseFloat(document.getElementById('tax-rate-input-field').value);
     }
   } 
 
   if (taxRate > 0.01) {
-    let taxEl = document.getElementById('rate-row-cell-1')
+    let taxEl = document.getElementById('rate-row-cell-1');
     var priceEl = document.getElementById('cost-num');
     var priceTotal = parseFloat(priceEl.innerText, 10); 
     
@@ -557,7 +558,7 @@ function toggleTaxes(){
       taxEl.innerText = `Taxes: $${taxOfTotal.toFixed(2)} @${taxRate}%`;
       togglePriceWithTax('add');
       // check if checkbox is unchecked to delete taxes
-    } else if (!(addTaxCheckBox.checked) && priceTotal > 0) {
+    } else if (!(addTaxCheckBox.checked) && priceTotal > 0){
       var taxOfTotal = calculateRate(priceTotal, taxRate/100);
       togglePriceWithTax('subtract');
     } else {
@@ -569,7 +570,7 @@ function toggleTaxes(){
 
 function togglePriceWithTax(operator) {
   var total;
-  var priceEl = document.getElementById('cost-num')
+  var priceEl = document.getElementById('cost-num');
   var numsArray = filterListForSelected(collectCheckedBoxes());
   var price = totalPrice(numsArray);
   var taxOfTotal = calculateRate(price, taxRate / 100);
