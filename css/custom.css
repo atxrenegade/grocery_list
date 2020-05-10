@@ -91,7 +91,6 @@ select.form-control {
 }
 
 #grocery-table, #rate-table {
-  max-width: 58%;
   margin: 30px auto 10px auto;
   text-align: left;
 }
@@ -102,6 +101,7 @@ select.form-control {
   margin-top: 0px;
   margin-bottom: 20px; 
   align-content: center;
+  font-weight: bold;
 }
 
 #grocery-img {
@@ -167,27 +167,16 @@ select.form-control {
   margin-left: 0px;
 }
 
-#rate-row-cell-0, #rate-row-cell-2 {
-  min-width: 30px; 
-  width: 17.5%;
-}
-
-#rate-row-cell-1, #rate-row-cell-3 {
-  width: 31.5%;
-  text-align: left;
-  margin-left: 0%;
-  padding-left: 0%;
-  font-weight: bold;
-  min-width: 120px;
-}
 
 #tax-rate-input-field {
-  max-width: 100px;
+  max-width: 85px;
   padding-bottom: 3px;
+  margin-left: 0px;
 }
 
 #tax-rate-button {
-  margin-left: 4px;
+  margin-left: 0px;
+  padding: 0px;
 }
 
 #currency-drop-down-button{
@@ -220,10 +209,29 @@ select.form-control {
 /* media queries */
 
 @media only screen and (max-width: 680px) {
-  #grocery-table, #rate-table {
+  #body {
+    width: 355px;
+  }
+
+  #grocery-table {
 	  max-width: 80%;
   }
+
+  #rate-row-cell-0, #rate-row-cell-2, #rate-row-cell-0, #rate-row-cell-3 {
+    padding: 0px;
+    text-align: left;
+  }
+
+   #rate-row-cell-0, #rate-row-cell-2 {
+     width: 15px;
+     padding-right: 10px;
+   }
+
+  #rate-row-cell-1 {
+    padding-left: 0px;
+  }
 } 
+
 @media only screen and (max-width: 780px) {
   #instructions-page {
     max-width: 85%;
