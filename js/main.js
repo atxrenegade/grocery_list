@@ -1,3 +1,4 @@
+var taxRate;
 initialize();
 
 //*****************************************************************
@@ -228,13 +229,9 @@ function savePrice(item, cell){
 function manageTableTotals(){ 
   var selectedItems = collectCheckedBoxes();
   var numsArray = filterListForSelected(selectedItems); 
-  var taxCheckBox = document.getElementById('tax-rate-checkbox');
   addPrice(numsArray);
   addCount(numsArray);
-  // create a form of closure to store tax rate
-  if (taxCheckBox != null && taxCheckBox.checked == true && taxRate > 0) {
-    addTax();
-  }
+  toggleTaxes();
 }
 
 function addCount(numsArray){
@@ -350,7 +347,6 @@ function manageGroceryList(action, item, num){
   }
 
   /*Local Storage Functions *****************************************/
-  
   // add item
   function addItemToSavedList(newItem){
     var retrievedArray = retrieveSavedList();
@@ -520,33 +516,61 @@ function convertCurrency(){
     elToAppendTo.innerHTML = `The total is ${ totalExchanged } ${ currencyArray[1].toUpperCase() }, converted from ${ currencyArray[0].toUpperCase() }.`;
   }
 }
+
 // tax rate functions
 function createTaxRateElements(event){
-  var addTaxCheckBox = document.getElementById('tax-rate-checkbox');
-  //if event.target tax-rate-checkbox and event target = unchecked clear taxes from total 
-  if (taxRate == 0 && event.target.checked == true && event.target == addTaxCheckBox) {
-    let taxRateInputField = buildInput('text', 'tax-rate-input-field', '0.0', clearValue) ;
-    let taxRateButton = buildInput('button', 'tax-rate-button', 'add tax', taxAndTotalToDOM);
+  var taxRateCell = document.getElementById('rate-row-cell-1')
+  if (event.target.checked && event.target.id == "tax-rate-checkbox" && taxRateCell.textContent == 'Add Taxes') {
+    let taxRateInputField = buildInput('text', 'tax-rate-input-field', '0.0', clearValue);
+    let taxRateButton = buildInput('button', 'tax-rate-button', 'add tax', toggleTaxes);
     let elToAppendTo = document.getElementById('rate-row-cell-1');
     elToAppendTo.innerText = '';
     elToAppendTo.appendChild(taxRateInputField);
     elToAppendTo.appendChild(taxRateButton);
-  } else if (taxRate != 0 && addTaxCheckBox.checked == true ) {
-    addTax();
   } else {
-    manageTableTotals();
+    toggleTaxes();
   }
 }
 
-function addTax(){
-  var priceEl = document.getElementById('cost-num')
-  var price = parseFloat(priceEl.innerText, 10);
-  var taxRate = document.getElementById('tax-rate-input-field').value; 
-    var taxElement = document.getElementById('rate-row-cell-1')
-    taxRate.innerText = `Tax @ ${taxRate}% :  $${taxOfTotal}`;
-    priceElement.innerText = `${totalWithTax}` 
+function toggleTaxes(){ 
+  var addTaxCheckBox = document.getElementById('tax-rate-checkbox');
+  if (!taxRate) {
+    if (document.getElementById('tax-rate-input-field')){
+      taxRate = parseInt(document.getElementById('tax-rate-input-field').value);
+    }
+  } 
+
+  if (taxRate > 0.01) {
+    let taxEl = document.getElementById('rate-row-cell-1')
+    var priceEl = document.getElementById('cost-num');
+    var priceTotal = parseFloat(priceEl.innerText, 10); 
+    
+    // check if tax rate present and total price is greater than zero
+    if (addTaxCheckBox.checked && priceTotal > 0){ 
+      // check if checkbox is checked to add taxes
+      var taxOfTotal = calculateRate(priceTotal, taxRate/100);
+      taxEl.innerText = `Taxes: $${taxOfTotal.toFixed(2)} @${taxRate}%`;
+      togglePriceWithTax('add');
+      // check if checkbox is unchecked to delete taxes
+    } else if (!(addTaxCheckBox.checked) && priceTotal > 0) {
+      var taxOfTotal = calculateRate(priceTotal, taxRate/100);
+      togglePriceWithTax('subtract');
+    } else {
+      // to add tax rate to DOM when total price is still zero
+      taxEl.innerHTML = `Tax Rate: ${taxRate}%`;
+    }
   }
 }
+
+function togglePriceWithTax(operator) {
+  var total;
+  var priceEl = document.getElementById('cost-num')
+  var numsArray = filterListForSelected(collectCheckedBoxes());
+  var price = totalPrice(numsArray);
+  var taxOfTotal = calculateRate(price, taxRate / 100);
+  operator == 'add' ? total = taxOfTotal + price : total = price - taxOfTotal;
+  priceEl.innerText = `${total.toFixed(2)}`;
+} 
 
 //round one - if checkbox is selected and event is taxRate checkbox create fields and get the tax rate
 //round two  - if taxRate is set and checkbox is selected calculate tax add to total
