@@ -86,15 +86,20 @@ select.form-control {
   margin-top: 5px;
 }
 
+.col-sm-2 {
+  padding: 0px;
+}
+
 #grocery-table, #rate-table {
   max-width: 58%;
   margin: 30px auto 10px auto;
+  text-align: left;
 }
 
 #rate-table {
-  margin: 0px auto 30px auto;
   border-top-style: none;  
   border-bottom-style: none; 
+  margin-top: 0px;
   margin-bottom: 20px; 
   align-content: center;
 }
@@ -125,29 +130,41 @@ select.form-control {
   display: inline-flex;
   margin: auto;
   padding-top: 5px;
-  padding-bottom: 3px;  
+  padding-bottom: 3px; 
+  width: 25%; 
+}
+
+#btn-field-del-item {
+  padding-left: 3px;
+  padding-right: 3px;
 }
 
 #field-quantity {
-  width: 82px;
+  width: 27%;
   margin-left: 0px;
   margin-bottom: 10px;
 }
 
 #field-add-item {
-  width: 120px;
+  width: 38%;
   margin-left: 0px;
   margin-top: 30px;
+}
+
+#edit-items-section {
+  max-width: 300px;
+  margin: auto;
 }
 
 #field-delete-item {
   margin-top: 30px;
   margin-bottom: 10px;
-  width: 190px;
+  width: 68%;
 }
 
 #item-price-field {
   width: 75px;
+  margin-left: 0px;
 }
 
 #rate-row-cell-0, #rate-row-cell-2 {
@@ -161,6 +178,7 @@ select.form-control {
   margin-left: 0%;
   padding-left: 0%;
   font-weight: bold;
+  min-width: 120px;
 }
 
 #tax-rate-input-field {
@@ -174,7 +192,10 @@ select.form-control {
 
 #currency-drop-down-button{
   margin-top: 5px;
+  padding-left: 12px;
+  padding-right: 10px;
 }
+
 
 #form-control {
   padding: 3px;
@@ -200,7 +221,7 @@ select.form-control {
 
 @media only screen and (max-width: 680px) {
   #grocery-table, #rate-table {
-	  max-width: 85%;
+	  max-width: 80%;
   }
 } 
 @media only screen and (max-width: 780px) {
