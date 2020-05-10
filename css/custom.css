@@ -121,7 +121,6 @@ select.form-control {
 
 #buttons-section {
   margin-bottom: 20px;
-  max-width: 400px;
   margin: 15px auto;
 }
 
@@ -210,11 +209,15 @@ select.form-control {
 
 @media only screen and (max-width: 680px) {
   #body {
-    width: 355px;
+    width: 350px;
   }
 
-  #grocery-table {
-	  max-width: 80%;
+  #buttons-section {
+    max-width: 400px;
+  }
+
+  #grocery-table, #rate-table {
+    max-width: 80%;
   }
 
   #rate-row-cell-0, #rate-row-cell-2, #rate-row-cell-0, #rate-row-cell-3 {
@@ -230,9 +233,7 @@ select.form-control {
   #rate-row-cell-1 {
     padding-left: 0px;
   }
-} 
 
-@media only screen and (max-width: 780px) {
   #instructions-page {
     max-width: 85%;
   }
