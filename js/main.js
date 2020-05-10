@@ -536,7 +536,7 @@ function toggleTaxes(){
   var addTaxCheckBox = document.getElementById('tax-rate-checkbox');
   if (!taxRate) {
     if (document.getElementById('tax-rate-input-field')){
-      taxRate = parseInt(document.getElementById('tax-rate-input-field').value);
+      taxRate = parseFloat(document.getElementById('tax-rate-input-field').value);
     }
   } 
 
@@ -568,17 +568,10 @@ function togglePriceWithTax(operator) {
   var numsArray = filterListForSelected(collectCheckedBoxes());
   var price = totalPrice(numsArray);
   var taxOfTotal = calculateRate(price, taxRate / 100);
-  operator == 'add' ? total = taxOfTotal + price : total = price - taxOfTotal;
+  operator == 'add' ? total = taxOfTotal + price : total = price;
   priceEl.innerText = `${total.toFixed(2)}`;
 } 
 
-//round one - if checkbox is selected and event is taxRate checkbox create fields and get the tax rate
-//round two  - if taxRate is set and checkbox is selected calculate tax add to total
-// round three - if taxRate is set and box is unselected remove tax set to zero and recalculate the total
-
-// everytime the total price is recalculated, tax should be recalculated
-// unchecking tax box should recalculated with out price without tax
-// change event listener on taxbox once rate has been set
 
 
 
