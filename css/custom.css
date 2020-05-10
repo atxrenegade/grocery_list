@@ -91,8 +91,10 @@ select.form-control {
 }
 
 #grocery-table, #rate-table {
-  margin: 30px auto 10px auto;
-  text-align: left;
+ max-width: 70%;
+ margin-left: auto;
+ margin-right: auto;
+ margin-top: 20px;
 }
 
 #rate-table {
@@ -150,11 +152,6 @@ select.form-control {
   margin-top: 30px;
 }
 
-#edit-items-section {
-  max-width: 300px;
-  margin: auto;
-}
-
 #field-delete-item {
   margin-top: 30px;
   margin-bottom: 10px;
@@ -165,7 +162,6 @@ select.form-control {
   width: 75px;
   margin-left: 0px;
 }
-
 
 #tax-rate-input-field {
   max-width: 85px;
@@ -208,8 +204,29 @@ select.form-control {
 /* media queries */
 
 @media only screen and (max-width: 680px) {
-  #body {
-    width: 350px;
+
+  body {
+    max-width: 350px;
+    margin: auto;
+  }
+
+  td {
+    max-width: 100px;
+    word-wrap: break-word;
+    padding-left: 5px;
+  }
+
+  .btn-add-price {
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    font-size: .90em;
+  }
+
+  #edit-items-section {
+    max-width: 300px;
+    margin: auto;
   }
 
   #buttons-section {
@@ -218,9 +235,15 @@ select.form-control {
 
   #grocery-table, #rate-table {
     max-width: 80%;
+    margin: 0px 0px 20px 0px;
+    text-align: left;
   }
 
-  #rate-row-cell-0, #rate-row-cell-2, #rate-row-cell-0, #rate-row-cell-3 {
+  #rate-table {
+    min-width: 280px;
+  }
+
+  #rate-row-cell-0, #rate-row-cell-1, #rate-row-cell-2, #rate-row-cell-3 {
     padding: 0px;
     text-align: left;
   }
@@ -232,6 +255,10 @@ select.form-control {
 
   #rate-row-cell-1 {
     padding-left: 0px;
+  }
+
+  #rate-row-cell-2 {
+    padding-left: 30px;
   }
 
   #instructions-page {

@@ -114,6 +114,7 @@ function createCellData(item){
 function createPriceButton(item, cell){
   var priceButton = buildInput('button', `${item}-price`, 'Add Price')
   priceButton.addEventListener('click', createPriceField.bind(null, item, cell)) // bind item param to createPriceField
+  priceButton.classList.add('btn-add-price')
   cell.appendChild(priceButton);
 }
 
