@@ -98,7 +98,7 @@ select.form-control {
 }
 
 #rate-table {
-  margin-bottom: 20px; 
+  margin-bottom: 40px; 
   align-content: center;
   font-weight: bold;
 }
@@ -161,14 +161,14 @@ select.form-control {
 }
 
 #tax-rate-input-field {
-  max-width: 85px;
+  max-width: 91px;
   padding-bottom: 3px;
   margin-left: 0px;
 }
 
 #tax-rate-button {
   margin-left: 0px;
-  padding: 0px;
+  padding: 3px;
 }
 
 #currency-drop-down-button{
@@ -176,7 +176,6 @@ select.form-control {
   padding-left: 12px;
   padding-right: 10px;
 }
-
 
 #form-control {
   padding: 3px;
@@ -203,8 +202,9 @@ select.form-control {
 @media only screen and (max-width: 680px) {
 
   body {
-    max-width: 330px;
+    max-width: 340px;
     margin: auto;
+    align-content: center;
   }
 
   td {
@@ -213,17 +213,27 @@ select.form-control {
     padding-left: 5px;
   }
 
-  .btn-add-price {
-    padding-left: 0px;
-    padding-right: 0px;
+  .btn-lg {
+    margin: 3px;
+  }
+
+  .btn-add-price, .btn-price-save, #tax-rate-button, #currency-drop-down-button {
+    padding: 3px;
     margin-left: 0px;
     margin-right: 0px;
     font-size: .75em;
   }
+  #tax-rate-button, #tax-rate-input-field {
+    width: 75px;
+  }
+
+  #currency-drop-down-button {
+    width: 100px;
+  }
 
   #edit-items-section {
     max-width: 300px;
-    margin: auto;
+    margin: auto auto 30px auto;
   }
 
   #edit-totals-section {
