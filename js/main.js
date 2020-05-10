@@ -278,12 +278,12 @@ function buildInput(type, id, value, eventListenerToAdd){
   return newInput;
 }
 
-function createCheckbox(item, checkboxEvent, elToAppendTo, labelContent) {
+function createCheckbox(item, checkboxEvent, elToAppendTo, labelContent){
   var itemCheckbox = document.createElement('input');
   itemCheckbox.type = 'checkbox';
   itemCheckbox.id = item.name;
   itemCheckbox.classList.add('ckbx-styled');
-  if (item.price == 'unassigned' || !(isNaN(parseInt(item.price)))) { itemCheckbox.classList.add('grocery')}; 
+  if (checkboxEvent == manageTableTotals) { itemCheckbox.classList.add('grocery')}; 
   elToAppendTo.appendChild(itemCheckbox);
   itemCheckbox.addEventListener('click', checkboxEvent);
   if (labelContent != undefined) {
