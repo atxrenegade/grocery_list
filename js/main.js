@@ -75,9 +75,10 @@ function buildDeleteGroceryInputs(){
   var elToAppendTo = document.getElementById('edit-items-section');
   var buttonStates = ['btn-del-item', 'btn-add-item', 'btn-reset', 'btn-select-all']
   var deleteField = buildInput('text', 'field-delete-item', 'item to delete', clearValue)
-  var deleteButton = buildInput('button', 'btn-field-del-item', 'Delete', deleteGroceryItem)
+  var deleteButton = buildInput('button', 'btn-field-del-item', 'DELETE', deleteGroceryItem)
   clearElement('edit-items-section');
   displayActiveButton(buttonStates);
+  deleteField.classList.add('form-control');
   elToAppendTo.appendChild(deleteField);
   elToAppendTo.appendChild(deleteButton);
 } 
@@ -120,6 +121,7 @@ function createPriceField(item, cell){
   var priceField = buildInput('text', 'item-price-field', '');
   var savePriceButton = buildInput('button', `save-${item}-price`, 'Save')
   savePriceButton.addEventListener('click', savePrice.bind(null, item, cell))
+  priceField.classList.add('form-control');
   cell.innerHTML = '';
   cell.appendChild(priceField);
   cell.appendChild(savePriceButton); 
@@ -430,7 +432,7 @@ function totalPrice(itemsArray){
   return Math.round(price * 100)/100
 }
 
-// use for tax and conversion rates?
+// use for tax and conversion rates
 function calculateRate(total, rate){
   var numWithRate = (total * rate)
   return Math.round(numWithRate * 100) / 100
@@ -448,10 +450,10 @@ function createCurrencySelector(){
   function createDropDownMenu(selectValues){
     var menuDiv = document.createElement('div');
     var menuSelect = document.createElement('select');
-    var menuButton = buildInput('button', 'currency-drop-down-button', 'convert', convertCurrency )
+    var menuButton = buildInput('button', 'currency-drop-down-button', 'Convert', convertCurrency )
     menuDiv.classList.add('col-sm-2')
     menuSelect.classList.add('form-control')
-    menuSelect.style.width = '125px';
+    menuSelect.style.width = '110px';
     menuButton.classList.add('custom-select-button');
     menuDiv.appendChild(menuSelect);
   
@@ -459,6 +461,7 @@ function createCurrencySelector(){
       let currencyOption = document.createElement('option');
       let currencyTextNode = document.createTextNode(`${selectValues[i][0]} to ${selectValues[i][1]}`)
       currencyOption.value = `${selectValues[i]}`;
+      currencyOption.classList.add('form-control')
       currencyOption.appendChild(currencyTextNode);
       menuSelect.appendChild(currencyOption); 
     }
@@ -522,8 +525,9 @@ function createTaxRateElements(event){
   var taxRateCell = document.getElementById('rate-row-cell-1')
   if (event.target.checked && event.target.id == "tax-rate-checkbox" && taxRateCell.textContent == 'Add Taxes') {
     let taxRateInputField = buildInput('text', 'tax-rate-input-field', '0.0', clearValue);
-    let taxRateButton = buildInput('button', 'tax-rate-button', 'add tax', toggleTaxes);
+    let taxRateButton = buildInput('button', 'tax-rate-button', 'Add Tax', toggleTaxes);
     let elToAppendTo = document.getElementById('rate-row-cell-1');
+    taxRateInputField.classList.add('form-control');
     elToAppendTo.innerText = '';
     elToAppendTo.appendChild(taxRateInputField);
     elToAppendTo.appendChild(taxRateButton);

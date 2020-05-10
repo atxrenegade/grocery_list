@@ -77,6 +77,15 @@ input[type='text'] {
   border: 2px dotted red;
 }
 
+.btn-lg {
+  padding: 10px;
+}
+
+select.form-control {
+  padding: 4px;
+  margin-top: 5px;
+}
+
 #grocery-table, #rate-table {
   max-width: 58%;
   margin: 30px auto 10px auto;
@@ -111,7 +120,7 @@ input[type='text'] {
   margin: 15px auto;
 }
 
-#btn-save {
+#btn-save, #btn-field-del-item {
   margin: 5px;
   display: inline-flex;
   margin: auto;
@@ -126,13 +135,19 @@ input[type='text'] {
 }
 
 #field-add-item {
-  width: 135px;
+  width: 120px;
   margin-left: 0px;
   margin-top: 30px;
 }
 
+#field-delete-item {
+  margin-top: 30px;
+  margin-bottom: 10px;
+  width: 190px;
+}
+
 #item-price-field {
-  width: 65px;
+  width: 75px;
 }
 
 #rate-row-cell-0, #rate-row-cell-2 {
@@ -149,12 +164,16 @@ input[type='text'] {
 }
 
 #tax-rate-input-field {
-  max-width: 82px;
+  max-width: 100px;
   padding-bottom: 3px;
 }
 
 #tax-rate-button {
   margin-left: 4px;
+}
+
+#currency-drop-down-button{
+  margin-top: 5px;
 }
 
 #form-control {
