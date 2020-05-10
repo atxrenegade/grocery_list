@@ -98,9 +98,6 @@ select.form-control {
 }
 
 #rate-table {
-  border-top-style: none;  
-  border-bottom-style: none; 
-  margin-top: 0px;
   margin-bottom: 20px; 
   align-content: center;
   font-weight: bold;
@@ -141,13 +138,13 @@ select.form-control {
 }
 
 #field-quantity {
-  width: 27%;
+  width: 28%;
   margin-left: 0px;
   margin-bottom: 10px;
 }
 
 #field-add-item {
-  width: 38%;
+  width: 37%;
   margin-left: 0px;
   margin-top: 30px;
 }
@@ -155,7 +152,7 @@ select.form-control {
 #field-delete-item {
   margin-top: 30px;
   margin-bottom: 10px;
-  width: 68%;
+  width: 67%;
 }
 
 #item-price-field {
@@ -206,7 +203,7 @@ select.form-control {
 @media only screen and (max-width: 680px) {
 
   body {
-    max-width: 350px;
+    max-width: 330px;
     margin: auto;
   }
 
@@ -221,7 +218,7 @@ select.form-control {
     padding-right: 0px;
     margin-left: 0px;
     margin-right: 0px;
-    font-size: .90em;
+    font-size: .75em;
   }
 
   #edit-items-section {
@@ -229,23 +226,32 @@ select.form-control {
     margin: auto;
   }
 
+  #edit-totals-section {
+    max-width: 320px;
+  }
+
   #buttons-section {
     max-width: 400px;
   }
 
-  #grocery-table, #rate-table {
-    max-width: 80%;
-    margin: 0px 0px 20px 0px;
-    text-align: left;
+  #grocery-items-section {
+    align-content: center;
   }
 
-  #rate-table {
+  #grocery-table {
+    padding: 0px;
+    max-width: 70%;
+    margin: 20px auto 20px auto;
+  }
+
+   #rate-table {
+    margin: 0px 0px 40px 0px;
     min-width: 280px;
   }
 
   #rate-row-cell-0, #rate-row-cell-1, #rate-row-cell-2, #rate-row-cell-3 {
     padding: 0px;
-    text-align: left;
+    text-align: justify;
   }
 
    #rate-row-cell-0, #rate-row-cell-2 {
@@ -258,7 +264,7 @@ select.form-control {
   }
 
   #rate-row-cell-2 {
-    padding-left: 30px;
+    padding-left: 10px;
   }
 
   #instructions-page {
