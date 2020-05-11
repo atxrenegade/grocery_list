@@ -31,7 +31,6 @@ function buildAddGroceryInputs(){
   var itemField = buildInput('text', 'field-add-item', 'item', clearValue);
   var itemQuantity = buildInput('text', 'field-quantity', 'amount', clearValue);
   var saveButton = buildInput('button', 'btn-save', 'SAVE', addGroceryItem);
-  saveButton.classList.add('btn-save-price');
   itemField.classList.add('form-control');
   itemQuantity.classList.add('form-control');
   var newElements = [itemField,itemQuantity, saveButton];
