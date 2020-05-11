@@ -268,7 +268,7 @@ select.form-control {
 
   #grocery-table {
     padding: 0px;
-    max-width: 70%;
+    max-width: 320px;
     margin: 20px auto 20px auto;
   }
 
