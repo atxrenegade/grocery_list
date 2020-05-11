@@ -439,8 +439,7 @@ function calculateRate(total, rate){
   return Math.round(numWithRate * 100) / 100;
 }
 
-// add currency checkbox to existing table with event listener to call create currency selector
-
+// currency conversion
 function createCurrencySelector(){
   var elToAppendTo = document.getElementById('rate-row-cell-3');
   var currencyTypesArray = [['usd', 'cad'], ['cad', 'usd'], ['usd', 'mxn'], ['mxn', 'usd'], ['cad','mxn'], ['mxn', 'cad']];
@@ -485,7 +484,7 @@ function convertCurrency(){
     }
   }
   
-  function calculateAndAppendConverted(currencyArray, total){
+  function calculateAndAppendConverted(currencyArray){
     try {
       fetchCurrencyRate(currencyArray[0]);      
     } catch(error) {
@@ -554,7 +553,7 @@ function toggleTaxes(){
     if (addTaxCheckBox.checked && priceTotal > 0){ 
       // check if checkbox is checked to add taxes
       var taxOfTotal = calculateRate(priceTotal, taxRate/100);
-      taxEl.innerText = `Taxes: $${taxOfTotal.toFixed(2)} @${taxRate}%`;
+      taxEl.innerText = `Taxes: $${taxOfTotal.toFixed(2)} @ ${taxRate}%`;
       togglePriceWithTax('add');
       // check if checkbox is unchecked to delete taxes
     } else if (!(addTaxCheckBox.checked) && priceTotal > 0){
