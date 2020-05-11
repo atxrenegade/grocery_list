@@ -208,10 +208,11 @@ select.form-control {
     font-size: .9em;
   }
 
-  td {
-    max-width: 100px;
+  .table td {
+    max-width: 120px;
     word-wrap: break-word;
-    padding-left: 5px;
+    padding-left: 3px;
+    padding-right:3px;
   }
 
   .btn-lg {
@@ -234,7 +235,7 @@ select.form-control {
 
   #edit-items-section {
     max-width: 300px;
-    margin: auto auto 10px auto;
+    margin: auto auto 0px auto;
   }
 
   #edit-totals-section {
@@ -262,7 +263,7 @@ select.form-control {
 
   #rate-row-cell-0, #rate-row-cell-1, #rate-row-cell-2, #rate-row-cell-3 {
     padding: 0px;
-    text-align: justify;
+    text-align: left;
   }
 
    #rate-row-cell-0, #rate-row-cell-2 {
@@ -271,6 +272,7 @@ select.form-control {
    }
 
   #rate-row-cell-1 {
+    max-width: 80px;
     padding-left: 0px;
   }
 
