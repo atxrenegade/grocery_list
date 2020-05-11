@@ -16,7 +16,7 @@ div, h1 {
 img {
   display: block;
   margin: 30px auto;
-  width: 40%;
+  width: 80%;
 }
 
 div a {
@@ -36,12 +36,13 @@ input[type='text'] {
 
 .content {
   padding: 50px 20px;
-  max-width: 850px;
+  max-width: 650px;
   text-align: center;
   display:flex; 
   flex-direction:column; 
   justify-content:center;
   min-height:100vh;
+  align-items: center;
 }
 
 .table td, .table th {
@@ -60,7 +61,7 @@ input[type='text'] {
 }
 
 .align-main { 
-  max-width: 800px;
+  max-width: 650px;
   margin:0 auto;
 }
 
@@ -91,7 +92,7 @@ select.form-control {
 }
 
 #grocery-table, #rate-table {
- max-width: 70%;
+ max-width: 650px;
  margin-left: auto;
  margin-right: auto;
  margin-top: 20px;
@@ -121,6 +122,12 @@ select.form-control {
 #buttons-section {
   margin-bottom: 20px;
   margin: 15px auto;
+}
+
+#buttons-section, #edit-items-section, #grocery-total-section {
+  max-width: 650px;
+  text-align: center;
+  align-content: center;
 }
 
 #btn-save, #btn-field-del-item {
@@ -208,6 +215,10 @@ select.form-control {
     font-size: .9em;
   }
 
+  img {
+    width: 70%;
+  }
+
   .tables {
     max-width: 320px;
   }
@@ -229,6 +240,7 @@ select.form-control {
     margin-right: 0px;
     font-size: .75em;
   }
+
   #tax-rate-button, #tax-rate-input-field {
     width: 75px;
   }
