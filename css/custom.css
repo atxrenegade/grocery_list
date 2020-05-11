@@ -296,8 +296,13 @@ select.form-control {
     padding-left: 10px;
   }
 
-  #instructions-page {
-    max-width: 85%;
+  #instructions-format {
+    align-content: left;
+    font-size: .9em;
+    max-width: 330;
+    text-align: left;
+    margin: auto;
+    margin-right: 10px;
   }
 
   .instruction-links {
