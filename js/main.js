@@ -561,10 +561,12 @@ function createTaxRateElements(event){
 }
 
 function toggleTaxes(){ 
+  var taxRate = CACHE.taxRate();
   var addTaxCheckBox = document.getElementById('tax-rate-checkbox');
   if (!taxRate){
     if (document.getElementById('tax-rate-input-field')){
-      taxRate = parseFloat(document.getElementById('tax-rate-input-field').value);
+       let newTaxRate = parseFloat(document.getElementById('tax-rate-input-field').value);
+       CACHE.taxRate(newTaxRate);
     }
   } 
 
@@ -592,6 +594,7 @@ function toggleTaxes(){
 
 function togglePriceWithTax(operator) {
   var total;
+  var taxRate = CACHE.taxRate();
   var priceEl = document.getElementById('cost-num');
   var numsArray = filterListForSelected(collectCheckedBoxes());
   var price = totalPrice(numsArray);
