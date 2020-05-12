@@ -1,29 +1,21 @@
-var taxRate;
 initialize();
 
 // set cache
-const CACHE = (function () {
-  const cache = {};
+const CACHE = (function() {
+  var cache = {};
+
+  function cacheData(data, cacheName){
+    if (data) { cache[cacheName] = data };
+    return cache[cacheName];
+  };
+
   return {
-    cell: function cacheCell(data) {
-      if (data) { cache['cell'] = data };
-      return cache['cell'];
-    },
-    row: function cacheRow(data) {
-      if (data) { cache['row'] = data };
-      return cache['row'];
-    },
-    taxRate: function cacheTaxRate(data) {
-      if (data) { cache['taxRate'] = data };
-      return cache['taxRate'];
-    },
-    totalPrice: function cacheTotalPrice(data) {
-      if (data) { cache['totalPrice'] = data };
-      return cache['totalPrice'];
-    }
+    totalPrice: function(data){ return cacheData(data, 'totalPrice')},
+    taxRate: function(data){ return cacheData(data, 'taxRate')},
+    cell: function(data){ return cacheData(data, 'cell')},
+    row: function(data){ return cacheData(data, 'row')}
   }
 })();
-
 
 //*****************************************************************
 function initialize(){
