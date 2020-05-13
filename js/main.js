@@ -272,13 +272,6 @@ function storeCell() {
   return cell;
 }
 
-function storeRow() {
-  // future closure
-  var row;
-  { row = document.getElementById('grocery-table').children[0].lastChild };
-  return row;
-}
-
 // factory functions
 function buildInput(type, id, value, eventListenerToAdd){
   var newInput = document.createElement('input');
