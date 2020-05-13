@@ -144,7 +144,6 @@ function createPriceField(item, cell){
   cell.appendChild(savePriceButton); 
 }
 
-
 function updateDOMItemCount(count){
   document.getElementById('items-num').innerText = count;
 }
@@ -248,19 +247,11 @@ function savePrice(item, cell){
 function manageTableTotals(){ 
   var selectedItems = collectCheckedBoxes();
   var numsArray = filterListForSelected(selectedItems); 
-  addPrice(numsArray);
-  addCount(numsArray);
+  debugger;
+  updateDOMTotalPrice(totalPrice(numsArray));
+  updateDOMItemCount(countItems(numsArray));
   toggleTaxes();
 }
-
-function addCount(numsArray){
-  return updateDOMItemCount(countItems(numsArray));
-}
-
-function addPrice(numsArray){
-  return updateDOMTotalPrice(totalPrice(numsArray));
-}
-
 
 function collectCheckedBoxes() {
   var checkboxes = Array.from(document.getElementsByClassName('ckbx-styled grocery'));
@@ -446,7 +437,8 @@ function totalPrice(itemsArray){
     price.push(quantNum * priceNum);
   })
   price = price.reduce(add, 0);
-  return Math.round(price * 100)/100;
+  return CACHE.totalPrice(Math.round(price * 100)/100);
+  
 }
 
 // use for tax and conversion rates
@@ -569,11 +561,11 @@ function toggleTaxes(){
     
     // check if tax rate present and total price is greater than zero
     if (addTaxCheckBox.checked && priceTotal > 0){ 
-      // check if checkbox is checked to add taxes
+      // check if checkbox is checked to add taxes to total
       var taxOfTotal = calculateRate(priceTotal, taxRate/100);
       taxEl.innerText = `Taxes: $${taxOfTotal.toFixed(2)} @ ${taxRate}%`;
       togglePriceWithTax('add');
-      // check if checkbox is unchecked to delete taxes
+      // check if checkbox is unchecked to delete taxes from
     } else if (!(addTaxCheckBox.checked) && priceTotal > 0){
       var taxOfTotal = calculateRate(priceTotal, taxRate/100);
       togglePriceWithTax('subtract');
@@ -589,7 +581,7 @@ function togglePriceWithTax(operator) {
   var taxRate = CACHE.taxRate();
   var priceEl = document.getElementById('cost-num');
   var numsArray = filterListForSelected(collectCheckedBoxes());
-  var price = totalPrice(numsArray);
+  var price = CACHE.totalPrice(); 
   var taxOfTotal = calculateRate(price, taxRate / 100);
   operator == 'add' ? total = taxOfTotal + price : total = price;
   priceEl.innerText = `${total.toFixed(2)}`;
