@@ -14,8 +14,8 @@ const CACHE = (function() {
     taxRate: function(data){ return cacheData(data, 'taxRate')},
     element: { 
       price: document.getElementById('cost-num'),
-      cell: function(data){ return cacheData(data, 'cell') },
-      row: function(data){ return cacheData(data, 'row') } 
+      cell: function(data){ return cacheData(data, 'cell') }
+     } 
     }
   }
 })();
@@ -68,7 +68,7 @@ function buildGroceryItem() {
 }
 
 function addGroceryItemToDOM(item){
-    createItemRow(item); 
+    createGroceryItemRow(item); 
     addRatesCheckboxes();  
   // if select all toggle is on, add checked value to new item checkbox
   if (document.getElementById('btn-select-all').textContent == 'DESELECT ALL'){
@@ -109,17 +109,16 @@ function deleteGroceryItemFromDOM(row){
   manageTableTotals();
 }
 
-function createItemRow(item){  
+function createGroceryItemRow(item){  
   var table = document.querySelector('tbody');
   var row = table.insertRow();
   var cell = row.insertCell();
   row.classList.add('grocery-row');
   createCheckbox(item, manageTableTotals, cell);
-  createCellData(item);
+  createCellData(item, row);
 }  
 
-function createCellData(item){
-  var row = storeRow();
+function createCellData(item, row){
   for (let [key, value] of Object.entries(item)) {
     let cell = row.insertCell();
     if (value == 'unassigned'){
@@ -252,7 +251,6 @@ function savePrice(item, cell){
 function manageTableTotals(){ 
   var selectedItems = collectCheckedBoxes();
   var numsArray = filterListForSelected(selectedItems); 
-  debugger;
   updateDOMTotalPrice(totalPrice(numsArray));
   updateDOMItemCount(countItems(numsArray));
   toggleTaxes();
