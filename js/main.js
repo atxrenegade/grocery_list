@@ -12,10 +12,15 @@ const CACHE = (function() {
   return {
     totalPrice: function(data){ return cacheData(data, 'totalPrice')},
     taxRate: function(data){ return cacheData(data, 'taxRate')},
-    cell: function(data){ return cacheData(data, 'cell')},
-    row: function(data){ return cacheData(data, 'row')}
+    element: { 
+      price: document.getElementById('cost-num'),
+      cell: function(data){ return cacheData(data, 'cell') },
+      row: function(data){ return cacheData(data, 'row') } 
+    }
   }
 })();
+
+CACHE.element.price;
 
 //*****************************************************************
 function initialize(){
@@ -152,7 +157,7 @@ function addPriceToCell(price, cell){
 }
 
 function updateDOMTotalPrice(price){
-  document.getElementById('cost-num').innerText = (parseFloat(price)).toFixed(2);
+  CACHE.element.price.innerText = (parseFloat(price)).toFixed(2);
 } 
 
 function createNaNError(){
@@ -192,7 +197,7 @@ function reset(){
     clearElement('edit-items-section');
     clearElement('grocery-tbody');
     clearElement('rate-tbody');
-    document.getElementById('cost-num').innerText = 0;
+    CACHE.element.price.innerText = 0; 
     document.getElementById('items-num').innerText = 0;
     cost = 0;
     manageGroceryList('resetList');
@@ -480,7 +485,7 @@ function createCurrencySelector(){
 
 function convertCurrency(){
   var currencyArray = retrieveUserInput().split(',');
-  var total = parseFloat(document.getElementById('cost-num').innerText, 10)
+  var total = parseFloat(CACHE.element.price.innerText, 10);
   calculateAndAppendConverted(currencyArray, total);
  
   function retrieveUserInput(){ 
@@ -517,7 +522,7 @@ function convertCurrency(){
   }
 
   function calculateExchangedTotal(rate){
-    var price = parseFloat(document.getElementById('cost-num').innerText, 10);
+    var price = parseFloat(CACHE.element.price.innerText, 10);
     var totalExchanged = calculateRate(price, rate);
     return totalExchanged;
   }
@@ -556,18 +561,14 @@ function toggleTaxes(){
 
   if (taxRate > 0.01) {
     let taxEl = document.getElementById('rate-row-cell-1');
-    var priceEl = document.getElementById('cost-num');
-    var priceTotal = parseFloat(priceEl.innerText, 10); 
-    
+    let totalPrice = CACHE.totalPrice();  
     // check if tax rate present and total price is greater than zero
-    if (addTaxCheckBox.checked && priceTotal > 0){ 
+    if (addTaxCheckBox.checked && totalPrice > 0){ 
       // check if checkbox is checked to add taxes to total
-      var taxOfTotal = calculateRate(priceTotal, taxRate/100);
-      taxEl.innerText = `Taxes: $${taxOfTotal.toFixed(2)} @ ${taxRate}%`;
+      taxEl.innerText = `Taxes: $${taxOfTotal().toFixed(2)} @ ${taxRate}%`;
       togglePriceWithTax('add');
       // check if checkbox is unchecked to delete taxes from
-    } else if (!(addTaxCheckBox.checked) && priceTotal > 0){
-      var taxOfTotal = calculateRate(priceTotal, taxRate/100);
+    } else if (!(addTaxCheckBox.checked) && totalPrice > 0){
       togglePriceWithTax('subtract');
     } else {
       // to add tax rate to DOM when total price is still zero
@@ -578,14 +579,14 @@ function toggleTaxes(){
 
 function togglePriceWithTax(operator) {
   var total;
-  var taxRate = CACHE.taxRate();
-  var priceEl = document.getElementById('cost-num');
-  var numsArray = filterListForSelected(collectCheckedBoxes());
   var price = CACHE.totalPrice(); 
-  var taxOfTotal = calculateRate(price, taxRate / 100);
-  operator == 'add' ? total = taxOfTotal + price : total = price;
-  priceEl.innerText = `${total.toFixed(2)}`;
+  operator == 'add' ? total = taxOfTotal() + price : total = price;
+  CACHE.element.price.innerText = `${total.toFixed(2)}`;
 } 
+
+function taxOfTotal(){
+  return calculateRate(CACHE.totalPrice(), CACHE.taxRate() / 100);
+}
 
 
 
