@@ -1,35 +1,34 @@
+const CACHE = setCACHE();
 initialize();
 
-// set cache
-const CACHE = (function() {
+//*****************************************************************
+function setCACHE() {
   var cache = {};
 
-  function cacheData(data, cacheName){
+  function cacheData(data, cacheName) {
     if (data) { cache[cacheName] = data };
     return cache[cacheName];
   };
 
   return {
-    totalPrice: function(data){ return cacheData(data, 'totalPrice')},
-    taxRate: function(data){ return cacheData(data, 'taxRate')},
-    element: { 
+    totalPrice: function (data) { return cacheData(data, 'totalPrice') },
+    taxRate: function (data) { return cacheData(data, 'taxRate') },
+    element: {
       price: document.getElementById('cost-num')
-    } 
+    }
   }
-})();
+}
 
-CACHE.element.price;
-
-//*****************************************************************
 function initialize(){
-  localStorage['groceryArray'] == undefined ? createNewList() : buildSavedList();
+  localStorage.length < 1 ? createNewList() : buildSavedList();
+  CACHE.totalPrice();
 
-  void function addButtonEventListeners(){
+  (function addButtonEventListeners(){
     document.getElementById('btn-add-item').addEventListener('click', buildAddGroceryInputs);
     document.getElementById('btn-del-item').addEventListener('click', buildDeleteGroceryInputs);
     document.getElementById('btn-select-all').addEventListener('click', selectAllToggle);
     document.getElementById('btn-reset').addEventListener('click', reset);
-  }();
+  }());
 
   function createNewList() {
     var groceryArray = [];
@@ -41,6 +40,8 @@ function initialize(){
     savedList.forEach(el => addGroceryItemToDOM(el));
   }
 }
+
+
 
 // DISPLAY DATA
 // BUILD AND APPEND DOM ELEMENTS
@@ -153,8 +154,8 @@ function addPriceToCell(price, cell){
   cell.innerHTML = '$' + (parseFloat(price)).toFixed(2);
 }
 
-function updateDOMTotalPrice(){
-  CACHE.element.price.innerText = CACHE.totalPrice().toFixed(2);
+function updateDOMTotalPrice(price){
+  CACHE.element.price.innerText = price;
 } 
 
 function createNaNError(){
@@ -194,10 +195,10 @@ function reset(){
     clearElement('edit-items-section');
     clearElement('grocery-tbody');
     clearElement('rate-tbody');
-    CACHE.element.price.innerText = 0; 
+    CACHE.element.price.innerText = 0;
     document.getElementById('items-num').innerText = 0;
-    cost = 0;
     manageGroceryList('resetList');
+    setCACHE();
     initialize();
   }
 }
@@ -249,7 +250,8 @@ function savePrice(item, cell){
 function manageTableTotals(){ 
   var selectedItems = collectCheckedBoxes();
   var numsArray = filterListForSelected(selectedItems); 
-  updateDOMTotalPrice(totalPrice(numsArray));
+  var price = totalPrice(numsArray).toFixed(2);
+  updateDOMTotalPrice(price);
   updateDOMItemCount(countItems(numsArray));
   toggleTaxes();
 }
@@ -412,19 +414,24 @@ function countItems(itemsArray){
 
 // calculate cost
 function totalPrice(itemsArray){
-  var price = [];
-  itemsArray.map(el => {
-    let quantNum = parseFloat(el.quantity, 10);
-    let priceNum;
-    if (el.price === 'unassigned' || el.price === 'undefined') {
-      priceNum = 0;
-    } else { 
-      priceNum = parseFloat(el.price, 10);
-    } 
-    price.push(quantNum * priceNum);
-  })
-  price = price.reduce(add, 0);
-  return price = CACHE.totalPrice(price);  
+  var price;
+  if (itemsArray.length < 1) {
+    price = parseInt(CACHE.totalPrice('0'));
+  } else {
+    var price = [];
+    itemsArray.map(el => {
+      let quantNum = parseFloat(el.quantity, 10);
+      let priceNum;
+      if (el.price === 'unassigned' || el.price === 'undefined') {
+        priceNum = 0;
+      } else { 
+        priceNum = parseFloat(el.price, 10);
+      } 
+      price.push(quantNum * priceNum);
+    })
+    price = CACHE.totalPrice(price.reduce(add, 0)); 
+  } 
+  return price;
 }
 
 // use for tax and conversion rates
