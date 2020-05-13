@@ -13,10 +13,8 @@ const CACHE = (function() {
     totalPrice: function(data){ return cacheData(data, 'totalPrice')},
     taxRate: function(data){ return cacheData(data, 'taxRate')},
     element: { 
-      price: document.getElementById('cost-num'),
-      cell: function(data){ return cacheData(data, 'cell') }
-     } 
-    }
+      price: document.getElementById('cost-num')
+    } 
   }
 })();
 
@@ -263,13 +261,6 @@ function collectCheckedBoxes() {
     if (element.checked == true) { items.push(element.id) };
   }
   return items;
-}
-
-function storeCell() {
-  // future closure here
-  var cell;
-  { cell = document.getElementById('grocery-table').children[0].lastChild.lastChild };
-  return cell;
 }
 
 // factory functions
