@@ -156,8 +156,8 @@ function addPriceToCell(price, cell){
   cell.innerHTML = '$' + (parseFloat(price)).toFixed(2);
 }
 
-function updateDOMTotalPrice(price){
-  CACHE.element.price.innerText = (parseFloat(price)).toFixed(2);
+function updateDOMTotalPrice(){
+  CACHE.element.price.innerText = CACHE.totalPrice().toFixed(2);
 } 
 
 function createNaNError(){
@@ -442,8 +442,7 @@ function totalPrice(itemsArray){
     price.push(quantNum * priceNum);
   })
   price = price.reduce(add, 0);
-  return CACHE.totalPrice(Math.round(price * 100)/100);
-  
+  return price = CACHE.totalPrice(price);  
 }
 
 // use for tax and conversion rates
