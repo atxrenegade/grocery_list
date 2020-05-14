@@ -46,13 +46,15 @@ function convertCurrency(CACHE) {
     return totalExchanged;
   }
 
+  function calculateRate(total, rate) {
+    var numWithRate = (total * rate);
+    return Math.round(numWithRate * 100) / 100;
+  }
+
   function appendToDOM(totalExchanged) {
     var elToAppendTo = document.getElementById('rate-row-cell-3');
     elToAppendTo.innerHTML = `The total is ${totalExchanged} ${currencyArray[1].toUpperCase()}, converted from ${currencyArray[0].toUpperCase()}.`;
   }
 
-  function calculateRate(total, rate) {
-    var numWithRate = (total * rate);
-    return Math.round(numWithRate * 100) / 100;
-  }
+  
 }
