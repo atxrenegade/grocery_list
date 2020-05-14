@@ -1,5 +1,6 @@
 import { setCACHE } from "./modules/cache.js";
 import { createNewList, buildSavedList, manageGroceryList } from "./modules/localStorage.js";
+import { toggleTaxes } from "./modules/taxes.js"
 
 const CACHE = setCACHE();
 initialize();
@@ -161,6 +162,21 @@ function selectAllToggle(event){
   } 
 }
 
+function createTaxRateElements(event) {
+  var taxRateCell = document.getElementById('rate-row-cell-1');
+  if (event.target.checked && event.target.id == "tax-rate-checkbox" && taxRateCell.textContent == 'Add Taxes') {
+    let taxRateInputField = buildInput('text', 'tax-rate-input-field', '0.0', clearValue);
+    let taxRateButton = buildInput('button', 'tax-rate-button', 'Add Tax', toggleTaxes.bind(null, CACHE));
+    let elToAppendTo = document.getElementById('rate-row-cell-1');
+    taxRateInputField.classList.add('form-control');
+    elToAppendTo.innerText = '';
+    elToAppendTo.appendChild(taxRateInputField);
+    elToAppendTo.appendChild(taxRateButton);
+  } else {
+    toggleTaxes(CACHE);
+  }
+}
+
 function reset(){
   var buttonStates = ['btn-reset', 'btn-add-item', 'btn-del-item', 'btn-select-all'];
   displayActiveButton(buttonStates);
@@ -227,7 +243,7 @@ function manageTableTotals(){
   var price = totalPrice(numsArray).toFixed(2);
   updateDOMTotalPrice(price);
   updateDOMItemCount(countItems(numsArray));
-  toggleTaxes();
+  toggleTaxes(CACHE);
 }
 
 function collectCheckedBoxes() {
@@ -287,6 +303,8 @@ function clearElement(id){
 
 // MANAGE DATA
 // build Grocery List
+
+// replace with manageGroceryList; 
 
 function parsedGroceryList(){
   return JSON.parse(localStorage.getItem('groceryArray'));
@@ -430,60 +448,7 @@ function convertCurrency(){
   }
 }
 
-// tax rate functions
-function createTaxRateElements(event){
-  var taxRateCell = document.getElementById('rate-row-cell-1');
-  if (event.target.checked && event.target.id == "tax-rate-checkbox" && taxRateCell.textContent == 'Add Taxes'){
-    let taxRateInputField = buildInput('text', 'tax-rate-input-field', '0.0', clearValue);
-    let taxRateButton = buildInput('button', 'tax-rate-button', 'Add Tax', toggleTaxes);
-    let elToAppendTo = document.getElementById('rate-row-cell-1');
-    taxRateInputField.classList.add('form-control');
-    elToAppendTo.innerText = '';
-    elToAppendTo.appendChild(taxRateInputField);
-    elToAppendTo.appendChild(taxRateButton);
-  } else {
-    toggleTaxes();
-  }
-}
 
-function toggleTaxes(){ 
-  var taxRate = CACHE.taxRate();
-  var addTaxCheckBox = document.getElementById('tax-rate-checkbox');
-  if (!taxRate){
-    if (document.getElementById('tax-rate-input-field')){
-       let newTaxRate = parseFloat(document.getElementById('tax-rate-input-field').value);
-       CACHE.taxRate(newTaxRate);
-    }
-  } 
-
-  if (taxRate > 0.01) {
-    let taxEl = document.getElementById('rate-row-cell-1');
-    let totalPrice = CACHE.totalPrice();  
-    // check if tax rate present and total price is greater than zero
-    if (addTaxCheckBox.checked && totalPrice > 0){ 
-      // check if checkbox is checked to add taxes to total
-      taxEl.innerText = `Taxes: $${taxOfTotal().toFixed(2)} @ ${taxRate}%`;
-      togglePriceWithTax('add');
-      // check if checkbox is unchecked to delete taxes from
-    } else if (!(addTaxCheckBox.checked) && totalPrice > 0){
-      togglePriceWithTax('subtract');
-    } else {
-      // to add tax rate to DOM when total price is still zero
-      taxEl.innerHTML = `Tax Rate: ${taxRate}%`;
-    }
-  }
-}
-
-function togglePriceWithTax(operator) {
-  var total;
-  var price = CACHE.totalPrice(); 
-  operator == 'add' ? total = taxOfTotal() + price : total = price;
-  CACHE.element.price.innerText = `${total.toFixed(2)}`;
-} 
-
-function taxOfTotal(){
-  return calculateRate(CACHE.totalPrice(), CACHE.taxRate() / 100);
-}
 
 
 
