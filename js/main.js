@@ -1,6 +1,7 @@
 import { setCACHE } from "./modules/cache.js";
 import { createNewList, buildSavedList, manageGroceryList } from "./modules/localStorage.js";
-import { toggleTaxes } from "./modules/taxes.js"
+import { toggleTaxes } from "./modules/taxes.js";
+import { convertCurrency } from "./modules/currencyConversion.js";
 
 const CACHE = setCACHE();
 initialize();
@@ -301,6 +302,7 @@ function clearElement(id){
   document.getElementById(id).innerHTML = '';
 }
 
+// ******************************
 // MANAGE DATA
 // build Grocery List
 
@@ -309,6 +311,8 @@ function clearElement(id){
 function parsedGroceryList(){
   return JSON.parse(localStorage.getItem('groceryArray'));
 }
+
+/// ****************************** /
 // LOGIC AND CALCULATIONS 
 
 function filterListForSelected(selectedItems){
@@ -361,12 +365,6 @@ function totalPrice(itemsArray){
   return price;
 }
 
-// use for tax and conversion rates
-function calculateRate(total, rate){
-  var numWithRate = (total * rate);
-  return Math.round(numWithRate * 100) / 100;
-}
-
 // currency conversion
 function createCurrencySelector(){
   var elToAppendTo = document.getElementById('rate-row-cell-3');
@@ -378,7 +376,7 @@ function createCurrencySelector(){
   function createDropDownMenu(selectValues){
     var menuDiv = document.createElement('div');
     var menuSelect = document.createElement('select');
-    var menuButton = buildInput('button', 'currency-drop-down-button', 'Convert', convertCurrency );
+    var menuButton = buildInput('button', 'currency-drop-down-button', 'Convert', convertCurrency.bind(null, CACHE) );
     menuDiv.classList.add('col-sm-2');
     menuSelect.classList.add('form-control');
     menuSelect.style.width = '110px';
@@ -397,57 +395,6 @@ function createCurrencySelector(){
     return menuDiv;
   }
 }
-
-function convertCurrency(){
-  var currencyArray = retrieveUserInput().split(',');
-  var total = parseFloat(CACHE.element.price.innerText, 10);
-  calculateAndAppendConverted(currencyArray, total);
- 
-  function retrieveUserInput(){ 
-    var options = Array.from(document.getElementsByTagName('select')[0].children);
-    return options.filter(returnSelectedValue)[0].value;
-
-    function returnSelectedValue(option){
-      if (option.selected == true) {return option.value};
-    }
-  }
-  
-  function calculateAndAppendConverted(currencyArray){
-    try {
-      fetchCurrencyRate(currencyArray[0]);      
-    } catch(error) {
-      console.log(error);
-    }
-  }  
-
-  function fetchCurrencyRate(currency){ 
-    var url = `https://prime.exchangerate-api.com/v5/51b51bd8875d058d36d9986d/latest/${currency.toUpperCase()}`
-    fetch(url)
-      .then(response => response.json())
-      .then(json => formatRate(json))
-      .then(rate => calculateExchangedTotal(rate))
-      .then(totalExchanged => appendToDOM(totalExchanged))
-  }
-
-  function formatRate(data){
-    var currencyRates = data.conversion_rates;
-    var currency = currencyArray[1].toUpperCase();
-    var rate = currencyRates[`${currency}`];
-    return rate;
-  }
-
-  function calculateExchangedTotal(rate){
-    var price = parseFloat(CACHE.element.price.innerText, 10);
-    var totalExchanged = calculateRate(price, rate);
-    return totalExchanged;
-  }
-
-  function appendToDOM(totalExchanged){
-    var elToAppendTo = document.getElementById('rate-row-cell-3');
-    elToAppendTo.innerHTML = `The total is ${ totalExchanged } ${ currencyArray[1].toUpperCase() }, converted from ${ currencyArray[0].toUpperCase() }.`;
-  }
-}
-
 
 
 
