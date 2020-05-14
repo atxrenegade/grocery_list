@@ -1,12 +1,10 @@
-export { convertCurrency };
+export { convertCurrency, resetCurrencyElements };
 
 function convertCurrency(CACHE) {
   var currencyArray = retrieveUserInput().split(',');
-  var total = parseFloat(CACHE.element.price.innerText, 10);
-  calculateAndAppendConverted(currencyArray, total);
+  calculateAndAppendConverted(currencyArray);
 
-
-/************************************************************** */  
+  /************************************************************** */  
   function retrieveUserInput() {
     var options = Array.from(document.getElementsByTagName('select')[0].children);
     return options.filter(returnSelectedValue)[0].value;
@@ -34,6 +32,7 @@ function convertCurrency(CACHE) {
   }
 
   function formatRate(data) {
+    debugger;
     var currencyRates = data.conversion_rates;
     var currency = currencyArray[1].toUpperCase();
     var rate = currencyRates[`${currency}`];
@@ -41,7 +40,7 @@ function convertCurrency(CACHE) {
   }
 
   function calculateExchangedTotal(rate) {
-    var price = parseFloat(CACHE.element.price.innerText, 10);
+    var price = CACHE.totalPrice();
     var totalExchanged = calculateRate(price, rate);
     return totalExchanged;
   }
@@ -53,8 +52,15 @@ function convertCurrency(CACHE) {
 
   function appendToDOM(totalExchanged) {
     var elToAppendTo = document.getElementById('rate-row-cell-3');
-    elToAppendTo.innerHTML = `The total is ${totalExchanged} ${currencyArray[1].toUpperCase()}, converted from ${currencyArray[0].toUpperCase()}.`;
+    elToAppendTo.innerHTML = `The total is ${totalExchanged.toFixed(2)} ${currencyArray[1].toUpperCase()}, converted from ${currencyArray[0].toUpperCase()}.`;
   }
+}
 
-  
+// reset currency element when new tax or items added to price;
+function resetCurrencyElements() {
+  let currencyCell = document.getElementById('rate-row-cell-3');
+  if (currencyCell.innerText != 'Convert Currency') {
+    currencyCell.innerText = 'Convert Currency'
+    document.getElementById('currency-rate-checkbox').checked = false;
+  };
 }
