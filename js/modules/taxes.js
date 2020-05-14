@@ -2,16 +2,16 @@ export { toggleTaxes };
 
 function toggleTaxes(CACHE) {
   var taxRate = CACHE.taxRate();
-  var addTaxCheckBox = document.getElementById('tax-rate-checkbox');
-
+  
   if (!taxRate) {
     if (document.getElementById('tax-rate-input-field')) {
       let newTaxRate = parseFloat(document.getElementById('tax-rate-input-field').value);
-      CACHE.taxRate(newTaxRate);
+      taxRate = CACHE.taxRate(newTaxRate);
     }
   }
 
   if (taxRate > 0.01) {
+    let addTaxCheckBox = document.getElementById('tax-rate-checkbox');
     let taxEl = document.getElementById('rate-row-cell-1');
     let totalPrice = CACHE.totalPrice();
     // check if tax rate present and total price is greater than zero
