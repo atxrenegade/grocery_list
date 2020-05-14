@@ -32,7 +32,6 @@ function convertCurrency(CACHE) {
   }
 
   function formatRate(data) {
-    debugger;
     var currencyRates = data.conversion_rates;
     var currency = currencyArray[1].toUpperCase();
     var rate = currencyRates[`${currency}`];
