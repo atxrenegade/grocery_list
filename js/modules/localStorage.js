@@ -1,11 +1,11 @@
 export { createNewList, buildSavedList, returnSavedList, manageGroceryList };
 
-function createNewList() {
+function createNewList(){
   var groceryArray = [];
   localStorage.setItem('groceryArray', JSON.stringify(groceryArray));
 }
 
-function buildSavedList() {
+function buildSavedList(){
   return JSON.parse(localStorage['groceryArray']);
 }
 
@@ -18,7 +18,7 @@ function manageGroceryList(action, item, num){
 
 /********************************************************** */
 
-  function directGroceryListAction(action, item, num) {
+  function directGroceryListAction(action, item, num){
     switch (action){
     case 'addItem': 
       var newItem = { name: item.name, quantity: item.quantity, price: 'unassigned' };
