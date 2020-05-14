@@ -1,13 +1,12 @@
 import { setCACHE } from "./modules/cache.js";
+import { createNewList, buildSavedList, manageGroceryList } from "./modules/localStorage.js";
 
 const CACHE = setCACHE();
 initialize();
 
 //*****************************************************************
-
-
 function initialize(){
-  localStorage.length < 1 ? createNewList() : buildSavedList();
+  localStorage.length < 1 ?  createNewList() : buildSavedList().forEach(el => addGroceryItemToDOM(el));
   CACHE.totalPrice();
 
   (function addButtonEventListeners(){
@@ -16,19 +15,7 @@ function initialize(){
     document.getElementById('btn-select-all').addEventListener('click', selectAllToggle);
     document.getElementById('btn-reset').addEventListener('click', reset);
   }());
-
-  function createNewList() {
-    var groceryArray = [];
-    localStorage.setItem('groceryArray', JSON.stringify(groceryArray));
-  }
-
-  function buildSavedList() {
-    var savedList = JSON.parse(localStorage['groceryArray']);
-    savedList.forEach(el => addGroceryItemToDOM(el));
-  }
 }
-
-
 
 // DISPLAY DATA
 // BUILD AND APPEND DOM ELEMENTS
@@ -300,71 +287,6 @@ function clearElement(id){
 
 // MANAGE DATA
 // build Grocery List
-function createStoredList(){
-  var groceryArray = [];
-  localStorage.setItem('groceryArray', JSON.stringify(groceryArray));
-}
-
-// create localStorage array to store GroceryList variable until cleared
-function manageGroceryList(action, item, num){
-  directGroceryListAction(action, item, num);
-
-/********************************************************** */
-
-  function directGroceryListAction(action, item, num) {
-    switch (action){
-    case 'addItem': 
-      var newItem = { name: item.name, quantity: item.quantity, price: 'unassigned' };
-      addItemToSavedList(newItem);
-      break;
-    case 'updateItem':
-      updateSavedItem(item, num);
-      break;
-    case 'deleteItem':
-      deleteItemFromSavedList(item);
-      break;
-    case 'resetList':
-      deleteSavedList();
-      break;  
-    default: 
-        return retrieveSavedList();  
-    } 
-    return retrieveSavedList();
-  }
-
-  /*Local Storage Functions *****************************************/
-  // add item
-  function addItemToSavedList(newItem){
-    var retrievedArray = retrieveSavedList();
-    retrievedArray.push(newItem);
-    var newArray = JSON.stringify(retrievedArray);
-    localStorage.setItem('groceryArray', newArray);
-  }
-
-  // delete item
-  function deleteItemFromSavedList(itemToDelete){
-    var retrievedArray = retrieveSavedList();
-    var elIndex = retrievedArray.findIndex(el => (el.name === itemToDelete))
-    retrievedArray.splice(elIndex, 1);
-    localStorage.setItem('groceryArray', JSON.stringify(retrievedArray));
-  }
-  // retrieveSavedList 
-  function retrieveSavedList(){
-    return JSON.parse(localStorage.getItem('groceryArray'));
-  }
-
-  // delete saved list
-  function deleteSavedList(){
-    localStorage.clear();
-  }
-
-  function updateSavedItem(itemToUpdate, num){
-    var retrievedArray = retrieveSavedList();
-    var elIndex = retrievedArray.findIndex(el => (el.name === itemToUpdate));
-    retrievedArray[elIndex]['price'] = num;
-    localStorage.setItem('groceryArray', JSON.stringify(retrievedArray));
-  }
-}
 
 function parsedGroceryList(){
   return JSON.parse(localStorage.getItem('groceryArray'));
