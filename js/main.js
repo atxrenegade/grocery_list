@@ -1,7 +1,7 @@
 import { setCACHE } from "./modules/cache.js";
 import { createNewList, buildSavedList, returnSavedList, manageGroceryList } from "./modules/localStorage.js";
 import { toggleTaxes } from "./modules/taxes.js";
-import { convertCurrency } from "./modules/currencyConversion.js";
+import { convertCurrency, resetCurrencyElements } from "./modules/currencyConversion.js";
 
 const CACHE = setCACHE();
 initialize();
@@ -177,7 +177,7 @@ function initialize(){
   }
 
   function updateDOMTotalPrice(price) {
-    CACHE.element.price.innerText = price;
+    CACHE.element.price.innerText = price.toFixed(2);
   }
 
   function selectAllToggle(event) {
@@ -225,10 +225,12 @@ function initialize(){
   function manageTableTotals() {
     var selectedItems = collectCheckedBoxes();
     var numsArray = filterListForSelected(selectedItems);
-    var price = totalPrice(numsArray).toFixed(2);
+    var price = totalPrice(numsArray);
     updateDOMTotalPrice(price);
     updateDOMItemCount(countItems(numsArray));
     toggleTaxes(CACHE);
+    // reset currency exchange when new items, taxes, added or removed
+    resetCurrencyElements();
   }
 
   function collectCheckedBoxes() {
@@ -246,15 +248,23 @@ function initialize(){
 
   // TAX RATE elements
   function createTaxRateElements(event) {
+    // any changes to total price reset currency exchange elements 
+    resetCurrencyElements();
     var taxRateCell = document.getElementById('rate-row-cell-1');
     if (event.target.checked && event.target.id == "tax-rate-checkbox" && taxRateCell.textContent == 'Add Taxes') {
       let taxRateInputField = buildInput('text', 'tax-rate-input-field', '0.0', clearValue);
-      let taxRateButton = buildInput('button', 'tax-rate-button', 'Add Tax', toggleTaxes.bind(null, CACHE));
+      let taxRateButton = buildInput('button', 'tax-rate-button', 'Add Tax', setTaxesResetExchange.bind(null, CACHE)); 
       let elToAppendTo = document.getElementById('rate-row-cell-1');
       taxRateInputField.classList.add('form-control');
       elToAppendTo.innerText = '';
       elToAppendTo.appendChild(taxRateInputField);
       elToAppendTo.appendChild(taxRateButton);
+
+      function setTaxesResetExchange(){
+        // any changes to total price reset currency exchange elements 
+        toggleTaxes(CACHE);
+        resetCurrencyElements();
+      }
     } else {
       toggleTaxes(CACHE);
     }
@@ -342,9 +352,7 @@ function initialize(){
     var groceryList = returnSavedList();
     selectedItems.forEach(el => {
       for (const grocery of groceryList) {
-        if (grocery.name == el) {
-          filteredArray.push(grocery);
-        }
+        if (grocery.name == el) { filteredArray.push(grocery) };
       }
     })
     return filteredArray
@@ -371,12 +379,12 @@ function initialize(){
   function totalPrice(itemsArray) {
     var price;
     if (itemsArray.length < 1) {
-      price = parseInt(CACHE.totalPrice('0'));
+      price = 0;
     } else {
-      var price = [];
+      price = [];
       itemsArray.map(el => {
-        let quantNum = parseFloat(el.quantity, 10);
         let priceNum;
+        let quantNum = parseFloat(el.quantity, 10);
         if (el.price === 'unassigned' || el.price === 'undefined') {
           priceNum = 0;
         } else {
