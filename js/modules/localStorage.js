@@ -1,4 +1,4 @@
-export { createNewList, buildSavedList, manageGroceryList };
+export { createNewList, buildSavedList, returnSavedList, manageGroceryList };
 
 function createNewList() {
   var groceryArray = [];
@@ -9,8 +9,12 @@ function buildSavedList() {
   return JSON.parse(localStorage['groceryArray']);
 }
 
+function returnSavedList(){
+  return JSON.parse(localStorage.getItem('groceryArray'));
+}
+
 function manageGroceryList(action, item, num){
-  directGroceryListAction(action, item, num);
+  directGroceryListAction(action, item, num); 
 
 /********************************************************** */
 
@@ -30,9 +34,8 @@ function manageGroceryList(action, item, num){
       deleteSavedList();
       break;  
     default: 
-        return retrieveSavedList();  
+      break;
     } 
-    return retrieveSavedList();
   }
 
   /*Local Storage Functions *****************************************/
