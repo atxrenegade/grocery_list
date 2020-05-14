@@ -1,23 +1,10 @@
+import { setCACHE } from "./modules/cache.js";
+
 const CACHE = setCACHE();
 initialize();
 
 //*****************************************************************
-function setCACHE() {
-  var cache = {};
 
-  function cacheData(data, cacheName) {
-    if (data) { cache[cacheName] = data };
-    return cache[cacheName];
-  };
-
-  return {
-    totalPrice: function (data) { return cacheData(data, 'totalPrice') },
-    taxRate: function (data) { return cacheData(data, 'taxRate') },
-    element: {
-      price: document.getElementById('cost-num')
-    }
-  }
-}
 
 function initialize(){
   localStorage.length < 1 ? createNewList() : buildSavedList();
