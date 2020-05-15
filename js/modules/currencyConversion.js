@@ -1,4 +1,4 @@
-export { convertCurrency, resetCurrencyElements };
+export { convertCurrency };
 
 function convertCurrency(CACHE) {
   var currencyArray = retrieveUserInput().split(',');
@@ -52,14 +52,22 @@ function convertCurrency(CACHE) {
   function appendToDOM(totalExchanged) {
     var elToAppendTo = document.getElementById('rate-row-cell-3');
     elToAppendTo.innerHTML = `The total is ${totalExchanged.toFixed(2)} ${currencyArray[1].toUpperCase()}, converted from ${currencyArray[0].toUpperCase()}.`;
+    clearExchangedTotal();
   }
-}
 
-// reset currency element when new tax or items added to price;
-function resetCurrencyElements() {
-  let currencyCell = document.getElementById('rate-row-cell-3');
-  if (currencyCell.innerText != 'Convert Currency') {
-    currencyCell.innerText = 'Convert Currency'
-    document.getElementById('currency-rate-checkbox').checked = false;
-  };
-}
+  function clearExchangedTotal(){
+    var checkboxArray = Array.from(document.querySelectorAll('input[type="checkbox"]'))
+    checkboxArray.forEach(el => {
+      el.addEventListener('click', function(){
+        if (document.getElementById('rate-row-cell-3').innerHTML != 'Covnvert Currency'){ 
+          resetCurrencyExchange();
+        }
+      })
+    })
+    function resetCurrencyExchange() {
+      document.getElementById('currency-rate-checkbox').checked = false;
+      document.getElementById('rate-row-cell-3').innerHTML = 'Convert Currency';
+    }
+  } 
+}  
+
