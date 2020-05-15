@@ -214,6 +214,8 @@ function initialize(){
       clearElement('grocery-tbody');
       clearElement('rate-tbody');
       CACHE.element.price.innerText = 0;
+      CACHE.totalPrice(0.00);
+      CACHE.taxRate(0.00);
       document.getElementById('items-num').innerText = 0;
       manageGroceryList('resetList');
       setCACHE();
