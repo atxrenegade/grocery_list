@@ -59,7 +59,7 @@ function convertCurrency(CACHE) {
     var checkboxArray = Array.from(document.querySelectorAll('input[type="checkbox"]'))
     checkboxArray.forEach(el => {
       el.addEventListener('click', function(){
-        if (document.getElementById('rate-row-cell-3').innerHTML != 'Covnvert Currency'){ 
+        if (document.getElementById('rate-row-cell-3').innerHTML != 'Convert Currency'){ 
           resetCurrencyExchange();
         }
       })
